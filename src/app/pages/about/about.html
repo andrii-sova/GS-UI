@@ -1,0 +1,85 @@
+<div class="flex flex-col">
+
+  <!-- Page hero -->
+  <section class="w-full py-20">
+    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div class="flex flex-col gap-6">
+        <h1 class="text-4xl font-bold">[We shape the future with metal]</h1>
+        <p class="text-lg">[Text: The team turns ideas into precise metal solutions. Full production cycle and modern technologies form the foundation for projects that change businesses, industries and cities.]</p>
+      </div>
+      <div class="w-full aspect-video overflow-hidden">
+        <img src="[image of full team photo]" alt="Company team" class="w-full h-full object-cover" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="w-full border-y py-12">
+    <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
+      @for (stat of stats; track stat.value) {
+        <div class="flex flex-col gap-1">
+          <strong class="text-4xl font-bold">{{ stat.value }}</strong>
+          <span class="text-sm">{{ stat.label }}</span>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Company story -->
+  <section class="w-full py-20">
+    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div class="w-full aspect-video overflow-hidden">
+        <img src="[image of heritage / early company photo]" alt="Company heritage" class="w-full h-full object-cover" />
+      </div>
+      <div class="flex flex-col gap-6">
+        <h2 class="text-3xl font-bold">[Our Story]</h2>
+        <p>[Text: How the company was founded, key milestones, growth from a small workshop to a full-cycle production facility.]</p>
+        <p>[Text: Expansion, key partnerships, international projects.]</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core values -->
+  <section class="w-full py-20 border-t">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col gap-12">
+      <h2 class="text-3xl font-bold">[Our Core Values]</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        @for (value of values; track value.title) {
+          <div class="flex flex-col gap-4">
+            <img [src]="value.icon" [alt]="value.title" class="w-12 h-12" />
+            <h3 class="text-xl font-semibold">{{ value.title }}</h3>
+            <p>{{ value.text }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="w-full py-20 border-t">
+    <div class="max-w-3xl mx-auto px-6 text-center flex flex-col items-center gap-6">
+      <h2 class="text-3xl font-bold">[Ready to bring your idea to life in metal?]</h2>
+      <p>[Text: Submit a request today and get a calculation, terms and real timeline.]</p>
+      <a routerLink="/contact" class="border px-10 py-4">[Get a Quote]</a>
+    </div>
+  </section>
+
+  <!-- Team -->
+  <section class="w-full py-20 border-t">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col gap-10">
+      <h2 class="text-3xl font-bold">[The Team]</h2>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        @for (member of teamMembers; track member.name) {
+          <div class="flex flex-col gap-3">
+            <div class="w-full aspect-square overflow-hidden">
+              <img [src]="member.photo" [alt]="member.name" class="w-full h-full object-cover" />
+            </div>
+            <h3 class="font-semibold">{{ member.name }}</h3>
+            <p class="text-sm">{{ member.role }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+</div>

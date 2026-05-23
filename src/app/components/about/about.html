@@ -1,0 +1,31 @@
+<section class="w-full py-20">
+  <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+    <!-- Left: image -->
+    <div class="w-full aspect-square overflow-hidden">
+      <img
+        src="[image of production hall / heritage photo]"
+        alt="About the company"
+        class="w-full h-full object-cover"
+      />
+    </div>
+
+    <!-- Right: stats + text -->
+    <div class="flex flex-col gap-8">
+
+      <div class="grid grid-cols-3 gap-6">
+        @for (stat of stats; track stat.value) {
+          <div class="flex flex-col gap-1">
+            <strong class="text-3xl font-bold">{{ stat.value }}</strong>
+            <span class="text-sm">{{ stat.label }}</span>
+          </div>
+        }
+      </div>
+
+      <h2 class="text-3xl font-bold">[About the Company]</h2>
+      <p>[Text: Company history and values — full-cycle production, certified materials, modern equipment, decades of experience.]</p>
+      <a routerLink="/about" class="border px-6 py-3 w-fit">[About Us >]</a>
+
+    </div>
+  </div>
+</section>

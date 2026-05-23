@@ -1,0 +1,22 @@
+<section class="w-full py-20">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <div class="flex items-end justify-between mb-12">
+      <h2 class="text-3xl font-bold">[Our Projects]</h2>
+      <a routerLink="/portfolio" class="underline">[View all projects >]</a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      @for (project of projects; track project.name) {
+        <article class="flex flex-col gap-4">
+          <div class="w-full aspect-video overflow-hidden">
+            <img [src]="project.image" [alt]="project.name" class="w-full h-full object-cover" />
+          </div>
+          <h3 class="text-xl font-semibold">{{ project.name }}</h3>
+          <p class="text-sm">{{ project.description }}</p>
+        </article>
+      }
+    </div>
+
+  </div>
+</section>

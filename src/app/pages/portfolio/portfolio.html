@@ -1,0 +1,36 @@
+<div class="max-w-7xl mx-auto px-6 py-20 flex flex-col gap-12">
+
+  <header class="flex flex-col gap-4">
+    <h1 class="text-4xl font-bold">[Our Projects]</h1>
+    <p class="text-lg max-w-2xl">[Text: A selection of completed work — from industrial enclosures to architectural metalwork.]</p>
+  </header>
+
+  <!-- Category filter -->
+  <nav class="flex flex-wrap gap-3">
+    @for (cat of categories; track cat) {
+      <button class="border px-4 py-2">{{ cat }}</button>
+    }
+  </nav>
+
+  <!-- Projects grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    @for (project of projects; track project.name) {
+      <article class="flex flex-col gap-4">
+        <div class="w-full aspect-video overflow-hidden">
+          <img [src]="project.image" [alt]="project.name" class="w-full h-full object-cover" />
+        </div>
+        <span class="text-sm">{{ project.category }}</span>
+        <h2 class="text-lg font-semibold">{{ project.name }}</h2>
+        <p class="text-sm">{{ project.description }}</p>
+      </article>
+    }
+  </div>
+
+  <!-- CTA -->
+  <div class="flex flex-col items-center gap-6 py-16 text-center border-t">
+    <h2 class="text-2xl font-bold">[Have a project in mind?]</h2>
+    <p>[Text: Send your brief and let's discuss what we can build together.]</p>
+    <a routerLink="/contact" class="border px-8 py-3">[Start a Project]</a>
+  </div>
+
+</div>

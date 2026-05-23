@@ -1,0 +1,15 @@
+<section class="relative w-full py-24 overflow-hidden">
+
+  <!-- Background image -->
+  <div class="absolute inset-0">
+    <img [src]="backgroundImage" alt="CTA background" class="w-full h-full object-cover" />
+  </div>
+
+  <!-- Content -->
+  <div class="relative z-10 max-w-3xl mx-auto px-6 text-center flex flex-col items-center gap-6">
+    <h2 class="text-4xl font-bold">{{ heading }}</h2>
+    <p class="text-lg">{{ subtext }}</p>
+    <a [routerLink]="buttonLink" class="border px-10 py-4 font-semibold">{{ buttonLabel }}</a>
+  </div>
+
+</section>

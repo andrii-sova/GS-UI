@@ -1,0 +1,38 @@
+<section class="w-full py-20">
+  <div class="max-w-7xl mx-auto px-6 flex flex-col gap-16">
+
+    <!-- Stats row -->
+    <div class="grid grid-cols-3 gap-8">
+      @for (stat of stats; track stat.value) {
+        <div class="flex flex-col gap-1">
+          <strong class="text-4xl font-bold">{{ stat.value }}</strong>
+          <span>{{ stat.label }}</span>
+        </div>
+      }
+    </div>
+
+    <!-- Group photo -->
+    <div class="w-full aspect-video overflow-hidden">
+      <img src="[image of full team group photo]" alt="Company team" class="w-full h-full object-cover" />
+    </div>
+
+    <!-- Team grid -->
+    <div>
+      <h2 class="text-3xl font-bold mb-10">[Our Team]</h2>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        @for (member of members; track member.name) {
+          <div class="flex flex-col gap-3">
+            <div class="w-full aspect-square overflow-hidden">
+              <img [src]="member.photo" [alt]="member.name" class="w-full h-full object-cover" />
+            </div>
+            <h3 class="font-semibold">{{ member.name }}</h3>
+            <p class="text-sm">{{ member.role }}</p>
+          </div>
+        }
+      </div>
+    </div>
+
+    <a routerLink="/about" class="border px-6 py-3 w-fit">[More About the Company >]</a>
+
+  </div>
+</section>
