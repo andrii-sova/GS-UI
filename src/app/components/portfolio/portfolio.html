@@ -2,12 +2,12 @@
   <div class="max-w-7xl mx-auto px-6">
 
     <div class="flex items-end justify-between mb-12">
-      <h2 class="text-3xl font-bold">[Our Projects]</h2>
-      <a routerLink="/portfolio" class="underline">[View all projects >]</a>
+      <h2 class="text-3xl font-bold">{{ lang.dict().portfolioSection.title }}</h2>
+      <a routerLink="/portfolio" class="underline">{{ lang.dict().portfolioSection.viewAll }}</a>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      @for (project of projects; track project.name) {
+      @for (project of lang.dict().portfolioSection.items; track project.name) {
         <article class="flex flex-col gap-4">
           <div class="w-full aspect-video overflow-hidden">
             <img [src]="project.image" [alt]="project.name" class="w-full h-full object-cover" />

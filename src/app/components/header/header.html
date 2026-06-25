@@ -1,23 +1,42 @@
 <header class="w-full border-b">
-  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+  <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
 
     <!-- Logo -->
-    <a routerLink="/" class="text-xl font-bold">[Logo / Company Name]</a>
+    <a routerLink="/" class="flex items-center shrink-0">
+      <img src="/logo_2.png" alt="Галіція Сталь Engineering" class="h-12 w-auto" />
+    </a>
 
     <!-- Nav links -->
     <ul class="flex gap-8 list-none">
-      <li><a routerLink="/services" routerLinkActive="underline">[Services]</a></li>
-      <li><a routerLink="/portfolio" routerLinkActive="underline">[Portfolio]</a></li>
-      <li><a routerLink="/about" routerLinkActive="underline">[About Us]</a></li>
-      <li><a routerLink="/contact" routerLinkActive="underline">[Contact]</a></li>
+      <li><a routerLink="/services"  routerLinkActive="underline">{{ lang.dict().nav.services }}</a></li>
+      <li><a routerLink="/portfolio" routerLinkActive="underline">{{ lang.dict().nav.portfolio }}</a></li>
+      <li><a routerLink="/about"     routerLinkActive="underline">{{ lang.dict().nav.about }}</a></li>
+      <li><a routerLink="/contact"   routerLinkActive="underline">{{ lang.dict().nav.contact }}</a></li>
     </ul>
 
     <!-- Right side -->
     <div class="flex items-center gap-4">
-      <a href="tel:+380000000000">[Phone number]</a>
-      <a routerLink="/contact" class="border px-4 py-2">[Get a Quote]</a>
-      <a href="/uk">[UA]</a>
-      <a href="/en">[EN]</a>
+      <a href="tel:+380000000000">{{ lang.dict().nav.phone }}</a>
+      <a routerLink="/contact" class="border px-4 py-2 text-sm font-medium">{{ lang.dict().nav.getQuote }}</a>
+
+      <!-- Theme switcher -->
+      <div class="theme-switcher" role="group" aria-label="Color theme">
+        @for (t of themes; track t.id) {
+          <button
+            type="button"
+            (click)="themeService.setTheme(t.id)"
+            [class.active]="themeService.theme() === t.id"
+            [title]="t.label"
+          >{{ t.icon }}</button>
+        }
+      </div>
+
+      <!-- Language switcher -->
+      <div class="lang-switcher" role="group" aria-label="Language">
+        <button type="button" (click)="lang.setLang('uk')" [class.active]="lang.lang() === 'uk'">УКР</button>
+        <span class="lang-sep">|</span>
+        <button type="button" (click)="lang.setLang('en')" [class.active]="lang.lang() === 'en'">ENG</button>
+      </div>
     </div>
 
   </div>

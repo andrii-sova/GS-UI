@@ -1,6 +1,6 @@
 <div class="max-w-5xl mx-auto px-6 py-20 flex flex-col gap-12">
 
-  <a routerLink="/services" class="underline text-sm">[< Back to all services]</a>
+  <a routerLink="/services" class="underline text-sm">{{ lang.dict().serviceDetailPage.back }}</a>
 
   <!-- Page hero -->
   <header class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
@@ -8,33 +8,31 @@
       <img src="[image of the service]" [alt]="slug" class="w-full h-full object-cover" />
     </div>
     <div class="flex flex-col gap-4">
-      <h1 class="text-4xl font-bold">[Service name for: {{ slug }}]</h1>
-      <p class="text-lg">[Text: Short service description]</p>
-      <a routerLink="/contact" class="border px-8 py-3 w-fit">[Request a Quote]</a>
+      <h1 class="text-4xl font-bold">{{ slug }}</h1>
+      <p class="text-lg">{{ lang.dict().serviceDetailPage.whatWeDoText }}</p>
+      <a routerLink="/contact" class="border px-8 py-3 w-fit">{{ lang.dict().serviceDetailPage.quoteCta }}</a>
     </div>
   </header>
 
   <!-- What we do -->
   <section class="flex flex-col gap-4 border-t pt-12">
-    <h2 class="text-2xl font-bold">[What we do]</h2>
-    <p>[Text: Detailed description of the service, process, equipment used.]</p>
+    <h2 class="text-2xl font-bold">{{ lang.dict().serviceDetailPage.whatWeDo }}</h2>
+    <p>{{ lang.dict().serviceDetailPage.whatWeDoText }}</p>
   </section>
 
   <!-- Technical capabilities -->
   <section class="flex flex-col gap-4 border-t pt-12">
-    <h2 class="text-2xl font-bold">[Technical capabilities]</h2>
+    <h2 class="text-2xl font-bold">{{ lang.dict().serviceDetailPage.capabilities }}</h2>
     <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 list-disc pl-5">
-      <li>[Spec: Material types]</li>
-      <li>[Spec: Size / thickness range]</li>
-      <li>[Spec: Tolerance / precision]</li>
-      <li>[Spec: Batch sizes]</li>
-      <li>[Spec: Lead time]</li>
+      @for (item of lang.dict().serviceDetailPage.capabilitiesItems; track item) {
+        <li>{{ item }}</li>
+      }
     </ul>
   </section>
 
   <!-- Examples -->
   <section class="flex flex-col gap-6 border-t pt-12">
-    <h2 class="text-2xl font-bold">[Examples of work]</h2>
+    <h2 class="text-2xl font-bold">{{ lang.dict().serviceDetailPage.examples }}</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div class="aspect-square overflow-hidden">
         <img src="[image of example part 1]" alt="Example 1" class="w-full h-full object-cover" />

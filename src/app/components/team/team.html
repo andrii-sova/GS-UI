@@ -3,7 +3,7 @@
 
     <!-- Stats row -->
     <div class="grid grid-cols-3 gap-8">
-      @for (stat of stats; track stat.value) {
+      @for (stat of lang.dict().teamSection.stats; track stat.value) {
         <div class="flex flex-col gap-1">
           <strong class="text-4xl font-bold">{{ stat.value }}</strong>
           <span>{{ stat.label }}</span>
@@ -18,9 +18,9 @@
 
     <!-- Team grid -->
     <div>
-      <h2 class="text-3xl font-bold mb-10">[Our Team]</h2>
+      <h2 class="text-3xl font-bold mb-10">{{ lang.dict().teamSection.title }}</h2>
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-        @for (member of members; track member.name) {
+        @for (member of lang.dict().teamSection.members; track member.role) {
           <div class="flex flex-col gap-3">
             <div class="w-full aspect-square overflow-hidden">
               <img [src]="member.photo" [alt]="member.name" class="w-full h-full object-cover" />
@@ -32,7 +32,7 @@
       </div>
     </div>
 
-    <a routerLink="/about" class="border px-6 py-3 w-fit">[More About the Company >]</a>
+    <a routerLink="/about" class="border px-6 py-3 w-fit">{{ lang.dict().teamSection.moreCta }}</a>
 
   </div>
 </section>

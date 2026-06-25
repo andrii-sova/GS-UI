@@ -1,3 +1,358 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import 'tailwindcss';
+
+/* ═══════════════════════════════════════════════════════════
+   BRAND PALETTE
+   Blue   #0071BC  — Галіція Сталь logo
+   Coral  #DB261B  — accent / CTA
+   Gray   #465053  — body text muted
+   White  #FFFFFF
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── 2 · Normal (default) ────────────────────────────────── */
+:root,
+[data-theme='normal'] {
+  --bg:            #f4f6f8;   /* cool off-white — slight blue-gray tint */
+  --surface:       #ffffff;
+  --surface-alt:   #edf2f8;
+  --text:          #18232a;   /* near-black, cool tone */
+  --text-muted:    #465053;   /* brand gray */
+  --brand:         #0071BC;
+  --brand-hover:   #005a96;
+  --coral:         #DB261B;
+  --coral-hover:   #b81e15;
+  --border:        #dce3ea;
+  --input-bg:      #ffffff;
+  --header-bg:        #0071BC;   /* full brand blue */
+  --header-gradient:  linear-gradient(90deg, #00579a 0%, #0090e0 50%, #00579a 100%);
+  --footer-bg:        #18232a;   /* deep charcoal */
+  --footer-gradient:  linear-gradient(180deg, #18232a 0%, #0e1922 100%);
+  --footer-text:      #e4ecf0;
+  --footer-muted:     #86999e;
+  --footer-border:    #28383f;
+}
+
+/* ── 3 · Lighter ─────────────────────────────────────────── */
+[data-theme='lighter'] {
+  --bg:            #ffffff;   /* pure white body */
+  --surface:       #eef6fb;   /* pale ice-blue surface */
+  --surface-alt:   #ddeef8;
+  --text:          #18232a;
+  --text-muted:    #465053;
+  --brand:         #0071BC;
+  --brand-hover:   #005a96;
+  --coral:         #DB261B;
+  --coral-hover:   #b81e15;
+  --border:        #b8d2e6;   /* more defined border — compensates for high-contrast body */
+  --input-bg:      #f8fbfd;
+  --header-bg:        #0071BC;   /* brand blue — consistent across all light modes */
+  --header-gradient:  linear-gradient(90deg, #005ea0 0%, #28a0f0 50%, #005ea0 100%);
+  --footer-bg:        #18232a;
+  --footer-gradient:  linear-gradient(180deg, #18232a 0%, #0e1922 100%);
+  --footer-text:      #e4ecf0;
+  --footer-muted:     #86999e;
+  --footer-border:    #28383f;
+}
+
+/* ── 1 · Darker ──────────────────────────────────────────── */
+[data-theme='darker'] {
+  --bg:            #0b1318;   /* deep navy-charcoal */
+  --surface:       #131e26;
+  --surface-alt:   #1a2c38;
+  --text:          #d8e8f0;   /* cool soft white */
+  --text-muted:    #7a9eac;
+  --brand:         #4aabea;   /* blue brightened for dark bg */
+  --brand-hover:   #67bef5;
+  --coral:         #e03028;   /* coral slightly brightened */
+  --coral-hover:   #f04038;
+  --border:        #1e3042;
+  --input-bg:      #0f1c28;
+  --header-bg:        #060d12;   /* near-black header */
+  --header-gradient:  linear-gradient(90deg, #050e18 0%, #1c3a55 50%, #050e18 100%);
+  --footer-bg:        #040a0e;
+  --footer-gradient:  linear-gradient(90deg, #050e18 0%, #18324a 50%, #050e18 100%);
+  --footer-text:   #d8e8f0;
+  --footer-muted:  #4a6870;
+  --footer-border: #101c28;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BASE
+   ═══════════════════════════════════════════════════════════ */
+@layer base {
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    transition: color 0.25s ease;
+  }
+
+  [data-theme='darker'] body {
+    background: linear-gradient(145deg, #080e14 0%, #142840 25%, #2c5272 50%, #142840 75%, #080e14 100%);
+    min-height: 100vh;
+  }
+
+  *, *::before, *::after { border-color: var(--border); }
+
+  h1, h2, h3, h4, h5, h6 { color: var(--text); }
+  p   { color: var(--text-muted); }
+  strong, b { color: var(--text); }
+  small     { color: var(--text-muted); }
+  label     { color: var(--text); }
+
+  /* ── HEADER ──────────────────────────────────────────── */
+  app-header header {
+    background: var(--header-gradient);
+    border-bottom: none;
+  }
+
+  app-header header a {
+    color: rgba(255,255,255,0.82);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  app-header header a:hover { color: #fff; }
+
+  /* "Get a Quote" — coral filled pill */
+  app-header header a.border {
+    background-color: var(--coral);
+    border-color: var(--coral) !important;
+    color: #fff !important;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: background-color 0.18s ease;
+  }
+  app-header header a.border:hover {
+    background-color: var(--coral-hover);
+    border-color: var(--coral-hover) !important;
+  }
+
+  /* ── SECTIONS ────────────────────────────────────────── */
+  section {
+    background-color: var(--bg);
+    transition: background-color 0.25s ease;
+  }
+
+  /* White surface on alternate component sections */
+  app-about section,
+  app-services section,
+  app-testimonials section,
+  app-team section,
+  app-partners section {
+    background-color: var(--surface);
+  }
+
+  /* Coral accent bar under every section h2 */
+  section h2 {
+    position: relative;
+    padding-bottom: 0.85rem;
+  }
+  section h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 42px;
+    height: 3px;
+    background-color: var(--coral);
+    border-radius: 2px;
+  }
+
+  /* Stat/counter numbers — brand blue */
+  section .text-3xl.font-bold,
+  section .text-5xl.font-bold {
+    color: var(--brand);
+  }
+
+  /* "Learn more" inline links inside sections */
+  section a.underline {
+    color: var(--brand);
+    transition: color 0.15s ease;
+  }
+  section a.underline:hover { color: var(--coral); }
+
+  /* ── CTA BANNER — always uses header gradient ───────────── */
+  app-cta-banner section {
+    background: var(--header-gradient) !important;
+  }
+  app-cta-banner h2 { color: #fff; }
+  app-cta-banner p  { color: rgba(255,255,255,0.78); }
+
+  /* ── BUTTONS / CTAs ──────────────────────────────────── */
+  main a.border,
+  main button.border {
+    border-color: var(--coral);
+    color: var(--coral);
+    border-radius: 4px;
+    transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+  }
+  main a.border:hover,
+  main button.border:hover {
+    background-color: var(--coral);
+    color: #fff;
+    border-color: var(--coral);
+  }
+
+  /* CTA-banner overrides — white outline → coral on hover */
+  app-cta-banner a.border {
+    border-color: #fff !important;
+    color: #fff !important;
+    background: transparent !important;
+  }
+  app-cta-banner a.border:hover {
+    background-color: var(--coral) !important;
+    border-color: var(--coral) !important;
+  }
+
+  /* About section "About Us" button — brand blue */
+  app-about a.border {
+    border-color: var(--brand) !important;
+    color: var(--brand) !important;
+  }
+  app-about a.border:hover {
+    background-color: var(--brand) !important;
+    color: #fff !important;
+  }
+
+  /* ── FORMS ───────────────────────────────────────────── */
+  input[type='text'],
+  input[type='tel'],
+  input[type='email'],
+  input[type='number'],
+  input[type='search'],
+  input[type='url'],
+  input[type='password'],
+  textarea,
+  select {
+    background-color: var(--input-bg);
+    color: var(--text);
+    border-color: var(--border);
+    transition: border-color 0.15s ease, background-color 0.25s ease, box-shadow 0.15s ease;
+    outline: none;
+  }
+
+  input[type='text']:focus,
+  input[type='tel']:focus,
+  input[type='email']:focus,
+  input[type='number']:focus,
+  input[type='search']:focus,
+  input[type='url']:focus,
+  input[type='password']:focus,
+  textarea:focus,
+  select:focus {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px rgba(0, 113, 188, 0.12);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--text-muted);
+    opacity: 0.55;
+  }
+
+  input[type='file'] {
+    color: var(--text-muted);
+  }
+
+  /* ── GENERAL INLINE LINKS (page content) ─────────────── */
+  main a:not(.border):not([routerLink]) {
+    color: var(--brand);
+    transition: color 0.15s ease;
+  }
+  main a:not(.border):not([routerLink]):hover { color: var(--coral); }
+
+  /* ── CARDS ───────────────────────────────────────────── */
+  blockquote {
+    background-color: var(--surface);
+    border-color: var(--border);
+  }
+
+  /* ── FOOTER ──────────────────────────────────────────── */
+  app-footer > footer {
+    background: var(--footer-gradient);
+    border-color: var(--footer-border);
+  }
+  app-footer footer h4              { color: var(--footer-text); }
+  app-footer footer p,
+  app-footer footer span,
+  app-footer footer li,
+  app-footer footer small           { color: var(--footer-muted); }
+  app-footer footer a               { color: var(--footer-muted); text-decoration: none; transition: color 0.15s ease; }
+  app-footer footer a:hover         { color: var(--coral); }
+  app-footer footer .border-t       { border-color: var(--footer-border); }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   THEME SWITCHER
+   ═══════════════════════════════════════════════════════════ */
+.theme-switcher {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.20);
+  background-color: rgba(255,255,255,0.08);
+}
+
+.theme-switcher button {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: rgba(255,255,255,0.55);
+  transition: background-color 0.18s ease, color 0.18s ease;
+  line-height: 1;
+}
+
+.theme-switcher button.active {
+  background-color: var(--coral);
+  color: #fff;
+}
+
+.theme-switcher button:hover:not(.active) {
+  background-color: rgba(255,255,255,0.14);
+  color: #fff;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LANGUAGE SWITCHER
+   ═══════════════════════════════════════════════════════════ */
+.lang-switcher {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.lang-switcher button {
+  background: transparent;
+  border: none;
+  color: rgba(255,255,255,0.55);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 2px 3px;
+  transition: color 0.15s ease;
+  line-height: 1;
+}
+
+.lang-switcher button.active {
+  color: #fff;
+}
+
+.lang-switcher button:hover:not(.active) {
+  color: rgba(255,255,255,0.85);
+}
+
+.lang-sep {
+  color: rgba(255,255,255,0.25);
+  font-size: 11px;
+  user-select: none;
+}

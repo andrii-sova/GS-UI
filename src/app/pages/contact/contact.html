@@ -1,112 +1,112 @@
 <div class="max-w-7xl mx-auto px-6 py-20 flex flex-col gap-12">
 
   <header class="flex flex-col gap-4">
-    <h1 class="text-4xl font-bold">[Contact Us]</h1>
-    <p class="text-lg max-w-xl">[Text: Send your brief, drawing or question and we'll get back with a real price and timeline.]</p>
+    <h1 class="text-4xl font-bold">{{ lang.dict().contactPage.title }}</h1>
+    <p class="text-lg max-w-xl">{{ lang.dict().contactPage.subtext }}</p>
   </header>
 
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
 
-    <!-- LEFT — Contact details -->
+    <!-- LEFT â€” Contact details -->
     <aside class="flex flex-col gap-8">
 
       <div class="flex flex-col gap-1">
-        <h2 class="font-semibold">[Phone]</h2>
-        <a href="tel:+380000000000">[Phone number]</a>
+        <h2 class="font-semibold">{{ lang.dict().contactPage.phoneLabel }}</h2>
+        <a href="tel:+380000000000">{{ lang.dict().footer.phone }}</a>
       </div>
       <div class="flex flex-col gap-1">
-        <h2 class="font-semibold">[Email]</h2>
-        <a href="mailto:info@company.com">[Email address]</a>
+        <h2 class="font-semibold">{{ lang.dict().contactPage.emailLabel }}</h2>
+        <a href="mailto:info@galicia-steel.com">{{ lang.dict().footer.email }}</a>
       </div>
       <div class="flex flex-col gap-1">
-        <h2 class="font-semibold">[Address]</h2>
-        <p>[Physical address, city, country]</p>
+        <h2 class="font-semibold">{{ lang.dict().contactPage.addressLabel }}</h2>
+        <p>{{ lang.dict().footer.address }}</p>
       </div>
       <div class="flex flex-col gap-1">
-        <h2 class="font-semibold">[Working hours]</h2>
-        <p>[Mon–Fri 09:00–18:00]</p>
+        <h2 class="font-semibold">{{ lang.dict().contactPage.hoursLabel }}</h2>
+        <p>{{ lang.dict().contactPage.hoursValue }}</p>
       </div>
       <div class="flex flex-col gap-2">
-        <h2 class="font-semibold">[Social media]</h2>
+        <h2 class="font-semibold">{{ lang.dict().contactPage.socialLabel }}</h2>
         <ul class="flex gap-4 list-none">
-          <li><a href="#">[Instagram]</a></li>
-          <li><a href="#">[Facebook]</a></li>
-          <li><a href="#">[LinkedIn]</a></li>
+          <li><a href="#">{{ lang.dict().footer.social.instagram }}</a></li>
+          <li><a href="#">{{ lang.dict().footer.social.facebook }}</a></li>
+          <li><a href="#">{{ lang.dict().footer.social.linkedin }}</a></li>
         </ul>
       </div>
 
       <!-- Map placeholder -->
       <div class="w-full aspect-video border flex items-center justify-center">
-        <p>[Map embed — Google Maps showing office/factory location]</p>
+        <p>{{ lang.dict().contactPage.mapPlaceholder }}</p>
       </div>
 
     </aside>
 
-    <!-- RIGHT — Contact form -->
+    <!-- RIGHT â€” Contact form -->
     <form (ngSubmit)="onSubmit()" #contactForm="ngForm" class="flex flex-col gap-6">
 
       <div class="flex flex-col gap-1">
-        <label for="name" class="font-medium">[Your name] *</label>
+        <label for="name" class="font-medium">{{ lang.dict().contactPage.form.nameLabel }}</label>
         <input
           id="name" type="text" name="name"
           [(ngModel)]="form.name" required
-          placeholder="[John Smith]"
+          [placeholder]="lang.dict().contactPage.form.namePlaceholder"
           class="border px-4 py-3 w-full"
         />
       </div>
 
       <div class="flex flex-col gap-1">
-        <label for="company" class="font-medium">[Company]</label>
+        <label for="company" class="font-medium">{{ lang.dict().contactPage.form.companyLabel }}</label>
         <input
           id="company" type="text" name="company"
           [(ngModel)]="form.company"
-          placeholder="[Company Ltd]"
+          [placeholder]="lang.dict().contactPage.form.companyPlaceholder"
           class="border px-4 py-3 w-full"
         />
       </div>
 
       <div class="grid grid-cols-2 gap-4">
         <div class="flex flex-col gap-1">
-          <label for="phone" class="font-medium">[Phone] *</label>
+          <label for="phone" class="font-medium">{{ lang.dict().contactPage.form.phoneLabel }}</label>
           <input
             id="phone" type="tel" name="phone"
             [(ngModel)]="form.phone" required
-            placeholder="[+38 000 000 00 00]"
+            [placeholder]="lang.dict().contactPage.form.phonePlaceholder"
             class="border px-4 py-3 w-full"
           />
         </div>
         <div class="flex flex-col gap-1">
-          <label for="email" class="font-medium">[Email]</label>
+          <label for="email" class="font-medium">{{ lang.dict().contactPage.form.emailLabel }}</label>
           <input
             id="email" type="email" name="email"
             [(ngModel)]="form.email"
-            placeholder="[you@company.com]"
+            [placeholder]="lang.dict().contactPage.form.emailPlaceholder"
             class="border px-4 py-3 w-full"
           />
         </div>
       </div>
 
       <div class="flex flex-col gap-1">
-        <label for="message" class="font-medium">[Describe your project] *</label>
+        <label for="message" class="font-medium">{{ lang.dict().contactPage.form.messageLabel }}</label>
         <textarea
           id="message" name="message"
           [(ngModel)]="form.message" required rows="5"
-          placeholder="[Material, dimensions, quantity, deadline]"
+          [placeholder]="lang.dict().contactPage.form.messagePlaceholder"
           class="border px-4 py-3 w-full resize-none"
         ></textarea>
       </div>
 
       <div class="flex flex-col gap-1">
-        <label for="file" class="font-medium">[Attach drawing / file (optional)]</label>
+        <label for="file" class="font-medium">{{ lang.dict().contactPage.form.fileLabel }}</label>
         <input id="file" type="file" name="file" accept=".pdf,.dwg,.dxf,.step,.png,.jpg" class="w-full" />
-        <small>[PDF, DWG, DXF, STEP, PNG, JPG]</small>
+        <small>{{ lang.dict().contactPage.form.fileHint }}</small>
       </div>
 
       <button type="submit" class="border px-10 py-4 font-semibold w-full">
-        [Send Request]
+        {{ lang.dict().contactPage.form.submit }}
       </button>
 
-      <p class="text-sm text-center">[By submitting you agree to our Privacy Policy]</p>
+      <p class="text-sm text-center">{{ lang.dict().contactPage.form.privacyNote }}</p>
 
     </form>
   </div>

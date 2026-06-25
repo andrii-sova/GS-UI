@@ -1,11 +1,26 @@
 <!doctype html>
-<html lang="en">
+<html lang="uk">
 <head>
   <meta charset="utf-8">
-  <title>GsUi</title>
+  <title>Галіція Сталь Engineering</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- Apply saved theme and lang before first paint to avoid flash -->
+  <script>
+    (function () {
+      var t = localStorage.getItem('gs-theme');
+      if (t === 'lighter' || t === 'normal' || t === 'darker') {
+        document.documentElement.setAttribute('data-theme', t);
+      } else {
+        document.documentElement.setAttribute('data-theme', 'normal');
+      }
+      var l = localStorage.getItem('gs-lang');
+      if (l === 'uk' || l === 'en') {
+        document.documentElement.setAttribute('lang', l);
+      }
+    })();
+  </script>
 </head>
 <body>
   <app-root></app-root>

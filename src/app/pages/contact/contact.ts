@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { LangService } from '../../services/lang.service';
 
 @Component({
   selector: 'app-contact-page',
@@ -7,6 +8,8 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './contact.html',
 })
 export class ContactPageComponent {
+  readonly lang = inject(LangService);
+
   form = {
     name: '',
     company: '',
@@ -17,7 +20,6 @@ export class ContactPageComponent {
   };
 
   onSubmit() {
-    // [TODO: wire up form submission to backend / email service]
     console.log('Form submitted', this.form);
   }
 }

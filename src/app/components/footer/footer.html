@@ -3,46 +3,48 @@
 
     <!-- Brand -->
     <div class="flex flex-col gap-4">
-      <a routerLink="/" class="text-xl font-bold">[Logo / Company Name]</a>
-      <p class="text-sm">[Text: Short company tagline]</p>
+      <a routerLink="/" class="flex items-center">
+        <img src="/logo_2.png" alt="Галіція Сталь Engineering" class="h-12 w-auto" />
+      </a>
+      <p class="text-sm">{{ lang.dict().footer.tagline }}</p>
     </div>
 
     <!-- Company nav -->
     <nav class="flex flex-col gap-3">
-      <h4 class="font-semibold">[Company]</h4>
+      <h4 class="font-semibold">{{ lang.dict().footer.companyCol }}</h4>
       <ul class="flex flex-col gap-2 list-none">
-        <li><a routerLink="/about">[About Us]</a></li>
-        <li><a routerLink="/about">[Team]</a></li>
-        <li><a routerLink="/portfolio">[Portfolio]</a></li>
-        <li><a href="#">[News / Blog]</a></li>
+        <li><a routerLink="/about">{{ lang.dict().footer.links.about }}</a></li>
+        <li><a routerLink="/about">{{ lang.dict().footer.links.team }}</a></li>
+        <li><a routerLink="/portfolio">{{ lang.dict().footer.links.portfolio }}</a></li>
+        <li><a href="#">{{ lang.dict().footer.links.blog }}</a></li>
       </ul>
     </nav>
 
     <!-- Services nav -->
     <nav class="flex flex-col gap-3">
-      <h4 class="font-semibold">[Services]</h4>
+      <h4 class="font-semibold">{{ lang.dict().footer.servicesCol }}</h4>
       <ul class="flex flex-col gap-2 list-none">
-        <li><a routerLink="/services/laser-cutting">[Laser Cutting]</a></li>
-        <li><a routerLink="/services/metal-bending">[Metal Bending]</a></li>
-        <li><a routerLink="/services/turning">[Turning]</a></li>
-        <li><a routerLink="/services/milling">[Milling]</a></li>
-        <li><a routerLink="/services/welding">[Welding]</a></li>
-        <li><a routerLink="/services/laser-engraving">[Laser Engraving]</a></li>
-        <li><a routerLink="/services/powder-coating">[Powder Coating]</a></li>
+        <li><a routerLink="/services/laser-cutting">{{ lang.dict().footer.services.laserCutting }}</a></li>
+        <li><a routerLink="/services/metal-bending">{{ lang.dict().footer.services.metalBending }}</a></li>
+        <li><a routerLink="/services/turning">{{ lang.dict().footer.services.turning }}</a></li>
+        <li><a routerLink="/services/milling">{{ lang.dict().footer.services.milling }}</a></li>
+        <li><a routerLink="/services/welding">{{ lang.dict().footer.services.welding }}</a></li>
+        <li><a routerLink="/services/laser-engraving">{{ lang.dict().footer.services.laserEngraving }}</a></li>
+        <li><a routerLink="/services/powder-coating">{{ lang.dict().footer.services.powderCoating }}</a></li>
       </ul>
     </nav>
 
     <!-- Contact -->
     <div class="flex flex-col gap-3">
-      <h4 class="font-semibold">[Contact]</h4>
-      <p>[Phone number]</p>
-      <p>[Email address]</p>
-      <p>[Physical address / city]</p>
+      <h4 class="font-semibold">{{ lang.dict().footer.contactCol }}</h4>
+      <p>{{ lang.dict().footer.phone }}</p>
+      <p>{{ lang.dict().footer.email }}</p>
+      <p>{{ lang.dict().footer.address }}</p>
       <ul class="flex gap-4 list-none mt-2">
-        <li><a href="#">[Instagram]</a></li>
-        <li><a href="#">[Facebook]</a></li>
-        <li><a href="#">[LinkedIn]</a></li>
-        <li><a href="#">[YouTube]</a></li>
+        <li><a href="#">{{ lang.dict().footer.social.instagram }}</a></li>
+        <li><a href="#">{{ lang.dict().footer.social.facebook }}</a></li>
+        <li><a href="#">{{ lang.dict().footer.social.linkedin }}</a></li>
+        <li><a href="#">{{ lang.dict().footer.social.youtube }}</a></li>
       </ul>
     </div>
 
@@ -51,10 +53,10 @@
   <!-- Bottom bar -->
   <div class="border-t">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between text-sm">
-      <p>[� 2024 Company Name. All rights reserved.]</p>
+      <p>{{ lang.dict().footer.copyright }}</p>
       <div class="flex gap-6">
-        <a href="#">[Privacy Policy]</a>
-        <a href="#">[Terms of Use]</a>
+        <a href="#">{{ lang.dict().footer.privacy }}</a>
+        <a href="#">{{ lang.dict().footer.terms }}</a>
       </div>
     </div>
   </div>
