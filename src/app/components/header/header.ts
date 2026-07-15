@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { LangService } from '../../services/lang.service';
 
@@ -9,4 +9,13 @@ import { LangService } from '../../services/lang.service';
 })
 export class HeaderComponent {
   readonly lang = inject(LangService);
+  readonly menuOpen = signal(false);
+
+  toggleMenu(): void {
+    this.menuOpen.update((open) => !open);
+  }
+
+  closeMenu(): void {
+    this.menuOpen.set(false);
+  }
 }

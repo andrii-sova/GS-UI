@@ -1,11 +1,11 @@
 <div class="flex flex-col">
 
   <!-- Page hero -->
-  <section class="w-full py-20">
-    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+  <section class="w-full py-12 sm:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
       <div class="flex flex-col gap-6">
-        <h1 class="text-4xl font-bold">{{ lang.dict().aboutPage.heroHeading }}</h1>
-        <p class="text-lg">{{ lang.dict().aboutPage.heroText }}</p>
+        <h1 class="text-3xl sm:text-4xl font-bold">{{ lang.dict().aboutPage.heroHeading }}</h1>
+        <p class="text-base sm:text-lg">{{ lang.dict().aboutPage.heroText }}</p>
       </div>
       <div class="w-full aspect-video overflow-hidden">
         <img src="[image of full team photo]" alt="Company team" class="w-full h-full object-cover" />
@@ -14,11 +14,11 @@
   </section>
 
   <!-- Stats -->
-  <section class="w-full border-y py-12">
-    <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
+  <section class="w-full border-y py-8 sm:py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
       @for (stat of lang.dict().aboutPage.stats; track stat.value) {
         <div class="flex flex-col gap-1">
-          <strong class="text-4xl font-bold">{{ stat.value }}</strong>
+          <strong class="text-3xl sm:text-4xl font-bold">{{ stat.value }}</strong>
           <span class="text-sm">{{ stat.label }}</span>
         </div>
       }
@@ -26,13 +26,13 @@
   </section>
 
   <!-- Company story -->
-  <section class="w-full py-20">
-    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+  <section class="w-full py-12 sm:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
       <div class="w-full aspect-video overflow-hidden">
         <img src="[image of heritage / early company photo]" alt="Company heritage" class="w-full h-full object-cover" />
       </div>
       <div class="flex flex-col gap-6">
-        <h2 class="text-3xl font-bold">{{ lang.dict().aboutPage.storyHeading }}</h2>
+        <h2 class="text-2xl sm:text-3xl font-bold">{{ lang.dict().aboutPage.storyHeading }}</h2>
         <p>{{ lang.dict().aboutPage.storyText1 }}</p>
         <p>{{ lang.dict().aboutPage.storyText2 }}</p>
       </div>
@@ -40,10 +40,10 @@
   </section>
 
   <!-- Core values -->
-  <section class="w-full py-20 border-t">
-    <div class="max-w-7xl mx-auto px-6 flex flex-col gap-12">
-      <h2 class="text-3xl font-bold">{{ lang.dict().aboutPage.valuesHeading }}</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+  <section class="w-full py-12 sm:py-20 border-t">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col gap-8 sm:gap-12">
+      <h2 class="text-2xl sm:text-3xl font-bold">{{ lang.dict().aboutPage.valuesHeading }}</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
         @for (value of lang.dict().aboutPage.values; track value.title) {
           <div class="flex flex-col gap-4">
             <img [src]="value.icon" [alt]="value.title" class="w-12 h-12" />
@@ -56,19 +56,19 @@
   </section>
 
   <!-- CTA -->
-  <section class="w-full py-20 border-t">
-    <div class="max-w-3xl mx-auto px-6 text-center flex flex-col items-center gap-6">
-      <h2 class="text-3xl font-bold">{{ lang.dict().aboutPage.ctaHeading }}</h2>
+  <section class="w-full py-12 sm:py-20 border-t">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 text-center flex flex-col items-center gap-6">
+      <h2 class="text-2xl sm:text-3xl font-bold">{{ lang.dict().aboutPage.ctaHeading }}</h2>
       <p>{{ lang.dict().aboutPage.ctaText }}</p>
-      <a routerLink="/contact" class="border px-10 py-4">{{ lang.dict().aboutPage.ctaButton }}</a>
+      <a routerLink="/contact" class="border px-8 sm:px-10 py-3 sm:py-4">{{ lang.dict().aboutPage.ctaButton }}</a>
     </div>
   </section>
 
   <!-- Team -->
-  <section class="w-full py-20 border-t">
-    <div class="max-w-7xl mx-auto px-6 flex flex-col gap-10">
-      <h2 class="text-3xl font-bold">{{ lang.dict().aboutPage.teamHeading }}</h2>
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+  <section class="w-full py-12 sm:py-20 border-t">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col gap-8 sm:gap-10">
+      <h2 class="text-2xl sm:text-3xl font-bold">{{ lang.dict().aboutPage.teamHeading }}</h2>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8">
         @for (member of lang.dict().aboutPage.members; track member.role) {
           <div class="flex flex-col gap-3">
             <div class="w-full aspect-square overflow-hidden">

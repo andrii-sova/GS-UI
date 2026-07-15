@@ -1,8 +1,8 @@
-<div class="max-w-7xl mx-auto px-6 py-20 flex flex-col gap-12">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20 flex flex-col gap-12">
 
   <header class="flex flex-col gap-4">
-    <h1 class="text-4xl font-bold">{{ lang.dict().portfolioPage.title }}</h1>
-    <p class="text-lg max-w-2xl">{{ lang.dict().portfolioPage.subtext }}</p>
+    <h1 class="text-3xl sm:text-4xl font-bold">{{ lang.dict().portfolioPage.title }}</h1>
+    <p class="text-base sm:text-lg max-w-2xl">{{ lang.dict().portfolioPage.subtext }}</p>
   </header>
 
   <!-- Category filter -->
@@ -13,7 +13,7 @@
   </nav>
 
   <!-- Projects grid -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
     @for (project of lang.dict().portfolioPage.items; track project.name) {
       <article class="flex flex-col gap-4">
         <div class="w-full aspect-video overflow-hidden">
@@ -27,8 +27,8 @@
   </div>
 
   <!-- CTA -->
-  <div class="flex flex-col items-center gap-6 py-16 text-center border-t">
-    <h2 class="text-2xl font-bold">{{ lang.dict().portfolioPage.ctaHeading }}</h2>
+  <div class="flex flex-col items-center gap-6 py-12 sm:py-16 text-center border-t">
+    <h2 class="text-xl sm:text-2xl font-bold">{{ lang.dict().portfolioPage.ctaHeading }}</h2>
     <p>{{ lang.dict().portfolioPage.ctaText }}</p>
     <a routerLink="/contact" class="border px-8 py-3">{{ lang.dict().portfolioPage.ctaButton }}</a>
   </div>

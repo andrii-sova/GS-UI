@@ -1,23 +1,23 @@
-<header class="w-full border-b">
-  <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+<header class="w-full border-b relative">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
 
     <!-- Logo -->
-    <a routerLink="/" class="flex items-center shrink-0">
+    <a routerLink="/" class="flex items-center shrink-0" (click)="closeMenu()">
       <span class="logo-badge">
-        <img src="/logo_1.png" alt="Галіція Сталь Engineering" class="h-10 w-auto" />
+        <img src="/logo_1.png" alt="Галіція Сталь Engineering" class="h-9 sm:h-10 w-auto" />
       </span>
     </a>
 
-    <!-- Nav links -->
-    <ul class="flex gap-8 list-none">
+    <!-- Nav links (desktop) -->
+    <ul class="hidden lg:flex gap-8 list-none">
       <li><a routerLink="/services"  routerLinkActive="underline">{{ lang.dict().nav.services }}</a></li>
       <li><a routerLink="/portfolio" routerLinkActive="underline">{{ lang.dict().nav.portfolio }}</a></li>
       <li><a routerLink="/about"     routerLinkActive="underline">{{ lang.dict().nav.about }}</a></li>
       <li><a routerLink="/contact"   routerLinkActive="underline">{{ lang.dict().nav.contact }}</a></li>
     </ul>
 
-    <!-- Right side -->
-    <div class="flex items-center gap-4">
+    <!-- Right side (desktop) -->
+    <div class="hidden lg:flex items-center gap-4">
       <a href="tel:+380983293324">{{ lang.dict().nav.phone }}</a>
       <a routerLink="/contact" class="border px-4 py-2 text-sm font-medium">{{ lang.dict().nav.getQuote }}</a>
 
@@ -29,5 +29,45 @@
       </div>
     </div>
 
+    <!-- Mobile menu toggle -->
+    <button
+      type="button"
+      class="menu-toggle lg:hidden"
+      (click)="toggleMenu()"
+      [attr.aria-expanded]="menuOpen()"
+      aria-controls="mobile-menu"
+      aria-label="Toggle menu"
+    >
+      <span class="menu-toggle-bar" [class.open]="menuOpen()"></span>
+      <span class="menu-toggle-bar" [class.open]="menuOpen()"></span>
+      <span class="menu-toggle-bar" [class.open]="menuOpen()"></span>
+    </button>
+
   </div>
+
+  <!-- Mobile menu panel -->
+  @if (menuOpen()) {
+    <div id="mobile-menu" class="mobile-menu lg:hidden">
+      <ul class="list-none">
+        <li><a routerLink="/services"  routerLinkActive="underline" (click)="closeMenu()">{{ lang.dict().nav.services }}</a></li>
+        <li><a routerLink="/portfolio" routerLinkActive="underline" (click)="closeMenu()">{{ lang.dict().nav.portfolio }}</a></li>
+        <li><a routerLink="/about"     routerLinkActive="underline" (click)="closeMenu()">{{ lang.dict().nav.about }}</a></li>
+        <li><a routerLink="/contact"   routerLinkActive="underline" (click)="closeMenu()">{{ lang.dict().nav.contact }}</a></li>
+      </ul>
+
+      <a href="tel:+380983293324" class="mobile-menu-phone" (click)="closeMenu()">{{ lang.dict().nav.phone }}</a>
+
+      <a
+        routerLink="/contact"
+        class="border px-4 py-3 text-sm font-medium text-center"
+        (click)="closeMenu()"
+      >{{ lang.dict().nav.getQuote }}</a>
+
+      <div class="lang-switcher" role="group" aria-label="Language">
+        <button type="button" (click)="lang.setLang('uk')" [class.active]="lang.lang() === 'uk'">УКР</button>
+        <span class="lang-sep">|</span>
+        <button type="button" (click)="lang.setLang('en')" [class.active]="lang.lang() === 'en'">ENG</button>
+      </div>
+    </div>
+  }
 </header>

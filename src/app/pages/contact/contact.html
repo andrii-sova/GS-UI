@@ -1,11 +1,11 @@
-<div class="max-w-7xl mx-auto px-6 py-20 flex flex-col gap-12">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20 flex flex-col gap-12">
 
   <header class="flex flex-col gap-4">
-    <h1 class="text-4xl font-bold">{{ lang.dict().contactPage.title }}</h1>
-    <p class="text-lg max-w-xl">{{ lang.dict().contactPage.subtext }}</p>
+    <h1 class="text-3xl sm:text-4xl font-bold">{{ lang.dict().contactPage.title }}</h1>
+    <p class="text-base sm:text-lg max-w-xl">{{ lang.dict().contactPage.subtext }}</p>
   </header>
 
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-16">
 
     <!-- LEFT — Contact details -->
     <aside class="flex flex-col gap-8">
@@ -71,7 +71,7 @@
         />
       </div>
 
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div class="flex flex-col gap-1">
           <label for="phone" class="font-medium">{{ lang.dict().contactPage.form.phoneLabel }}</label>
           <input
