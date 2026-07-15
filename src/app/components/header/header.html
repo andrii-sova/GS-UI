@@ -3,7 +3,9 @@
 
     <!-- Logo -->
     <a routerLink="/" class="flex items-center shrink-0">
-      <img src="/logo_2.png" alt="Галіція Сталь Engineering" class="h-12 w-auto" />
+      <span class="logo-badge">
+        <img src="/logo_1.png" alt="Галіція Сталь Engineering" class="h-10 w-auto" />
+      </span>
     </a>
 
     <!-- Nav links -->
@@ -16,20 +18,8 @@
 
     <!-- Right side -->
     <div class="flex items-center gap-4">
-      <a href="tel:+380000000000">{{ lang.dict().nav.phone }}</a>
+      <a href="tel:+380983293324">{{ lang.dict().nav.phone }}</a>
       <a routerLink="/contact" class="border px-4 py-2 text-sm font-medium">{{ lang.dict().nav.getQuote }}</a>
-
-      <!-- Theme switcher -->
-      <div class="theme-switcher" role="group" aria-label="Color theme">
-        @for (t of themes; track t.id) {
-          <button
-            type="button"
-            (click)="themeService.setTheme(t.id)"
-            [class.active]="themeService.theme() === t.id"
-            [title]="t.label"
-          >{{ t.icon }}</button>
-        }
-      </div>
 
       <!-- Language switcher -->
       <div class="lang-switcher" role="group" aria-label="Language">

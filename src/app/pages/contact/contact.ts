@@ -22,4 +22,9 @@ export class ContactPageComponent {
   onSubmit() {
     console.log('Form submitted', this.form);
   }
+
+  onFileChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.form.file = input.files?.[0] ?? null;
+  }
 }

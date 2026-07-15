@@ -3,10 +3,13 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "prestart": "node scripts/generate-partners-manifest.mjs",
     "start": "ng serve",
+    "prebuild": "node scripts/generate-partners-manifest.mjs",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "generate:partners": "node scripts/generate-partners-manifest.mjs"
   },
   "private": true,
   "packageManager": "npm@11.13.0",

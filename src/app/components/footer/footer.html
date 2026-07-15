@@ -4,7 +4,7 @@
     <!-- Brand -->
     <div class="flex flex-col gap-4">
       <a routerLink="/" class="flex items-center">
-        <img src="/logo_2.png" alt="Галіція Сталь Engineering" class="h-12 w-auto" />
+        <img src="/logo_1.png" alt="Галіція Сталь Engineering" class="h-12 w-auto" />
       </a>
       <p class="text-sm">{{ lang.dict().footer.tagline }}</p>
     </div>
@@ -37,14 +37,12 @@
     <!-- Contact -->
     <div class="flex flex-col gap-3">
       <h4 class="font-semibold">{{ lang.dict().footer.contactCol }}</h4>
-      <p>{{ lang.dict().footer.phone }}</p>
-      <p>{{ lang.dict().footer.email }}</p>
+      <p><a href="tel:+380983293324">{{ lang.dict().footer.phone }}</a></p>
+      <p><a href="mailto:sale@galiciasteel.com.ua">{{ lang.dict().footer.email }}</a></p>
       <p>{{ lang.dict().footer.address }}</p>
       <ul class="flex gap-4 list-none mt-2">
-        <li><a href="#">{{ lang.dict().footer.social.instagram }}</a></li>
-        <li><a href="#">{{ lang.dict().footer.social.facebook }}</a></li>
-        <li><a href="#">{{ lang.dict().footer.social.linkedin }}</a></li>
-        <li><a href="#">{{ lang.dict().footer.social.youtube }}</a></li>
+        <li><a [href]="lang.dict().footer.social.instagramUrl" target="_blank" rel="noopener noreferrer">{{ lang.dict().footer.social.instagram }}</a></li>
+        <li><a [href]="lang.dict().footer.social.facebookUrl" target="_blank" rel="noopener noreferrer">{{ lang.dict().footer.social.facebook }}</a></li>
       </ul>
     </div>
 
