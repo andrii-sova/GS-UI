@@ -164,9 +164,9 @@
   }
   section a.underline:hover { color: var(--coral); }
 
-  /* ── CTA BANNER — always uses brand accent gradient ─────── */
+  /* ── CTA BANNER — the gradient IS the background, no photo behind it ── */
   app-cta-banner section {
-    background: var(--accent-gradient) !important;
+    background: var(--accent-gradient);
   }
   app-cta-banner h2 { color: #fff; }
   app-cta-banner p  { color: rgba(255,255,255,0.78); }
@@ -247,6 +247,19 @@
 
   input[type='file'] {
     color: var(--text-muted);
+  }
+
+  /* Content placeholder images ("[image of ...]" — not a real photo yet) —
+     plain gray box instead of the browser's broken-image icon + alt text.
+     The icon glyph itself is fallback replaced-content, not text, so a
+     text-indent trick alone won't hide it — instead hide the <img> itself
+     and let its wrapper (every placeholder image here is already wrapped
+     in a sized div) show the gray background through. */
+  *:has(> img[src^="["]) {
+    background-color: var(--border);
+  }
+  img[src^="["] {
+    visibility: hidden;
   }
 
   /* ── GENERAL INLINE LINKS (page content) ─────────────── */

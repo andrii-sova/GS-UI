@@ -46,7 +46,9 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
         @for (value of lang.dict().aboutPage.values; track value.title) {
           <div class="flex flex-col gap-4">
-            <img [src]="value.icon" [alt]="value.title" class="w-12 h-12" />
+            <div class="w-12 h-12">
+              <img [src]="value.icon" [alt]="value.title" class="w-12 h-12" />
+            </div>
             <h3 class="text-xl font-semibold">{{ value.title }}</h3>
             <p>{{ value.text }}</p>
           </div>
