@@ -529,3 +529,30 @@
 .mobile-menu .lang-sep {
   color: var(--border);
 }
+
+/* ═══════════════════════════════════════════════════════════
+   ARROW LINKS — "Learn more →" / "← Back to all services"
+   Text-only nav links, styled with a color shift + arrow slide
+   on hover instead of a plain underline.
+   ═══════════════════════════════════════════════════════════ */
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--brand);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.link-arrow:hover {
+  color: var(--coral);
+}
+
+.link-arrow--forward:hover {
+  transform: translateX(3px);
+}
+
+.link-arrow--back:hover {
+  transform: translateX(-3px);
+}
