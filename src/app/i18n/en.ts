@@ -267,6 +267,30 @@ export const EN: Translations = {
       { name: '[Name]', role: 'Head of Laser Engraving & Souvenir Production',                       photo: '[photo of Engraving Head]' },
     ],
   },
+  regionsMap: {
+    title: 'Where Our Products Are Used',
+    subtext: 'Our products are already in use at manufacturing sites across these regions of Ukraine.',
+    items: [
+      { id: 'lviv',            name: 'Lviv Oblast' },
+      { id: 'ivano-frankivsk', name: 'Ivano-Frankivsk Oblast' },
+      { id: 'ternopil',        name: 'Ternopil Oblast' },
+      { id: 'volyn',           name: 'Volyn Oblast' },
+      { id: 'rivne',           name: 'Rivne Oblast' },
+      { id: 'zakarpattia',     name: 'Zakarpattia Oblast' },
+      { id: 'khmelnytskyi',    name: 'Khmelnytskyi Oblast' },
+      { id: 'chernivtsi',      name: 'Chernivtsi Oblast' },
+      { id: 'kyiv',            name: 'Kyiv Oblast' },
+    ],
+  },
+  europeMap: {
+    title: 'International Cooperation',
+    subtext: 'We export our products to these European countries.',
+    items: [
+      { id: 'dk', name: 'Denmark' },
+      { id: 'nl', name: 'Netherlands' },
+      { id: 'pl', name: 'Poland' },
+    ],
+  },
   contactPage: {
     title: 'Contact Us',
     subtext: 'Send your brief, drawing or question and we\'ll get back with a real price and timeline.',

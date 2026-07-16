@@ -368,6 +368,59 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
+   REGIONS MAP — Ukraine oblasts, active = presence highlight
+   ═══════════════════════════════════════════════════════════ */
+.ukraine-map path {
+  fill: #aeb8c2;
+  stroke: var(--surface);
+  stroke-width: 1.5;
+  transition: fill 0.15s ease;
+}
+
+.ukraine-map path.active {
+  fill: var(--brand);
+  cursor: default;
+}
+
+.ukraine-map path.active:hover {
+  fill: var(--brand-hover);
+}
+
+.region-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  border-radius: 3px;
+  background-color: var(--brand);
+}
+
+.europe-map path {
+  fill: #aeb8c2;
+  stroke: var(--surface);
+  stroke-width: 0.4;
+  transition: fill 0.15s ease;
+}
+
+.europe-map path.active {
+  fill: var(--brand);
+  cursor: default;
+}
+
+.europe-map path.active:hover {
+  fill: var(--brand-hover);
+}
+
+.europe-map path.origin {
+  fill: #003d66;
+  cursor: default;
+}
+
+.europe-map path.origin:hover {
+  fill: #002948;
+}
+
+/* ═══════════════════════════════════════════════════════════
    LANGUAGE SWITCHER
    ═══════════════════════════════════════════════════════════ */
 .lang-switcher {
