@@ -13,15 +13,18 @@
     </div>
   </section>
 
-  <!-- Stats -->
-  <section class="w-full border-y py-8 sm:py-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
-      @for (stat of lang.dict().aboutPage.stats; track stat.value) {
-        <div class="flex flex-col gap-1">
-          <strong class="text-3xl sm:text-4xl font-bold">{{ stat.value }}</strong>
-          <span class="text-sm">{{ stat.label }}</span>
-        </div>
-      }
+  <!-- Metrics -->
+  <section class="w-full py-12 sm:py-20 border-y">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col gap-8 sm:gap-12">
+      <h2 class="text-2xl sm:text-3xl font-bold">{{ lang.dict().aboutPage.metrics.title }}</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6">
+        @for (stat of lang.dict().aboutPage.metrics.items; track stat.label) {
+          <div class="metric-card flex flex-col gap-1 p-5 sm:p-6">
+            <strong class="text-2xl sm:text-3xl font-bold">{{ stat.value }}</strong>
+            <span class="text-sm">{{ stat.label }}</span>
+          </div>
+        }
+      </div>
     </div>
   </section>
 
@@ -46,8 +49,38 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
         @for (value of lang.dict().aboutPage.values; track value.title) {
           <div class="flex flex-col gap-4">
-            <div class="w-12 h-12">
-              <img [src]="value.icon" [alt]="value.title" class="w-12 h-12" />
+            <div class="w-12 h-12 text-[var(--brand)]">
+              @switch (value.icon) {
+                @case ('shield') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full">
+                    <path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6l7-3z" />
+                    <path d="M9 12l2 2 4-4" />
+                  </svg>
+                }
+                @case ('quality') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full">
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="M8.5 12.5l2.5 2.5 4.5-5" />
+                  </svg>
+                }
+                @case ('innovation') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full">
+                    <path d="M9 18h6M10 21h4" />
+                    <path d="M12 3a6 6 0 00-4 10.5c.6.6 1 1.4 1 2.3v.2h6v-.2c0-.9.4-1.7 1-2.3A6 6 0 0012 3z" />
+                  </svg>
+                }
+                @case ('responsibility') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full">
+                    <path d="M12 3v18M6 7h12M6 7l-3 6a3 3 0 006 0l-3-6zM18 7l-3 6a3 3 0 006 0l-3-6z" />
+                  </svg>
+                }
+                @case ('growth') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full">
+                    <path d="M3 17l6-6 4 4 8-8" />
+                    <path d="M15 7h6v6" />
+                  </svg>
+                }
+              }
             </div>
             <h3 class="text-xl font-semibold">{{ value.title }}</h3>
             <p>{{ value.text }}</p>

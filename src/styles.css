@@ -53,7 +53,7 @@
   /* ── HEADER ──────────────────────────────────────────── */
   app-header header {
     background: var(--header-bg);
-    border-bottom: none;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
   }
 
   app-header header a {
@@ -273,6 +273,12 @@
   blockquote {
     background-color: var(--surface);
     border-color: var(--border);
+  }
+
+  .metric-card {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
   }
 
   /* ── FOOTER ──────────────────────────────────────────── */

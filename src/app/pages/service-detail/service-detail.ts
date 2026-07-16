@@ -18,4 +18,8 @@ export class ServiceDetailPageComponent implements OnInit {
       this.slug = params.get('slug') ?? '';
     });
   }
+
+  get service() {
+    return this.lang.dict().servicesPage.items.find((s) => s.slug === this.slug);
+  }
 }
