@@ -3,43 +3,49 @@
   <!-- Background image -->
   <div class="absolute inset-0 overflow-hidden">
     <img
-      src="[image of factory / metalworking facility background]"
+      src="/backgrouns/her0_background.jpg"
       alt="Hero background"
       class="w-full h-full object-cover"
     />
+    <div class="hero-scrim"></div>
   </div>
 
   <!-- Content -->
   <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 py-24 text-center flex flex-col items-center gap-6 sm:gap-8">
 
     <!-- Trust badges -->
-    <div class="flex gap-3 sm:gap-8 justify-center flex-wrap text-sm sm:text-base">
+    <div class="flex gap-3 sm:gap-4 justify-center flex-wrap">
       @for (badge of lang.dict().hero.badges; track badge) {
-        <span class="flex items-center gap-2">{{ badge }}</span>
+        <span class="hero-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          {{ badge }}
+        </span>
       }
     </div>
 
     <!-- Headline -->
-    <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
+    <h1 class="hero-title text-3xl sm:text-4xl font-bold leading-tight">
       {{ lang.dict().hero.headline }}<br />{{ lang.dict().hero.headlineSub }}
     </h1>
 
     <!-- Description -->
-    <p class="text-base sm:text-lg max-w-xl">{{ lang.dict().hero.subtext }}</p>
+    <p class="hero-subtext text-lg sm:text-xl max-w-xl">{{ lang.dict().hero.subtext }}</p>
 
     <!-- Stats -->
     <div class="flex gap-6 sm:gap-12 justify-center flex-wrap">
       @for (stat of lang.dict().hero.stats; track stat.value) {
         <div class="flex flex-col items-center">
-          <strong class="text-2xl sm:text-3xl font-bold">{{ stat.value }}</strong>
-          <span class="text-sm sm:text-base">{{ stat.label }}</span>
+          <strong class="hero-stat-value text-3xl sm:text-4xl font-bold">{{ stat.value }}</strong>
+          <span class="hero-stat-label text-base sm:text-lg">{{ stat.label }}</span>
         </div>
       }
     </div>
 
     <!-- CTA buttons -->
     <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-      <a routerLink="/contact" class="border px-8 py-3 font-semibold">{{ lang.dict().hero.cta.quote }}</a>
+      <a routerLink="/contact" class="btn-primary px-8 py-3 font-semibold">{{ lang.dict().hero.cta.quote }}</a>
       <a routerLink="/services" class="border px-8 py-3">{{ lang.dict().hero.cta.services }}</a>
     </div>
 

@@ -1,0 +1,29 @@
+<div class="max-w-3xl mx-auto px-4 sm:px-6 py-12 sm:py-20 flex flex-col gap-10">
+
+  <a routerLink="/blog" class="link-arrow link-arrow--back text-sm">{{ lang.dict().blogDetailPage.back }}</a>
+
+  <!-- Post hero -->
+  <header class="flex flex-col gap-4">
+    <span class="text-sm">{{ post?.date }}</span>
+    <h1 class="text-3xl sm:text-4xl font-bold">{{ post?.title }}</h1>
+  </header>
+
+  <div class="w-full aspect-video overflow-hidden">
+    <img [src]="post?.image" [alt]="post?.title" class="w-full h-full object-cover" />
+  </div>
+
+  <!-- Post body -->
+  <section class="flex flex-col gap-4">
+    @for (paragraph of post?.body; track paragraph) {
+      <p class="text-base sm:text-lg">{{ paragraph }}</p>
+    }
+  </section>
+
+  <!-- CTA -->
+  <div class="flex flex-col items-center gap-6 py-12 sm:py-16 text-center border-t">
+    <h2 class="text-xl sm:text-2xl font-bold">{{ lang.dict().blogDetailPage.ctaHeading }}</h2>
+    <p>{{ lang.dict().blogDetailPage.ctaText }}</p>
+    <a routerLink="/contact" class="btn-primary px-8 py-3">{{ lang.dict().blogDetailPage.ctaButton }}</a>
+  </div>
+
+</div>

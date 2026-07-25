@@ -4,7 +4,7 @@
     <!-- Left: image -->
     <div class="w-full aspect-square overflow-hidden">
       <img
-        src="[image of production hall / heritage photo]"
+        src="/general_images/production_hall.jpg"
         alt="About the company"
         class="w-full h-full object-cover"
       />
@@ -16,7 +16,7 @@
       <div class="grid grid-cols-3 gap-4 sm:gap-6">
         @for (stat of lang.dict().aboutSection.stats; track stat.value) {
           <div class="flex flex-col gap-1">
-            <strong class="text-2xl sm:text-3xl font-bold">{{ stat.value }}</strong>
+            <strong class="stat-number text-2xl sm:text-3xl font-bold">{{ stat.value }}</strong>
             <span class="text-sm">{{ stat.label }}</span>
           </div>
         }

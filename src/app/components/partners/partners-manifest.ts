@@ -64,10 +64,6 @@ export const PARTNERS_MANIFEST: PartnerLogo[] = [
     "logo": "/partners/4-scaled.png"
   },
   {
-    "name": "45703l",
-    "logo": "/partners/45703l.jpg"
-  },
-  {
     "name": "Корпорація Нерухомості РІЕЛ",
     "logo": "/partners/%D0%9A%D0%BE%D1%80%D0%BF%D0%BE%D1%80%D0%B0%D1%86%D1%96%D1%8F_%D0%9D%D0%B5%D1%80%D1%83%D1%85%D0%BE%D0%BC%D0%BE%D1%81%D1%82%D1%96_%D0%A0%D0%86%D0%95%D0%9B.png"
   },
@@ -86,6 +82,10 @@ export const PARTNERS_MANIFEST: PartnerLogo[] = [
   {
     "name": "DragonCapital Logo New",
     "logo": "/partners/DragonCapital_logo_new.png"
+  },
+  {
+    "name": "Famili Development New",
+    "logo": "/partners/famili_development_new.jpg"
   },
   {
     "name": "Favicon",
@@ -112,20 +112,16 @@ export const PARTNERS_MANIFEST: PartnerLogo[] = [
     "logo": "/partners/iveco-logo-A7vGS6vu.jpg"
   },
   {
+    "name": "Lev Logo White",
+    "logo": "/partners/lev-logo-white.svg"
+  },
+  {
     "name": "Logo Нова Лінія.svg",
     "logo": "/partners/Logo_%D0%9D%D0%BE%D0%B2%D0%B0_%D0%9B%D1%96%D0%BD%D1%96%D1%8F.svg.webp"
   },
   {
-    "name": "Logo 1",
-    "logo": "/partners/logo-1.png"
-  },
-  {
     "name": "Logo About",
     "logo": "/partners/logo-about-c2e9db9e35f6d0a3f139709426b5a582c5180704544b5cd11d6b98e4c856f07b.png"
-  },
-  {
-    "name": "Logo Adamson1",
-    "logo": "/partners/logo-adamson1.png"
   },
   {
     "name": "Logo Lizrome 2",
@@ -134,10 +130,6 @@ export const PARTNERS_MANIFEST: PartnerLogo[] = [
   {
     "name": "Lvivbud 640x199",
     "logo": "/partners/lvivbud-640x199.png"
-  },
-  {
-    "name": "M202203578",
-    "logo": "/partners/m202203578.jpeg"
   },
   {
     "name": "M202403689",
@@ -150,6 +142,10 @@ export const PARTNERS_MANIFEST: PartnerLogo[] = [
   {
     "name": "NovaOselia Logo 1main",
     "logo": "/partners/NovaOselia_Logo_1main.png"
+  },
+  {
+    "name": "Novi Bud",
+    "logo": "/partners/novi_bud.png"
   },
   {
     "name": "Parus Development",

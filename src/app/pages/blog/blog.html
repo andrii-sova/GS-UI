@@ -1,0 +1,22 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20 flex flex-col gap-12">
+
+  <header>
+    <h1 class="text-3xl sm:text-4xl font-bold">{{ lang.dict().blogPage.title }}</h1>
+  </header>
+
+  <!-- Posts grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+    @for (post of lang.dict().blogPage.items; track post.slug) {
+      <article class="flex flex-col gap-4">
+        <a [routerLink]="['/blog', post.slug]" class="w-full aspect-video overflow-hidden block">
+          <img [src]="post.image" [alt]="post.title" class="w-full h-full object-cover" />
+        </a>
+        <span class="text-sm">{{ post.date }}</span>
+        <h2 class="text-lg font-semibold">{{ post.title }}</h2>
+        <p class="text-sm">{{ post.excerpt }}</p>
+        <a [routerLink]="['/blog', post.slug]" class="link-arrow text-sm w-fit">{{ lang.dict().blogPage.learnMore }}</a>
+      </article>
+    }
+  </div>
+
+</div>

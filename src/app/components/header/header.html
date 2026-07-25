@@ -1,11 +1,9 @@
 <header class="w-full relative">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between">
 
     <!-- Logo -->
     <a routerLink="/" class="flex items-center shrink-0" (click)="closeMenu()">
-      <span class="logo-badge">
-        <img src="/logo_1.png" alt="Галіція Сталь Engineering" class="h-9 sm:h-10 w-auto" />
-      </span>
+      <img src="/logo_2.png" alt="Галіція Сталь Engineering" class="h-[52px] w-auto" />
     </a>
 
     <!-- Nav links (desktop) -->
@@ -14,6 +12,7 @@
       <li><a routerLink="/portfolio" routerLinkActive="underline">{{ lang.dict().nav.portfolio }}</a></li>
       <li><a routerLink="/about"     routerLinkActive="underline">{{ lang.dict().nav.about }}</a></li>
       <li><a routerLink="/contact"   routerLinkActive="underline">{{ lang.dict().nav.contact }}</a></li>
+      <li><a routerLink="/blog"      routerLinkActive="underline">{{ lang.dict().nav.blog }}</a></li>
     </ul>
 
     <!-- Right side (desktop) -->
@@ -53,6 +52,7 @@
         <li><a routerLink="/portfolio" routerLinkActive="underline" (click)="closeMenu()">{{ lang.dict().nav.portfolio }}</a></li>
         <li><a routerLink="/about"     routerLinkActive="underline" (click)="closeMenu()">{{ lang.dict().nav.about }}</a></li>
         <li><a routerLink="/contact"   routerLinkActive="underline" (click)="closeMenu()">{{ lang.dict().nav.contact }}</a></li>
+        <li><a routerLink="/blog"      routerLinkActive="underline" (click)="closeMenu()">{{ lang.dict().nav.blog }}</a></li>
       </ul>
 
       <a href="tel:+380983293324" class="mobile-menu-phone" (click)="closeMenu()">{{ lang.dict().nav.phone }}</a>
