@@ -20,7 +20,7 @@
       </div>
       <div class="flex flex-col gap-1">
         <h2 class="font-semibold">{{ lang.dict().contactPage.addressLabel }}</h2>
-        <p>{{ lang.dict().footer.address }}</p>
+        <a href="https://maps.app.goo.gl/Y9nPZqbxrZTSpsnr9" target="_blank" rel="noopener noreferrer">{{ lang.dict().footer.address }}</a>
       </div>
       <div class="flex flex-col gap-1">
         <h2 class="font-semibold">{{ lang.dict().contactPage.hoursLabel }}</h2>
@@ -35,15 +35,23 @@
       </div>
 
       <!-- Map -->
-      <div class="w-full aspect-video border">
-        <iframe
-          [title]="lang.dict().contactPage.mapPlaceholder"
-          src="https://www.google.com/maps?q=Львів,+вул.+Зелена+299б&output=embed"
-          width="100%" height="100%"
-          style="border:0"
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-        ></iframe>
+      <div class="flex flex-col gap-2">
+        <div class="w-full aspect-video border">
+          <iframe
+            [title]="lang.dict().contactPage.mapPlaceholder"
+            src="https://www.google.com/maps?q=49.798963,24.0721628&output=embed"
+            width="100%" height="100%"
+            style="border:0"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+        <a
+          href="https://maps.app.goo.gl/Y9nPZqbxrZTSpsnr9"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="link-arrow link-arrow--forward w-fit"
+        >{{ lang.dict().contactPage.viewOnMap }}</a>
       </div>
 
     </aside>

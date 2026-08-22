@@ -51,14 +51,65 @@
   label     { color: var(--text); }
 
   /* ── HEADER ──────────────────────────────────────────── */
+  /* Fixed to the top on every page so it stays visible while scrolling.
+     The gradient lives on a separate absolutely-positioned layer behind the
+     nav content, faded via `opacity` rather than toggling the `background`
+     property directly — a gradient can't be interpolated against
+     `transparent`, so animating `background` itself just snaps instantly
+     instead of producing a smooth fade. Opacity itself is driven inline,
+     proportional to scroll position through the hero (see header.ts); the
+     short transition here only smooths between individual scroll-event
+     updates, it isn't the primary fade mechanism. */
   app-header header {
+    background: transparent;
+  }
+
+  app-header .header-bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
     background: var(--header-bg);
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
+    transition: opacity 0.1s linear;
+    pointer-events: none;
+  }
+
+  /* Legibility helpers — the header is fully transparent at the top of the
+     hero, so its own controls need to hold up against any part of the
+     photo (bright sky, mid-tone smoke, etc.) on their own, the same way
+     `.hero-badge` below stays readable over the same image. A shadow (not
+     a background chip) keeps that legibility without giving the header a
+     permanent tint, which would defeat the "fully transparent" starting
+     state. Scoped to the nav row, excluding `.header-bg` (the fading
+     background layer, also a `div` — `:first-of-type` would otherwise
+     match it instead of the row) and `.mobile-menu` (already sits on its
+     own solid panel and doesn't need it). */
+  app-header header > div:not(.header-bg):not(.mobile-menu) a,
+  app-header header > div:not(.header-bg):not(.mobile-menu) button {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9), 0 2px 8px rgba(0, 0, 0, 0.55);
+  }
+  app-header header > div:not(.header-bg):not(.mobile-menu) img {
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.9)) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
+  }
+  app-header header > div:not(.header-bg):not(.mobile-menu) .menu-toggle-bar {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
+  }
+
+  /* Pushes page content below the fixed header on routes with no hero
+     image behind the top of the page (everything except the homepage). */
+  main.header-offset {
+    padding-top: 72px;
+  }
+  @media (min-width: 640px) {
+    main.header-offset {
+      padding-top: 76px;
+    }
   }
 
   app-header header a {
     color: rgba(255,255,255,0.82);
     text-decoration: none;
+    font-weight: 500;
     transition: color 0.15s ease;
   }
   app-header header a:hover { color: #fff; }
@@ -334,6 +385,10 @@
   blockquote {
     background-color: var(--surface);
     border-color: var(--border);
+    transition: border-color 0.2s ease;
+  }
+  blockquote:hover {
+    border-color: var(--brand);
   }
 
   .metric-card {
@@ -355,6 +410,70 @@
   app-footer footer a               { color: var(--footer-muted); text-decoration: none; transition: color 0.15s ease; }
   app-footer footer a:hover         { color: var(--coral); }
   app-footer footer .border-t       { border-color: var(--footer-border); }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CARD / IMAGE HOVER TRANSITIONS — grid cards that link through to a
+   detail page (portfolio, services, blog). Given a real card body now
+   (border + padded text, see markup) rather than bare image-then-text,
+   the lift + shadow reads as an actual plate rising off the page instead
+   of disembodied text moving — so it's back, alongside the heading color
+   shift and image zoom below.
+   ═══════════════════════════════════════════════════════════ */
+.card-hover {
+  background-color: var(--surface);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.card-hover:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+.card-hover h2,
+.card-hover h3 {
+  transition: color 0.2s ease;
+}
+.card-hover:hover h2,
+.card-hover:hover h3 {
+  color: var(--brand);
+}
+
+.img-hover-zoom {
+  display: block;
+}
+.img-hover-zoom img {
+  transition: transform 0.4s ease;
+}
+.img-hover-zoom:hover img {
+  transform: scale(1.04);
+}
+
+/* Team photo — a hover gives the portrait a touch more life (slightly
+   richer color + a small zoom) instead of the card-style lift above;
+   these portraits aren't links, so the cue is a photographic detail, not
+   a click affordance. No permanent desaturation at rest — these are
+   photos of real people, not archive/history-tinted imagery. */
+.team-photo img {
+  transition: transform 0.35s ease, filter 0.35s ease;
+}
+.team-photo:hover img {
+  transform: scale(1.03);
+  filter: saturate(1.15) brightness(1.03);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-hover,
+  .card-hover:hover,
+  .card-hover h2,
+  .card-hover h3,
+  .card-hover:hover h2,
+  .card-hover:hover h3,
+  .img-hover-zoom img,
+  .img-hover-zoom:hover img,
+  .team-photo img,
+  .team-photo:hover img {
+    transition: none;
+    transform: none;
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -499,7 +618,7 @@
 .lang-switcher button {
   background: transparent;
   border: none;
-  color: rgba(255,255,255,0.55);
+  color: rgba(255,255,255,0.75);
   cursor: pointer;
   font-size: 11px;
   font-weight: 700;
@@ -514,11 +633,11 @@
 }
 
 .lang-switcher button:hover:not(.active) {
-  color: rgba(255,255,255,0.85);
+  color: #fff;
 }
 
 .lang-sep {
-  color: rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.4);
   font-size: 11px;
   user-select: none;
 }

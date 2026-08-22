@@ -1,5 +1,5 @@
 <app-header />
-<main>
+<main [class.header-offset]="!isHome()">
   <router-outlet />
 </main>
 <app-footer />

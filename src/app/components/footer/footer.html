@@ -38,7 +38,7 @@
       <h4 class="font-semibold">{{ lang.dict().footer.contactCol }}</h4>
       <p><a href="tel:+380983293324">{{ lang.dict().footer.phone }}</a></p>
       <p><a href="mailto:sale@galiciasteel.com.ua">{{ lang.dict().footer.email }}</a></p>
-      <p>{{ lang.dict().footer.address }}</p>
+      <p><a href="https://maps.app.goo.gl/Y9nPZqbxrZTSpsnr9" target="_blank" rel="noopener noreferrer">{{ lang.dict().footer.address }}</a></p>
       <ul class="flex gap-4 list-none mt-2">
         <li><a [href]="lang.dict().footer.social.instagramUrl" target="_blank" rel="noopener noreferrer">{{ lang.dict().footer.social.instagram }}</a></li>
         <li><a [href]="lang.dict().footer.social.facebookUrl" target="_blank" rel="noopener noreferrer">{{ lang.dict().footer.social.facebook }}</a></li>
@@ -52,8 +52,8 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center gap-3 sm:gap-0 sm:justify-between text-sm text-center sm:text-left">
       <p>{{ lang.dict().footer.copyright }}</p>
       <div class="flex gap-6">
-        <a href="#">{{ lang.dict().footer.privacy }}</a>
-        <a href="#">{{ lang.dict().footer.terms }}</a>
+        <a routerLink="/privacy">{{ lang.dict().footer.privacy }}</a>
+        <a routerLink="/terms">{{ lang.dict().footer.terms }}</a>
       </div>
     </div>
   </div>

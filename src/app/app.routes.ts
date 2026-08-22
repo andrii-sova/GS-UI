@@ -38,6 +38,14 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/blog-detail/blog-detail').then(m => m.BlogDetailPageComponent),
   },
   {
+    path: 'privacy',
+    loadComponent: () => import('./pages/privacy/privacy').then(m => m.PrivacyPageComponent),
+  },
+  {
+    path: 'terms',
+    loadComponent: () => import('./pages/terms/terms').then(m => m.TermsPageComponent),
+  },
+  {
     path: '**',
     redirectTo: '',
   },
