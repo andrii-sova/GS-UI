@@ -5,13 +5,13 @@
   @if (post(); as p) {
     <!-- Post hero -->
     <header class="flex flex-col gap-4">
-      <span class="text-sm">{{ p.publishedOn }}</span>
+      <time class="text-sm" [attr.datetime]="p.publishedOn">{{ p.publishedOn | localizedDate }}</time>
       <h1 class="text-3xl sm:text-4xl font-bold">{{ p.title }}</h1>
     </header>
 
     @if (p.imageUrl) {
       <div class="w-full aspect-video overflow-hidden">
-        <img [src]="p.imageUrl" [alt]="p.title" class="w-full h-full object-cover" />
+        <img [src]="p.imageUrl" [alt]="p.title" decoding="async" class="w-full h-full object-cover" />
       </div>
     }
 
@@ -22,7 +22,7 @@
       }
     </section>
   } @else {
-    <p class="text-neutral-500">{{ content.isLoading() ? '…' : 'Post not found.' }}</p>
+    <p class="text-neutral-500" aria-live="polite">{{ content.isLoading() ? 'Loading…' : 'Post not found.' }}</p>
   }
 
   <!-- CTA -->

@@ -27,7 +27,7 @@ test.describe('hidden studio', () => {
     await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
 
     const sidebar = page.locator('aside');
-    await expect(sidebar.getByRole('link', { name: '🔧 Services' })).toBeVisible();
+    await expect(sidebar.getByRole('link', { name: 'Services', exact: true })).toBeVisible();
     await expect(sidebar.getByRole('link', { name: 'Operator accounts' })).toBeVisible();
   });
 
@@ -58,7 +58,7 @@ test.describe('hidden studio', () => {
 
     try {
       await signIn(page);
-      await page.locator('aside').getByRole('link', { name: '💬 Testimonials' }).click();
+      await page.locator('aside').getByRole('link', { name: 'Testimonials', exact: true }).click();
       await expect(page).toHaveURL(/\/studio\/testimonials$/);
       await page.getByRole('link', { name: originalCompany }).click();
 

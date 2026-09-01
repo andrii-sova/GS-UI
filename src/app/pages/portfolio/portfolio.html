@@ -29,7 +29,8 @@
       <article class="flex flex-col border rounded-lg overflow-hidden card-hover">
         <a [routerLink]="['/portfolio', project.slug]" class="w-full aspect-video overflow-hidden img-hover-zoom">
           @if (project.imageUrl) {
-            <img [src]="project.imageUrl" [alt]="project.name" class="w-full h-full object-cover" />
+            <img [src]="project.imageUrl" [alt]="project.name" loading="lazy" decoding="async"
+                 class="w-full h-full object-cover" />
           }
         </a>
         <div class="flex flex-col gap-2 p-5">

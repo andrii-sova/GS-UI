@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { studioAuthGuard, studioGuestGuard } from '../core/auth/auth.guard';
+import { unsavedChangesGuard } from './collection/unsaved-changes.guard';
 
 /**
  * The hidden content studio. Not linked from anywhere on the public site and not in the
@@ -36,6 +37,7 @@ export const STUDIO_ROUTES: Routes = [
       {
         path: ':collection/:id',
         loadComponent: () => import('./collection/collection-form').then((m) => m.CollectionFormComponent),
+        canDeactivate: [unsavedChangesGuard],
       },
     ],
   },

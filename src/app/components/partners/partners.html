@@ -3,14 +3,14 @@
     <ul class="partners-track list-none">
       @for (partner of content.partners(); track partner.name + partner.logoUrl) {
         <li class="partners-item">
-          <img [src]="partner.logoUrl" [alt]="partner.name" />
+          <img [src]="partner.logoUrl" [alt]="partner.name" loading="lazy" decoding="async" />
         </li>
       }
     </ul>
     <ul class="partners-track list-none" aria-hidden="true">
       @for (partner of content.partners(); track partner.name + partner.logoUrl) {
         <li class="partners-item">
-          <img [src]="partner.logoUrl" [alt]="partner.name" />
+          <img [src]="partner.logoUrl" alt="" loading="lazy" decoding="async" />
         </li>
       }
     </ul>

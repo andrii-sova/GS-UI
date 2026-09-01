@@ -7,6 +7,7 @@ import { AuthService } from '../../core/auth/auth.service';
 @Component({
   selector: 'app-studio-login',
   imports: [FormsModule],
+  host: { style: 'color-scheme: dark' },
   template: `
     <div class="min-h-screen flex items-center justify-center bg-neutral-950 text-neutral-100 px-4">
       <form
@@ -21,9 +22,10 @@ import { AuthService } from '../../core/auth/auth.service';
         <label class="block space-y-1">
           <span class="text-sm text-neutral-300">Email</span>
           <input
-            name="email" type="email" autocomplete="username" required
+            name="email" type="email" autocomplete="username" spellcheck="false" required
             [(ngModel)]="email"
-            class="w-full rounded-md border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm outline-none focus:border-neutral-400"
+            class="w-full rounded-md border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm
+                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
           />
         </label>
 
@@ -32,17 +34,17 @@ import { AuthService } from '../../core/auth/auth.service';
           <input
             name="password" type="password" autocomplete="current-password" required
             [(ngModel)]="password"
-            class="w-full rounded-md border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm outline-none focus:border-neutral-400"
+            class="w-full rounded-md border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm
+                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
           />
         </label>
 
-        @if (error()) {
-          <p class="text-sm text-red-400">{{ error() }}</p>
-        }
+        <p class="min-h-5 text-sm text-red-400" role="alert">{{ error() }}</p>
 
         <button
           type="submit" [disabled]="busy()"
-          class="w-full rounded-md bg-white px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-200 disabled:opacity-50"
+          class="w-full rounded-md bg-white px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-200
+                 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-900"
         >
           {{ busy() ? 'Signing in…' : 'Sign in' }}
         </button>

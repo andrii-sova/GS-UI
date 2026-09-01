@@ -7,7 +7,7 @@
     <header class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-10 items-center">
       @if (p.imageUrl) {
         <div class="w-full aspect-video overflow-hidden">
-          <img [src]="p.imageUrl" [alt]="p.name" class="w-full h-full object-cover" />
+          <img [src]="p.imageUrl" [alt]="p.name" decoding="async" class="w-full h-full object-cover" />
         </div>
       }
       <div class="flex flex-col gap-4">
@@ -41,7 +41,8 @@
       <section class="flex flex-col gap-4 border-t pt-12">
         <div class="gallery-slider">
           <div class="gallery-slider__viewport">
-            <img [src]="p.gallery[activeImage()]" [alt]="p.name" class="w-full h-full object-cover" />
+            <img [src]="p.gallery[activeImage()]" [alt]="p.name" loading="lazy" decoding="async"
+                 class="w-full h-full object-cover" />
 
             @if (p.gallery.length > 1) {
               <button type="button" class="gallery-slider__nav gallery-slider__nav--prev" (click)="prevImage()" aria-label="Previous image">
@@ -70,7 +71,7 @@
       </section>
     }
   } @else {
-    <p class="text-neutral-500">{{ content.isLoading() ? '…' : 'Project not found.' }}</p>
+    <p class="text-neutral-500" aria-live="polite">{{ content.isLoading() ? 'Loading…' : 'Project not found.' }}</p>
   }
 
 </div>

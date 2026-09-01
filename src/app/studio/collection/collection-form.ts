@@ -1,4 +1,4 @@
-import { Component, computed, inject, resource, signal } from '@angular/core';
+import { Component, HostListener, computed, inject, resource, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -7,6 +7,7 @@ import { map } from 'rxjs';
 import { StudioApi } from '../studio-api';
 import { CollectionDef, FieldDef, collectionByKey } from '../collections.config';
 import { ImageFieldComponent } from '../media/image-field';
+import { HasUnsavedChanges } from './unsaved-changes.guard';
 
 type Model = Record<string, unknown>;
 
@@ -15,7 +16,7 @@ type Model = Record<string, unknown>;
   imports: [FormsModule, RouterLink, ImageFieldComponent],
   templateUrl: './collection-form.html',
 })
-export class CollectionFormComponent {
+export class CollectionFormComponent implements HasUnsavedChanges {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly api = inject(StudioApi);
@@ -35,6 +36,28 @@ export class CollectionFormComponent {
   readonly saving = signal(false);
   readonly error = signal<string | null>(null);
 
+  /** Serialized snapshot of the form as first loaded, for change detection. */
+  private readonly pristine = signal('');
+  private savedAndLeaving = false;
+
+  readonly dirty = computed(
+    () => this.pristine() !== '' && JSON.stringify(this.model()) !== this.pristine(),
+  );
+
+  @HostListener('window:beforeunload', ['$event'])
+  onBeforeUnload(event: BeforeUnloadEvent): void {
+    if (this.dirty() && !this.savedAndLeaving) event.preventDefault();
+  }
+
+  /** Router `canDeactivate` hook. */
+  canLeave(): boolean {
+    return (
+      !this.dirty() ||
+      this.savedAndLeaving ||
+      window.confirm('You have unsaved changes. Leave without saving?')
+    );
+  }
+
   /** Category options for `categorySelect` fields. */
   readonly categories = resource({
     loader: () => this.api.list<{ key: string; label: { uk: string } }>('project-categories'),
@@ -53,6 +76,7 @@ export class CollectionFormComponent {
         ? blankModel(def)
         : await this.api.get<Model>(def.path ?? def.key, params.id);
       this.model.set(normalise(def, model));
+      this.pristine.set(JSON.stringify(this.model()));
       return model;
     },
   });
@@ -114,6 +138,7 @@ export class CollectionFormComponent {
       } else {
         await this.api.update(this.path, this.id(), body);
       }
+      this.savedAndLeaving = true;
       await this.router.navigate(['/studio', def.key]);
     } catch (err) {
       this.error.set(errorMessage(err));

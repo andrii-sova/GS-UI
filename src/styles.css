@@ -44,6 +44,16 @@
 
   *, *::before, *::after { border-color: var(--border); }
 
+  /* Kill the 300ms tap delay and control the tap flash on all controls. */
+  a, button, input, select, textarea, label, summary, [role="button"] {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: color-mix(in srgb, var(--brand) 18%, transparent);
+  }
+
+  /* Heading anchors aren't hidden behind the fixed header when deep-linked. */
+  :is(h1, h2, h3, h4, h5, h6)[id],
+  [id] { scroll-margin-top: 6rem; }
+
   h1, h2, h3, h4, h5, h6 { color: var(--text); }
   p   { color: var(--text-muted); }
   strong, b { color: var(--text); }

@@ -4,10 +4,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { LangService } from '../../services/lang.service';
 import { ContentStore } from '../../core/content/content.store';
+import { LocalizedDatePipe } from '../../shared/localized-date.pipe';
 
 @Component({
   selector: 'app-blog-detail-page',
-  imports: [RouterLink],
+  imports: [RouterLink, LocalizedDatePipe],
   templateUrl: './blog-detail.html',
 })
 export class BlogDetailPageComponent {

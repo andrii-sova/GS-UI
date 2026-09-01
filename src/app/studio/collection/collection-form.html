@@ -7,76 +7,133 @@
   </div>
 
   @if (loaded.isLoading()) {
-    <p class="text-sm text-neutral-500">Loading…</p>
+    <p class="text-sm text-neutral-500" aria-live="polite">Loading…</p>
   } @else {
     <form (ngSubmit)="save()" class="space-y-6">
       @for (field of d.fields; track field.key) {
+        @let inputId = 'field-' + field.key;
         <div class="rounded-lg border border-neutral-200 bg-white p-4">
-          <label class="block text-sm font-medium">{{ field.label }}</label>
-          @if (field.help) { <p class="mb-2 text-xs text-neutral-500">{{ field.help }}</p> }
 
           @switch (field.kind) {
-            @case ('text') {
-              <input [(ngModel)]="model()[field.key]" [name]="field.key" [attr.data-testid]="field.key"
-                     class="mt-1 w-full rounded-md border border-neutral-300 px-2 py-1 text-sm" />
-            }
-            @case ('slug') {
-              <input [(ngModel)]="model()[field.key]" [name]="field.key" [attr.data-testid]="field.key"
-                     class="mt-1 w-full rounded-md border border-neutral-300 px-2 py-1 text-sm font-mono" />
-            }
-            @case ('url') {
-              <input [(ngModel)]="model()[field.key]" [name]="field.key" type="url" [attr.data-testid]="field.key"
-                     class="mt-1 w-full rounded-md border border-neutral-300 px-2 py-1 text-sm" />
-            }
-            @case ('date') {
-              <input [(ngModel)]="model()[field.key]" [name]="field.key" type="date" [attr.data-testid]="field.key"
-                     class="mt-1 rounded-md border border-neutral-300 px-2 py-1 text-sm" />
-            }
+
             @case ('checkbox') {
-              <label class="mt-1 flex items-center gap-2 text-sm">
-                <input type="checkbox" [(ngModel)]="model()[field.key]" [name]="field.key" />
-                <span class="text-neutral-600">Enabled</span>
+              <label [for]="inputId" class="flex items-center gap-2 text-sm font-medium">
+                <input type="checkbox" [id]="inputId" [(ngModel)]="model()[field.key]" [name]="field.key" />
+                {{ field.label }}
               </label>
+              @if (field.help) { <p class="mt-1 text-xs text-neutral-500">{{ field.help }}</p> }
             }
+
+            @case ('text') {
+              <label [for]="inputId" class="block text-sm font-medium">{{ field.label }}</label>
+              @if (field.help) { <p class="mb-1 text-xs text-neutral-500">{{ field.help }}</p> }
+              <input [id]="inputId" [(ngModel)]="model()[field.key]" [name]="field.key" [attr.data-testid]="field.key"
+                     autocomplete="off" spellcheck="false"
+                     class="mt-1 w-full rounded-md border border-neutral-300 px-2 py-1 text-sm
+                            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500" />
+            }
+
+            @case ('slug') {
+              <label [for]="inputId" class="block text-sm font-medium">{{ field.label }}</label>
+              @if (field.help) { <p class="mb-1 text-xs text-neutral-500">{{ field.help }}</p> }
+              <input [id]="inputId" [(ngModel)]="model()[field.key]" [name]="field.key" [attr.data-testid]="field.key"
+                     autocomplete="off" spellcheck="false" inputmode="url"
+                     class="mt-1 w-full rounded-md border border-neutral-300 px-2 py-1 text-sm font-mono
+                            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500" />
+            }
+
+            @case ('url') {
+              <label [for]="inputId" class="block text-sm font-medium">{{ field.label }}</label>
+              @if (field.help) { <p class="mb-1 text-xs text-neutral-500">{{ field.help }}</p> }
+              <input [id]="inputId" [(ngModel)]="model()[field.key]" [name]="field.key" [attr.data-testid]="field.key"
+                     type="url" inputmode="url" autocomplete="off" spellcheck="false"
+                     placeholder="https://example.com"
+                     class="mt-1 w-full rounded-md border border-neutral-300 px-2 py-1 text-sm
+                            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500" />
+            }
+
+            @case ('date') {
+              <label [for]="inputId" class="block text-sm font-medium">{{ field.label }}</label>
+              @if (field.help) { <p class="mb-1 text-xs text-neutral-500">{{ field.help }}</p> }
+              <input [id]="inputId" [(ngModel)]="model()[field.key]" [name]="field.key" [attr.data-testid]="field.key"
+                     type="date"
+                     class="mt-1 rounded-md border border-neutral-300 px-2 py-1 text-sm
+                            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500" />
+            }
+
             @case ('categorySelect') {
-              <select [(ngModel)]="model()[field.key]" [name]="field.key"
-                      class="mt-1 rounded-md border border-neutral-300 px-2 py-1 text-sm">
+              <label [for]="inputId" class="block text-sm font-medium">{{ field.label }}</label>
+              <select [id]="inputId" [(ngModel)]="model()[field.key]" [name]="field.key"
+                      class="mt-1 rounded-md border border-neutral-300 bg-white px-2 py-1 text-sm text-neutral-900
+                             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500">
                 <option value="">— select —</option>
                 @for (opt of categoryOptions(); track opt.key) {
                   <option [value]="opt.key">{{ opt.label }}</option>
                 }
               </select>
             }
+
             @case ('image') {
+              <p class="block text-sm font-medium" [id]="inputId + '-label'">{{ field.label }}</p>
+              @if (field.help) { <p class="mb-1 text-xs text-neutral-500">{{ field.help }}</p> }
               <app-image-field class="mt-2 block"
+                [label]="field.label"
                 [value]="$any(model()[field.key])"
                 (valueChange)="model()[field.key] = $event" />
             }
+
             @case ('localized') {
+              <p class="block text-sm font-medium">{{ field.label }}</p>
+              @if (field.help) { <p class="mb-1 text-xs text-neutral-500">{{ field.help }}</p> }
               <div class="mt-1 grid grid-cols-1 gap-2 sm:grid-cols-2">
-                <input [(ngModel)]="localized(field.key).uk" [name]="field.key + '_uk'" placeholder="Українською"
-                       class="rounded-md border border-neutral-300 px-2 py-1 text-sm" (ngModelChange)="bump()" />
-                <input [(ngModel)]="localized(field.key).en" [name]="field.key + '_en'" placeholder="English"
-                       class="rounded-md border border-neutral-300 px-2 py-1 text-sm" (ngModelChange)="bump()" />
+                <input [(ngModel)]="localized(field.key).uk" [name]="field.key + '_uk'"
+                       [attr.aria-label]="field.label + ' (Ukrainian)'" [attr.data-testid]="field.key + '-uk'"
+                       placeholder="Українською" (ngModelChange)="bump()"
+                       class="rounded-md border border-neutral-300 px-2 py-1 text-sm
+                              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500" />
+                <input [(ngModel)]="localized(field.key).en" [name]="field.key + '_en'"
+                       [attr.aria-label]="field.label + ' (English)'" [attr.data-testid]="field.key + '-en'"
+                       placeholder="English" (ngModelChange)="bump()"
+                       class="rounded-md border border-neutral-300 px-2 py-1 text-sm
+                              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500" />
               </div>
             }
+
             @case ('localizedMultiline') {
+              <p class="block text-sm font-medium">{{ field.label }}</p>
+              @if (field.help) { <p class="mb-1 text-xs text-neutral-500">{{ field.help }}</p> }
               <div class="mt-1 grid grid-cols-1 gap-2 sm:grid-cols-2">
-                <textarea [(ngModel)]="localized(field.key).uk" [name]="field.key + '_uk'" rows="3" placeholder="Українською"
-                          class="rounded-md border border-neutral-300 px-2 py-1 text-sm" (ngModelChange)="bump()"></textarea>
-                <textarea [(ngModel)]="localized(field.key).en" [name]="field.key + '_en'" rows="3" placeholder="English"
-                          class="rounded-md border border-neutral-300 px-2 py-1 text-sm" (ngModelChange)="bump()"></textarea>
+                <textarea [(ngModel)]="localized(field.key).uk" [name]="field.key + '_uk'" rows="3"
+                          [attr.aria-label]="field.label + ' (Ukrainian)'" placeholder="Українською"
+                          (ngModelChange)="bump()"
+                          class="rounded-md border border-neutral-300 px-2 py-1 text-sm
+                                 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500"></textarea>
+                <textarea [(ngModel)]="localized(field.key).en" [name]="field.key + '_en'" rows="3"
+                          [attr.aria-label]="field.label + ' (English)'" placeholder="English"
+                          (ngModelChange)="bump()"
+                          class="rounded-md border border-neutral-300 px-2 py-1 text-sm
+                                 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500"></textarea>
               </div>
             }
+
             @case ('localizedList') {
+              <p class="block text-sm font-medium">{{ field.label }}</p>
+              @if (field.help) { <p class="mb-1 text-xs text-neutral-500">{{ field.help }}</p> }
               <div class="mt-1 space-y-2">
                 @for (item of asList(field.key); track $index) {
                   <div class="flex items-start gap-2">
-                    <input [(ngModel)]="item.uk" [name]="field.key + '_uk_' + $index" placeholder="Українською"
-                           class="flex-1 rounded-md border border-neutral-300 px-2 py-1 text-sm" (ngModelChange)="bump()" />
-                    <input [(ngModel)]="item.en" [name]="field.key + '_en_' + $index" placeholder="English"
-                           class="flex-1 rounded-md border border-neutral-300 px-2 py-1 text-sm" (ngModelChange)="bump()" />
+                    <input [(ngModel)]="item.uk" [name]="field.key + '_uk_' + $index"
+                           [attr.aria-label]="field.label + ' row ' + ($index + 1) + ' (Ukrainian)'"
+                           placeholder="Українською" (ngModelChange)="bump()"
+                           class="flex-1 rounded-md border border-neutral-300 px-2 py-1 text-sm
+                                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500" />
+                    <input [(ngModel)]="item.en" [name]="field.key + '_en_' + $index"
+                           [attr.aria-label]="field.label + ' row ' + ($index + 1) + ' (English)'"
+                           placeholder="English" (ngModelChange)="bump()"
+                           class="flex-1 rounded-md border border-neutral-300 px-2 py-1 text-sm
+                                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500" />
                     <button type="button" (click)="removeListItem(field.key, $index)"
+                            [attr.aria-label]="'Remove ' + field.label + ' row ' + ($index + 1)"
                             class="px-2 py-1 text-xs text-neutral-400 hover:text-red-600">✕</button>
                   </div>
                 }
@@ -84,14 +141,19 @@
                         class="rounded-md border border-neutral-300 px-2 py-1 text-xs hover:bg-neutral-100">+ Add row</button>
               </div>
             }
+
             @case ('imageList') {
+              <p class="block text-sm font-medium">{{ field.label }}</p>
+              @if (field.help) { <p class="mb-1 text-xs text-neutral-500">{{ field.help }}</p> }
               <div class="mt-1 space-y-2">
                 @for (url of asStringList(field.key); track $index) {
                   <div class="flex items-center gap-2">
                     <app-image-field class="flex-1"
+                      [label]="field.label + ' image ' + ($index + 1)"
                       [value]="url"
                       (valueChange)="setStringListItem(field.key, $index, $event)" />
                     <button type="button" (click)="removeListItem(field.key, $index)"
+                            [attr.aria-label]="'Remove ' + field.label + ' image ' + ($index + 1)"
                             class="px-2 py-1 text-xs text-neutral-400 hover:text-red-600">✕</button>
                   </div>
                 }
@@ -104,18 +166,22 @@
       }
 
       @if (error()) {
-        <p class="text-sm text-red-600">{{ error() }}</p>
+        <p class="text-sm text-red-600" role="alert">{{ error() }}</p>
       }
 
       <div class="flex items-center gap-3">
         <button type="submit" [disabled]="saving()"
-                class="rounded-md bg-neutral-900 px-4 py-2 text-sm text-white hover:bg-neutral-700 disabled:opacity-50">
+                class="rounded-md bg-neutral-900 px-4 py-2 text-sm text-white hover:bg-neutral-700 disabled:opacity-50
+                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500 focus-visible:ring-offset-2">
           {{ saving() ? 'Saving…' : 'Save' }}
         </button>
         <a [routerLink]="['/studio', d.key]" class="text-sm text-neutral-500 hover:underline">Cancel</a>
+        @if (dirty()) {
+          <span class="text-xs text-amber-600">Unsaved changes</span>
+        }
       </div>
     </form>
   }
 } @else {
-  <p class="text-sm text-red-600">Unknown collection.</p>
+  <p class="text-sm text-red-600" role="alert">Unknown collection.</p>
 }

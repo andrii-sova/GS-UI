@@ -12,12 +12,11 @@ import { COLLECTIONS } from '../collections.config';
     <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
       @for (c of collections; track c.key) {
         <a [routerLink]="['/studio', c.key]"
-           class="rounded-lg border border-neutral-200 bg-white p-4 hover:border-neutral-400">
-          <div class="text-2xl">{{ c.icon }}</div>
+           class="rounded-lg border border-neutral-200 bg-white p-4 hover:border-neutral-400
+                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500">
+          <div class="text-2xl" aria-hidden="true">{{ c.icon }}</div>
           <div class="mt-2 text-sm font-medium">{{ c.title }}</div>
-          <div class="text-xs text-neutral-500">
-            {{ counts.value()?.[c.key] ?? '—' }} item(s)
-          </div>
+          <div class="text-xs text-neutral-500">{{ countLabel(c.key) }}</div>
         </a>
       }
     </div>
@@ -26,6 +25,12 @@ import { COLLECTIONS } from '../collections.config';
 export class StudioDashboardComponent {
   private readonly api = inject(StudioApi);
   readonly collections = COLLECTIONS;
+
+  countLabel(key: string): string {
+    const n = this.counts.value()?.[key];
+    if (n == null) return '…';
+    return `${n} ${n === 1 ? 'item' : 'items'}`;
+  }
 
   readonly counts = resource({
     loader: async () => {
