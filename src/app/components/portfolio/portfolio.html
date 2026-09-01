@@ -7,14 +7,16 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-      @for (project of lang.dict().portfolioSection.items; track project.slug) {
+      @for (project of content.featuredProjects(); track project.slug) {
         <article class="flex flex-col border rounded-lg overflow-hidden card-hover">
           <a [routerLink]="['/portfolio', project.slug]" class="w-full aspect-video overflow-hidden img-hover-zoom">
-            <img [src]="project.image" [alt]="project.name" class="w-full h-full object-cover" />
+            @if (project.imageUrl) {
+              <img [src]="project.imageUrl" [alt]="project.name" class="w-full h-full object-cover" />
+            }
           </a>
           <div class="flex flex-col gap-2 p-5">
             <h3 class="text-xl font-semibold">{{ project.name }}</h3>
-            <p class="text-sm">{{ project.description }}</p>
+            <p class="text-sm">{{ project.shortDescription }}</p>
           </div>
         </article>
       }

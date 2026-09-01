@@ -104,10 +104,10 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col gap-8 sm:gap-10">
       <h2 class="text-2xl sm:text-3xl font-bold">{{ lang.dict().aboutPage.teamHeading }}</h2>
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8">
-        @for (member of lang.dict().aboutPage.members; track member.role) {
+        @for (member of content.team(); track $index) {
           <div class="flex flex-col gap-3">
             <div class="w-full aspect-[2/3] overflow-hidden shadow-lg team-photo">
-              <img [src]="member.photo" [alt]="member.name" class="w-full h-full object-cover" />
+              <img [src]="member.photoUrl" [alt]="member.name" class="w-full h-full object-cover" />
             </div>
             <h3 class="font-semibold">{{ member.name }}</h3>
             <p class="text-sm">{{ member.role }}</p>

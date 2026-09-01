@@ -4,7 +4,7 @@
     <h2 class="text-2xl sm:text-3xl font-bold mb-8 sm:mb-12">{{ lang.dict().testimonials.title }}</h2>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-      @for (item of lang.dict().testimonials.items; track item.company) {
+      @for (item of content.testimonials(); track $index) {
         <blockquote class="flex flex-col gap-4 p-6 border">
           <p class="text-lg font-medium">{{ item.quote }}</p>
           <footer class="mt-auto">

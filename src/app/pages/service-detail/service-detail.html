@@ -2,60 +2,52 @@
 
   <a routerLink="/services" class="link-arrow link-arrow--back text-sm">{{ lang.dict().serviceDetailPage.back }}</a>
 
-  <!-- Page hero -->
-  <header class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-10 items-center">
-    <div class="w-full aspect-video overflow-hidden">
-      <img [src]="service?.image" [alt]="service?.name" class="w-full h-full object-cover" />
-    </div>
-    <div class="flex flex-col gap-4">
-      <h1 class="text-3xl sm:text-4xl font-bold">{{ service?.name }}</h1>
-      <p class="text-base sm:text-lg">{{ service?.description }}</p>
-      <a routerLink="/contact" class="btn-primary px-8 py-3 w-fit">{{ lang.dict().serviceDetailPage.quoteCta }}</a>
-    </div>
-  </header>
-
-  <!-- What we do -->
-  <section class="flex flex-col gap-4 border-t pt-12">
-    <h2 class="text-xl sm:text-2xl font-bold">{{ lang.dict().serviceDetailPage.whatWeDo }}</h2>
-    <p>{{ service?.description }}</p>
-  </section>
-
-  <!-- Specifications -->
-  <section class="flex flex-col gap-4 border-t pt-12">
-    <h2 class="text-xl sm:text-2xl font-bold">{{ lang.dict().serviceDetailPage.capabilities }}</h2>
-    <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 list-disc pl-5">
-      @for (item of service?.details; track item) {
-        <li>{{ item }}</li>
+  @if (service(); as s) {
+    <!-- Page hero -->
+    <header class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-10 items-center">
+      @if (s.imageUrl) {
+        <div class="w-full aspect-video overflow-hidden">
+          <img [src]="s.imageUrl" [alt]="s.name" class="w-full h-full object-cover" />
+        </div>
       }
-    </ul>
-  </section>
+      <div class="flex flex-col gap-4">
+        <h1 class="text-3xl sm:text-4xl font-bold">{{ s.name }}</h1>
+        <p class="text-base sm:text-lg">{{ s.summary }}</p>
+        <a routerLink="/contact" class="btn-primary px-8 py-3 w-fit">{{ lang.dict().serviceDetailPage.quoteCta }}</a>
+      </div>
+    </header>
 
-  <!-- Advantages -->
-  @if (service?.advantages?.length) {
+    <!-- What we do -->
     <section class="flex flex-col gap-4 border-t pt-12">
-      <h2 class="text-xl sm:text-2xl font-bold">{{ lang.dict().serviceDetailPage.advantages }}</h2>
-      <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 list-disc pl-5">
-        @for (item of service?.advantages; track item) {
-          <li>{{ item }}</li>
-        }
-      </ul>
+      <h2 class="text-xl sm:text-2xl font-bold">{{ lang.dict().serviceDetailPage.whatWeDo }}</h2>
+      <p>{{ s.description }}</p>
     </section>
-  }
 
-  <!-- Examples -->
-  <section class="flex flex-col gap-6 border-t pt-12">
-    <h2 class="text-xl sm:text-2xl font-bold">{{ lang.dict().serviceDetailPage.examples }}</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="aspect-square overflow-hidden">
-        <img src="[image of example part 1]" alt="Example 1" class="w-full h-full object-cover" />
-      </div>
-      <div class="aspect-square overflow-hidden">
-        <img src="[image of example part 2]" alt="Example 2" class="w-full h-full object-cover" />
-      </div>
-      <div class="aspect-square overflow-hidden">
-        <img src="[image of example part 3]" alt="Example 3" class="w-full h-full object-cover" />
-      </div>
-    </div>
-  </section>
+    <!-- Specifications -->
+    @if (s.details.length) {
+      <section class="flex flex-col gap-4 border-t pt-12">
+        <h2 class="text-xl sm:text-2xl font-bold">{{ lang.dict().serviceDetailPage.capabilities }}</h2>
+        <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 list-disc pl-5">
+          @for (item of s.details; track $index) {
+            <li>{{ item }}</li>
+          }
+        </ul>
+      </section>
+    }
+
+    <!-- Advantages -->
+    @if (s.advantages.length) {
+      <section class="flex flex-col gap-4 border-t pt-12">
+        <h2 class="text-xl sm:text-2xl font-bold">{{ lang.dict().serviceDetailPage.advantages }}</h2>
+        <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 list-disc pl-5">
+          @for (item of s.advantages; track $index) {
+            <li>{{ item }}</li>
+          }
+        </ul>
+      </section>
+    }
+  } @else {
+    <p class="text-neutral-500">{{ content.isLoading() ? '…' : 'Service not found.' }}</p>
+  }
 
 </div>

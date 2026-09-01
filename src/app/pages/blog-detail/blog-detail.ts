@@ -1,25 +1,26 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs';
 import { LangService } from '../../services/lang.service';
+import { ContentStore } from '../../core/content/content.store';
 
 @Component({
   selector: 'app-blog-detail-page',
   imports: [RouterLink],
   templateUrl: './blog-detail.html',
 })
-export class BlogDetailPageComponent implements OnInit {
-  slug = '';
+export class BlogDetailPageComponent {
   readonly lang = inject(LangService);
+  readonly content = inject(ContentStore);
+  private readonly route = inject(ActivatedRoute);
 
-  constructor(private route: ActivatedRoute) {}
+  private readonly slug = toSignal(
+    this.route.paramMap.pipe(map((p) => p.get('slug') ?? '')),
+    { initialValue: '' },
+  );
 
-  ngOnInit() {
-    this.route.paramMap.subscribe(params => {
-      this.slug = params.get('slug') ?? '';
-    });
-  }
-
-  get post() {
-    return this.lang.dict().blogPage.items.find((p) => p.slug === this.slug);
-  }
+  readonly post = computed(
+    () => this.content.blog().find((p) => p.slug === this.slug()) ?? null,
+  );
 }

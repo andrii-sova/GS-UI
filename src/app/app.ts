@@ -19,9 +19,15 @@ export class App {
   // so only routes without a hero need their content pushed below it.
   readonly isHome = signal(this.router.url === '/');
 
+  // The studio has its own full-screen chrome — hide the marketing header/footer there.
+  readonly isStudio = signal(this.router.url.startsWith('/studio'));
+
   constructor() {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe(() => this.isHome.set(this.router.url === '/'));
+      .subscribe(() => {
+        this.isHome.set(this.router.url === '/');
+        this.isStudio.set(this.router.url.startsWith('/studio'));
+      });
   }
 }

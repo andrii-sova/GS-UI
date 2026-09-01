@@ -7,13 +7,19 @@
 
   <!-- Category filter -->
   <nav class="flex flex-wrap gap-3">
-    @for (cat of lang.dict().portfolioPage.categories; track cat; let i = $index) {
+    <button
+      type="button"
+      class="border px-4 py-2"
+      [class.filter-active]="selectedCategory() === null"
+      (click)="selectCategory(null)"
+    >{{ lang.lang() === 'uk' ? 'Всі' : 'All' }}</button>
+    @for (cat of content.projectCategories(); track cat.key) {
       <button
         type="button"
         class="border px-4 py-2"
-        [class.filter-active]="i === 0 ? selectedCategory() === null : selectedCategory() === cat"
-        (click)="selectCategory(i === 0 ? null : cat)"
-      >{{ cat }}</button>
+        [class.filter-active]="selectedCategory() === cat.key"
+        (click)="selectCategory(cat.key)"
+      >{{ cat.label }}</button>
     }
   </nav>
 
@@ -22,12 +28,14 @@
     @for (project of filteredItems(); track project.slug) {
       <article class="flex flex-col border rounded-lg overflow-hidden card-hover">
         <a [routerLink]="['/portfolio', project.slug]" class="w-full aspect-video overflow-hidden img-hover-zoom">
-          <img [src]="project.image" [alt]="project.name" class="w-full h-full object-cover" />
+          @if (project.imageUrl) {
+            <img [src]="project.imageUrl" [alt]="project.name" class="w-full h-full object-cover" />
+          }
         </a>
         <div class="flex flex-col gap-2 p-5">
-          <span class="text-sm">{{ project.category }}</span>
+          <span class="text-sm">{{ project.categoryLabel }}</span>
           <h2 class="text-lg font-semibold">{{ project.name }}</h2>
-          <p class="text-sm">{{ project.description }}</p>
+          <p class="text-sm">{{ project.shortDescription }}</p>
           <a [routerLink]="['/portfolio', project.slug]" class="link-arrow text-sm w-fit">{{ lang.dict().portfolioPage.learnMore }}</a>
         </div>
       </article>

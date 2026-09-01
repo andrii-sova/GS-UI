@@ -1,41 +1,53 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs';
 import { LangService } from '../../services/lang.service';
+import { ContentStore } from '../../core/content/content.store';
 
 @Component({
   selector: 'app-project-detail-page',
   imports: [RouterLink],
   templateUrl: './project-detail.html',
 })
-export class ProjectDetailPageComponent implements OnInit {
-  slug = '';
-  readonly activeImage = signal(0);
+export class ProjectDetailPageComponent {
   readonly lang = inject(LangService);
+  readonly content = inject(ContentStore);
+  private readonly route = inject(ActivatedRoute);
 
-  constructor(private route: ActivatedRoute) {}
+  private readonly slug = toSignal(
+    this.route.paramMap.pipe(map((p) => p.get('slug') ?? '')),
+    { initialValue: '' },
+  );
 
-  ngOnInit() {
-    this.route.paramMap.subscribe(params => {
-      this.slug = params.get('slug') ?? '';
+  readonly project = computed(
+    () => this.content.projects().find((p) => p.slug === this.slug()) ?? null,
+  );
+
+  readonly activeImage = signal(0);
+
+  constructor() {
+    effect(() => {
+      this.slug();
       this.activeImage.set(0);
     });
   }
 
-  get project() {
-    return this.lang.dict().portfolioPage.items.find((p) => p.slug === this.slug);
+  private get galleryLength(): number {
+    return this.project()?.gallery.length ?? 0;
   }
 
-  prevImage() {
-    const total = this.project?.gallery?.length ?? 0;
-    if (total > 0) this.activeImage.update(i => (i - 1 + total) % total);
+  prevImage(): void {
+    const total = this.galleryLength;
+    if (total > 0) this.activeImage.update((i) => (i - 1 + total) % total);
   }
 
-  nextImage() {
-    const total = this.project?.gallery?.length ?? 0;
-    if (total > 0) this.activeImage.update(i => (i + 1) % total);
+  nextImage(): void {
+    const total = this.galleryLength;
+    if (total > 0) this.activeImage.update((i) => (i + 1) % total);
   }
 
-  goToImage(index: number) {
+  goToImage(index: number): void {
     this.activeImage.set(index);
   }
 }

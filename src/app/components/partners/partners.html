@@ -1,16 +1,16 @@
 <section class="w-full py-12 border-y">
   <div class="partners-marquee">
     <ul class="partners-track list-none">
-      @for (partner of partners; track partner.name + partner.logo) {
+      @for (partner of content.partners(); track partner.name + partner.logoUrl) {
         <li class="partners-item">
-          <img [src]="partner.logo" [alt]="partner.name" />
+          <img [src]="partner.logoUrl" [alt]="partner.name" />
         </li>
       }
     </ul>
     <ul class="partners-track list-none" aria-hidden="true">
-      @for (partner of partners; track partner.name + partner.logo) {
+      @for (partner of content.partners(); track partner.name + partner.logoUrl) {
         <li class="partners-item">
-          <img [src]="partner.logo" [alt]="partner.name" />
+          <img [src]="partner.logoUrl" [alt]="partner.name" />
         </li>
       }
     </ul>

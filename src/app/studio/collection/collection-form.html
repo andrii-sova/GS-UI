@@ -1,0 +1,121 @@
+@if (def(); as d) {
+  <div class="mb-6 flex items-center justify-between">
+    <div>
+      <a [routerLink]="['/studio', d.key]" class="text-xs text-neutral-500 hover:underline">← {{ d.title }}</a>
+      <h1 class="text-xl font-semibold">{{ isNew() ? 'New ' + d.singular.toLowerCase() : 'Edit ' + d.singular.toLowerCase() }}</h1>
+    </div>
+  </div>
+
+  @if (loaded.isLoading()) {
+    <p class="text-sm text-neutral-500">Loading…</p>
+  } @else {
+    <form (ngSubmit)="save()" class="space-y-6">
+      @for (field of d.fields; track field.key) {
+        <div class="rounded-lg border border-neutral-200 bg-white p-4">
+          <label class="block text-sm font-medium">{{ field.label }}</label>
+          @if (field.help) { <p class="mb-2 text-xs text-neutral-500">{{ field.help }}</p> }
+
+          @switch (field.kind) {
+            @case ('text') {
+              <input [(ngModel)]="model()[field.key]" [name]="field.key" [attr.data-testid]="field.key"
+                     class="mt-1 w-full rounded-md border border-neutral-300 px-2 py-1 text-sm" />
+            }
+            @case ('slug') {
+              <input [(ngModel)]="model()[field.key]" [name]="field.key" [attr.data-testid]="field.key"
+                     class="mt-1 w-full rounded-md border border-neutral-300 px-2 py-1 text-sm font-mono" />
+            }
+            @case ('url') {
+              <input [(ngModel)]="model()[field.key]" [name]="field.key" type="url" [attr.data-testid]="field.key"
+                     class="mt-1 w-full rounded-md border border-neutral-300 px-2 py-1 text-sm" />
+            }
+            @case ('date') {
+              <input [(ngModel)]="model()[field.key]" [name]="field.key" type="date" [attr.data-testid]="field.key"
+                     class="mt-1 rounded-md border border-neutral-300 px-2 py-1 text-sm" />
+            }
+            @case ('checkbox') {
+              <label class="mt-1 flex items-center gap-2 text-sm">
+                <input type="checkbox" [(ngModel)]="model()[field.key]" [name]="field.key" />
+                <span class="text-neutral-600">Enabled</span>
+              </label>
+            }
+            @case ('categorySelect') {
+              <select [(ngModel)]="model()[field.key]" [name]="field.key"
+                      class="mt-1 rounded-md border border-neutral-300 px-2 py-1 text-sm">
+                <option value="">— select —</option>
+                @for (opt of categoryOptions(); track opt.key) {
+                  <option [value]="opt.key">{{ opt.label }}</option>
+                }
+              </select>
+            }
+            @case ('image') {
+              <app-image-field class="mt-2 block"
+                [value]="$any(model()[field.key])"
+                (valueChange)="model()[field.key] = $event" />
+            }
+            @case ('localized') {
+              <div class="mt-1 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                <input [(ngModel)]="localized(field.key).uk" [name]="field.key + '_uk'" placeholder="Українською"
+                       class="rounded-md border border-neutral-300 px-2 py-1 text-sm" (ngModelChange)="bump()" />
+                <input [(ngModel)]="localized(field.key).en" [name]="field.key + '_en'" placeholder="English"
+                       class="rounded-md border border-neutral-300 px-2 py-1 text-sm" (ngModelChange)="bump()" />
+              </div>
+            }
+            @case ('localizedMultiline') {
+              <div class="mt-1 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                <textarea [(ngModel)]="localized(field.key).uk" [name]="field.key + '_uk'" rows="3" placeholder="Українською"
+                          class="rounded-md border border-neutral-300 px-2 py-1 text-sm" (ngModelChange)="bump()"></textarea>
+                <textarea [(ngModel)]="localized(field.key).en" [name]="field.key + '_en'" rows="3" placeholder="English"
+                          class="rounded-md border border-neutral-300 px-2 py-1 text-sm" (ngModelChange)="bump()"></textarea>
+              </div>
+            }
+            @case ('localizedList') {
+              <div class="mt-1 space-y-2">
+                @for (item of asList(field.key); track $index) {
+                  <div class="flex items-start gap-2">
+                    <input [(ngModel)]="item.uk" [name]="field.key + '_uk_' + $index" placeholder="Українською"
+                           class="flex-1 rounded-md border border-neutral-300 px-2 py-1 text-sm" (ngModelChange)="bump()" />
+                    <input [(ngModel)]="item.en" [name]="field.key + '_en_' + $index" placeholder="English"
+                           class="flex-1 rounded-md border border-neutral-300 px-2 py-1 text-sm" (ngModelChange)="bump()" />
+                    <button type="button" (click)="removeListItem(field.key, $index)"
+                            class="px-2 py-1 text-xs text-neutral-400 hover:text-red-600">✕</button>
+                  </div>
+                }
+                <button type="button" (click)="addListItem(field.key, 'localized')"
+                        class="rounded-md border border-neutral-300 px-2 py-1 text-xs hover:bg-neutral-100">+ Add row</button>
+              </div>
+            }
+            @case ('imageList') {
+              <div class="mt-1 space-y-2">
+                @for (url of asStringList(field.key); track $index) {
+                  <div class="flex items-center gap-2">
+                    <app-image-field class="flex-1"
+                      [value]="url"
+                      (valueChange)="setStringListItem(field.key, $index, $event)" />
+                    <button type="button" (click)="removeListItem(field.key, $index)"
+                            class="px-2 py-1 text-xs text-neutral-400 hover:text-red-600">✕</button>
+                  </div>
+                }
+                <button type="button" (click)="addListItem(field.key, 'string')"
+                        class="rounded-md border border-neutral-300 px-2 py-1 text-xs hover:bg-neutral-100">+ Add image</button>
+              </div>
+            }
+          }
+        </div>
+      }
+
+      @if (error()) {
+        <p class="text-sm text-red-600">{{ error() }}</p>
+      }
+
+      <div class="flex items-center gap-3">
+        <button type="submit" [disabled]="saving()"
+                class="rounded-md bg-neutral-900 px-4 py-2 text-sm text-white hover:bg-neutral-700 disabled:opacity-50">
+          {{ saving() ? 'Saving…' : 'Save' }}
+        </button>
+        <a [routerLink]="['/studio', d.key]" class="text-sm text-neutral-500 hover:underline">Cancel</a>
+      </div>
+    </form>
+  }
+} @else {
+  <p class="text-sm text-red-600">Unknown collection.</p>
+}

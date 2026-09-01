@@ -6,13 +6,15 @@
 
   <!-- Posts grid -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-    @for (post of lang.dict().blogPage.items; track post.slug) {
+    @for (post of content.blog(); track post.slug) {
       <article class="flex flex-col border rounded-lg overflow-hidden card-hover">
         <a [routerLink]="['/blog', post.slug]" class="w-full aspect-video overflow-hidden img-hover-zoom">
-          <img [src]="post.image" [alt]="post.title" class="w-full h-full object-cover" />
+          @if (post.imageUrl) {
+            <img [src]="post.imageUrl" [alt]="post.title" class="w-full h-full object-cover" />
+          }
         </a>
         <div class="flex flex-col gap-2 p-5">
-          <span class="text-sm">{{ post.date }}</span>
+          <span class="text-sm">{{ post.publishedOn }}</span>
           <h2 class="text-lg font-semibold">{{ post.title }}</h2>
           <p class="text-sm">{{ post.excerpt }}</p>
           <a [routerLink]="['/blog', post.slug]" class="link-arrow text-sm w-fit">{{ lang.dict().blogPage.learnMore }}</a>

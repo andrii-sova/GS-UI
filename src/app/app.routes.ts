@@ -42,6 +42,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/privacy/privacy').then(m => m.PrivacyPageComponent),
   },
   {
+    // Hidden content studio — deliberately not linked anywhere on the site or in the sitemap.
+    path: 'studio',
+    loadChildren: () => import('./studio/studio.routes').then(m => m.STUDIO_ROUTES),
+  },
+  {
     path: 'terms',
     loadComponent: () => import('./pages/terms/terms').then(m => m.TermsPageComponent),
   },

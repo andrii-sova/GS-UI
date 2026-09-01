@@ -2,22 +2,28 @@
 
   <a routerLink="/blog" class="link-arrow link-arrow--back text-sm">{{ lang.dict().blogDetailPage.back }}</a>
 
-  <!-- Post hero -->
-  <header class="flex flex-col gap-4">
-    <span class="text-sm">{{ post?.date }}</span>
-    <h1 class="text-3xl sm:text-4xl font-bold">{{ post?.title }}</h1>
-  </header>
+  @if (post(); as p) {
+    <!-- Post hero -->
+    <header class="flex flex-col gap-4">
+      <span class="text-sm">{{ p.publishedOn }}</span>
+      <h1 class="text-3xl sm:text-4xl font-bold">{{ p.title }}</h1>
+    </header>
 
-  <div class="w-full aspect-video overflow-hidden">
-    <img [src]="post?.image" [alt]="post?.title" class="w-full h-full object-cover" />
-  </div>
-
-  <!-- Post body -->
-  <section class="flex flex-col gap-4">
-    @for (paragraph of post?.body; track paragraph) {
-      <p class="text-base sm:text-lg">{{ paragraph }}</p>
+    @if (p.imageUrl) {
+      <div class="w-full aspect-video overflow-hidden">
+        <img [src]="p.imageUrl" [alt]="p.title" class="w-full h-full object-cover" />
+      </div>
     }
-  </section>
+
+    <!-- Post body -->
+    <section class="flex flex-col gap-4">
+      @for (paragraph of p.body; track $index) {
+        <p class="text-base sm:text-lg">{{ paragraph }}</p>
+      }
+    </section>
+  } @else {
+    <p class="text-neutral-500">{{ content.isLoading() ? '…' : 'Post not found.' }}</p>
+  }
 
   <!-- CTA -->
   <div class="flex flex-col items-center gap-6 py-12 sm:py-16 text-center border-t">
