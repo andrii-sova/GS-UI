@@ -5,10 +5,8 @@
   @if (service(); as s) {
     <!-- Page hero -->
     <header class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-10 items-center">
-      @if (s.imageUrl) {
-        <div class="w-full aspect-video overflow-hidden">
-          <img [src]="s.imageUrl" [alt]="s.name" decoding="async" class="w-full h-full object-cover" />
-        </div>
+      @if (images().length) {
+        <app-gallery-slider [images]="images()" [alt]="s.name" />
       }
       <div class="flex flex-col gap-4">
         <h1 class="text-3xl sm:text-4xl font-bold">{{ s.name }}</h1>

@@ -2,11 +2,13 @@
 
   <!-- Background image -->
   <div class="absolute inset-0 overflow-hidden">
-    <img
-      src="/backgrouns/her0_background.jpg"
-      alt="Hero background"
-      class="w-full h-full object-cover"
-    />
+    @if (content.site().heroImageUrl; as heroImage) {
+      <img
+        [src]="heroImage"
+        alt=""
+        class="hero-bg-image w-full h-full object-cover"
+      />
+    }
     <div class="hero-scrim"></div>
   </div>
 
@@ -36,7 +38,7 @@
 
     <!-- Stats -->
     <div class="flex gap-6 sm:gap-12 justify-center flex-wrap">
-      @for (stat of lang.dict().hero.stats; track stat.value) {
+      @for (stat of content.stats().hero; track $index) {
         <div class="flex flex-col items-center">
           <strong class="hero-stat-value text-3xl sm:text-4xl font-bold">{{ stat.value }}</strong>
           <span class="hero-stat-label text-base sm:text-lg">{{ stat.label }}</span>

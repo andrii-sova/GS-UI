@@ -3,18 +3,20 @@
 
     <!-- Left: image -->
     <div class="w-full aspect-square overflow-hidden">
-      <img
-        src="/general_images/production_hall.jpg"
-        alt="About the company"
-        class="w-full h-full object-cover"
-      />
+      @if (content.site().aboutImageUrl; as aboutImage) {
+        <img
+          [src]="aboutImage"
+          alt=""
+          class="w-full h-full object-cover"
+        />
+      }
     </div>
 
     <!-- Right: stats + text -->
     <div class="flex flex-col gap-6 sm:gap-8">
 
       <div class="grid grid-cols-3 gap-4 sm:gap-6">
-        @for (stat of lang.dict().aboutSection.stats; track stat.value) {
+        @for (stat of content.stats().about; track $index) {
           <div class="flex flex-col gap-1">
             <strong class="stat-number text-2xl sm:text-3xl font-bold">{{ stat.value }}</strong>
             <span class="text-sm">{{ stat.label }}</span>

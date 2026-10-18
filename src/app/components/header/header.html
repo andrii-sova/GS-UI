@@ -4,7 +4,11 @@
 
     <!-- Logo -->
     <a routerLink="/" class="flex items-center shrink-0" (click)="closeMenu()">
-      <img src="/logo_2.png" alt="Галіція Сталь Engineering" class="h-[52px] w-auto" />
+      @if (content.site().logoUrl; as logo) {
+        <img [src]="logo" alt="Галіція Сталь" class="h-[52px] w-auto" />
+      } @else {
+        <span class="sr-only">Галіція Сталь</span>
+      }
     </a>
 
     <!-- Nav links (desktop) -->
@@ -18,7 +22,9 @@
 
     <!-- Right side (desktop) -->
     <div class="hidden lg:flex items-center gap-4">
-      <a href="tel:+380983293324">{{ lang.dict().nav.phone }}</a>
+      @if (content.site().phone) {
+        <a [href]="content.phoneHref()" data-testid="header-phone">{{ content.site().phone }}</a>
+      }
       <a routerLink="/contact" class="border px-4 py-2 text-sm font-medium">{{ lang.dict().nav.getQuote }}</a>
 
       <!-- Language switcher -->
@@ -56,7 +62,9 @@
         <li><a routerLink="/blog"      routerLinkActive="underline" (click)="closeMenu()">{{ lang.dict().nav.blog }}</a></li>
       </ul>
 
-      <a href="tel:+380983293324" class="mobile-menu-phone" (click)="closeMenu()">{{ lang.dict().nav.phone }}</a>
+      @if (content.site().phone) {
+        <a [href]="content.phoneHref()" class="mobile-menu-phone" (click)="closeMenu()">{{ content.site().phone }}</a>
+      }
 
       <a
         routerLink="/contact"

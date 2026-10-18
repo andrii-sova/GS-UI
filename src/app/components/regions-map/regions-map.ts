@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { ContentStore } from '../../core/content/content.store';
 import { LangService } from '../../services/lang.service';
 
 @Component({
@@ -7,8 +8,13 @@ import { LangService } from '../../services/lang.service';
 })
 export class RegionsMapComponent {
   readonly lang = inject(LangService);
+  readonly content = inject(ContentStore);
 
-  regionName(id: string): string {
-    return this.lang.dict().regionsMap.items.find((r) => r.id === id)?.name ?? '';
+  isActive(key: string): boolean {
+    return this.content.regionKeys().has(key);
+  }
+
+  regionName(key: string): string | null {
+    return this.content.regions().find((r) => r.key === key)?.name ?? null;
   }
 }

@@ -4,7 +4,11 @@
     <!-- Brand -->
     <div class="flex flex-col gap-4">
       <a routerLink="/" class="flex items-center">
-        <img src="/logo_2.png" alt="Галіція Сталь Engineering" class="h-12 w-auto" />
+        @if (content.site().logoUrl; as logo) {
+          <img [src]="logo" alt="Галіція Сталь" class="h-12 w-auto" />
+        } @else {
+          <span class="sr-only">Галіція Сталь</span>
+        }
       </a>
       <p class="text-sm">{{ lang.dict().footer.tagline }}</p>
     </div>
@@ -36,12 +40,29 @@
     <!-- Contact -->
     <div class="flex flex-col gap-3">
       <h4 class="font-semibold">{{ lang.dict().footer.contactCol }}</h4>
-      <p><a href="tel:+380983293324">{{ lang.dict().footer.phone }}</a></p>
-      <p><a href="mailto:sale@galiciasteel.com.ua">{{ lang.dict().footer.email }}</a></p>
-      <p><a href="https://maps.app.goo.gl/Y9nPZqbxrZTSpsnr9" target="_blank" rel="noopener noreferrer">{{ lang.dict().footer.address }}</a></p>
+      @if (content.site().phone) {
+        <p><a [href]="content.phoneHref()">{{ content.site().phone }}</a></p>
+      }
+      @if (content.site().email) {
+        <p><a [href]="'mailto:' + content.site().email">{{ content.site().email }}</a></p>
+      }
+      @if (content.site().address) {
+        @if (content.mapLink(); as link) {
+          <p><a [href]="link" target="_blank" rel="noopener noreferrer">{{ content.site().address }}</a></p>
+        } @else {
+          <p>{{ content.site().address }}</p>
+        }
+      }
       <ul class="flex gap-4 list-none mt-2">
-        <li><a [href]="lang.dict().footer.social.instagramUrl" target="_blank" rel="noopener noreferrer">{{ lang.dict().footer.social.instagram }}</a></li>
-        <li><a [href]="lang.dict().footer.social.facebookUrl" target="_blank" rel="noopener noreferrer">{{ lang.dict().footer.social.facebook }}</a></li>
+        @if (content.site().instagramUrl; as url) {
+          <li><a [href]="url" target="_blank" rel="noopener noreferrer">{{ lang.dict().footer.social.instagram }}</a></li>
+        }
+        @if (content.site().facebookUrl; as url) {
+          <li><a [href]="url" target="_blank" rel="noopener noreferrer">{{ lang.dict().footer.social.facebook }}</a></li>
+        }
+        @if (content.site().youtubeUrl; as url) {
+          <li><a [href]="url" target="_blank" rel="noopener noreferrer">{{ lang.dict().footer.social.youtube }}</a></li>
+        }
       </ul>
     </div>
 

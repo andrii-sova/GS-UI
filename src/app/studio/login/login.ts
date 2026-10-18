@@ -3,50 +3,54 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../../core/auth/auth.service';
+import { T } from '../studio-i18n';
 
 @Component({
   selector: 'app-studio-login',
   imports: [FormsModule],
-  host: { style: 'color-scheme: dark' },
   template: `
-    <div class="min-h-screen flex items-center justify-center bg-neutral-950 text-neutral-100 px-4">
+    <div class="min-h-screen flex items-center justify-center px-4 py-10"
+         style="background: radial-gradient(70% 90% at 80% 0%, rgba(0,113,188,.35), transparent 60%), #0b1822">
       <form
         (ngSubmit)="submit()"
-        class="w-full max-w-sm space-y-5 rounded-xl border border-neutral-800 bg-neutral-900 p-8 shadow-xl"
+        class="w-full max-w-md space-y-6 rounded-2xl bg-white p-8 sm:p-10 shadow-2xl"
+        style="box-shadow: 0 30px 80px rgba(0,0,0,.45)"
       >
-        <div class="space-y-1">
-          <h1 class="text-lg font-semibold">Galicia Steel · Studio</h1>
-          <p class="text-sm text-neutral-400">Sign in to manage site content.</p>
+        <div class="flex items-center gap-3">
+          <span class="grid h-11 w-11 place-items-center rounded-xl text-lg font-extrabold text-white"
+                style="background: linear-gradient(135deg,#0071bc,#0a8ad8)">G</span>
+          <div>
+            <h1 class="text-xl font-extrabold leading-tight" style="color:#18232a">{{ t.brand }}</h1>
+            <p class="text-sm" style="color:#465053">{{ t.login.subtitle }}</p>
+          </div>
         </div>
 
-        <label class="block space-y-1">
-          <span class="text-sm text-neutral-300">Email</span>
+        <label class="block space-y-1.5">
+          <span class="text-sm font-semibold" style="color:#18232a">{{ t.login.email }}</span>
           <input
             name="email" type="email" autocomplete="username" spellcheck="false" required
             [(ngModel)]="email"
-            class="w-full rounded-md border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm
-                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+            class="w-full rounded-lg border px-3.5 text-base"
           />
         </label>
 
-        <label class="block space-y-1">
-          <span class="text-sm text-neutral-300">Password</span>
+        <label class="block space-y-1.5">
+          <span class="text-sm font-semibold" style="color:#18232a">{{ t.login.password }}</span>
           <input
             name="password" type="password" autocomplete="current-password" required
             [(ngModel)]="password"
-            class="w-full rounded-md border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm
-                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+            class="w-full rounded-lg border px-3.5 text-base"
           />
         </label>
 
-        <p class="min-h-5 text-sm text-red-400" role="alert">{{ error() }}</p>
+        <p class="min-h-5 text-sm font-medium" style="color:#b81e15" role="alert">{{ error() }}</p>
 
         <button
           type="submit" [disabled]="busy()"
-          class="w-full rounded-md bg-white px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-200
-                 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-900"
+          class="w-full rounded-lg px-4 text-base font-semibold text-white disabled:opacity-60"
+          style="min-height:48px; background:#0071bc; box-shadow:0 6px 18px rgba(0,113,188,.35)"
         >
-          {{ busy() ? 'Signing in…' : 'Sign in' }}
+          {{ busy() ? t.login.busy : t.login.submit }}
         </button>
       </form>
     </div>
@@ -56,6 +60,7 @@ export class StudioLoginComponent {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
 
+  protected readonly t = T;
   email = '';
   password = '';
   readonly error = signal<string | null>(null);
@@ -70,8 +75,8 @@ export class StudioLoginComponent {
     } catch (err) {
       this.error.set(
         err instanceof HttpErrorResponse && err.status === 401
-          ? 'Invalid email or password.'
-          : 'Something went wrong. Please try again.',
+          ? T.login.invalid
+          : T.login.failed,
       );
     } finally {
       this.busy.set(false);

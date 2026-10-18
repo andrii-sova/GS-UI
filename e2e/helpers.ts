@@ -6,9 +6,9 @@ export const ADMIN_PASSWORD = 'ChangeMe!Admin2026';
 /** Signs in through the studio login form and waits for the dashboard. */
 export async function signIn(page: Page): Promise<void> {
   await page.goto('/studio/login');
-  await page.getByRole('textbox', { name: 'Email' }).fill(ADMIN_EMAIL);
+  await page.getByRole('textbox', { name: 'Електронна пошта' }).fill(ADMIN_EMAIL);
   await page.locator('input[name="password"]').fill(ADMIN_PASSWORD);
-  await page.getByRole('button', { name: 'Sign in' }).click();
+  await page.getByRole('button', { name: 'Увійти' }).click();
   await expect(page).toHaveURL(/\/studio\/dashboard$/);
 }
 

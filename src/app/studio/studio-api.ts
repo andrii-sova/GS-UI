@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { apiUrl } from '../core/api';
 
@@ -78,6 +78,35 @@ export class StudioApi {
     return firstValueFrom(
       this.http.post<MediaUploadResult>(apiUrl('admin/media/images'), form),
     );
+  }
+
+  /** Several images in one request; falls back to one request per file when the batch endpoint is unavailable. */
+  async uploadImages(files: File[]): Promise<MediaUploadResult[]> {
+    if (files.length === 0) return [];
+    if (files.length > 1) {
+      try {
+        const form = new FormData();
+        for (const f of files) form.append('files', f);
+        return await firstValueFrom(
+          this.http.post<MediaUploadResult[]>(apiUrl('admin/media/images/batch'), form),
+        );
+      } catch (err) {
+        const status = err instanceof HttpErrorResponse ? err.status : 0;
+        if (status === 401 || status === 403 || status === 413) throw err;
+      }
+    }
+    const results: MediaUploadResult[] = [];
+    for (const f of files) results.push(await this.uploadImage(f));
+    return results;
+  }
+
+  // --- singletons (site-settings, legal/{key}) ---
+  getOne<T>(path: string): Promise<T> {
+    return firstValueFrom(this.http.get<T>(apiUrl(`admin/${path}`)));
+  }
+
+  putOne<T>(path: string, body: unknown): Promise<T> {
+    return firstValueFrom(this.http.put<T>(apiUrl(`admin/${path}`), body));
   }
 
   // --- operator accounts ---

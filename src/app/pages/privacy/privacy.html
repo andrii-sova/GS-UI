@@ -1,12 +1,12 @@
 <div class="max-w-3xl mx-auto px-4 sm:px-6 py-12 sm:py-20 flex flex-col gap-10">
 
   <header class="flex flex-col gap-4">
-    <h1 class="text-3xl sm:text-4xl font-bold">{{ lang.dict().privacyPage.title }}</h1>
-    <p class="text-base sm:text-lg">{{ lang.dict().privacyPage.intro }}</p>
+    <h1 class="text-3xl sm:text-4xl font-bold">{{ page().title }}</h1>
+    <p class="text-base sm:text-lg">{{ page().intro }}</p>
   </header>
 
   <section class="flex flex-col gap-8">
-    @for (section of lang.dict().privacyPage.sections; track section.heading) {
+    @for (section of page().sections; track $index) {
       <div class="flex flex-col gap-3">
         <h2 class="text-xl sm:text-2xl font-bold">{{ section.heading }}</h2>
         <p>{{ section.text }}</p>
@@ -23,7 +23,5 @@
       </div>
     }
   </section>
-
-  <p class="text-sm border-t pt-8">{{ lang.dict().privacyPage.closing }}</p>
 
 </div>

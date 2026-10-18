@@ -1,164 +1,143 @@
 @if (def(); as d) {
-  <div class="mb-6 flex items-center justify-between">
+  <div class="st-formhead">
     <div>
-      <a [routerLink]="['/studio', d.key]" class="text-xs text-neutral-500 hover:underline">← {{ d.title }}</a>
-      <h1 class="text-xl font-semibold">{{ isNew() ? 'New ' + d.singular.toLowerCase() : 'Edit ' + d.singular.toLowerCase() }}</h1>
+      @if (!d.singleton) {
+        <a [routerLink]="backLink()" class="st-help" style="text-decoration:none">{{ t.form.back(d.title) }}</a>
+      }
+      <h1 class="st-h1">{{ d.singleton ? d.title : isNew() ? t.form.createTitle(d.singular) : t.form.editTitle(d.singular) }}</h1>
+      @if (hasLocalized()) {
+        <p class="st-help" data-testid="bilingual-note">{{ t.lang.bothLangs }}</p>
+      }
     </div>
   </div>
 
-  @if (loaded.isLoading()) {
-    <p class="text-sm text-neutral-500" aria-live="polite">Loading…</p>
+  @if (loaded.isLoading() && !loaded.hasValue()) {
+    <div class="st-list" aria-busy="true" aria-live="polite">
+      <div class="st-skeleton"></div><div class="st-skeleton"></div><div class="st-skeleton"></div>
+      <span class="st-visually-hidden">{{ t.common.loading }}</span>
+    </div>
+  } @else if (loaded.error()) {
+    <div class="st-card st-state error" role="alert">
+      {{ t.form.loadError }}
+      <button type="button" class="st-btn st-btn-sm" (click)="loaded.reload()">{{ t.common.retry }}</button>
+    </div>
   } @else {
-    <form (ngSubmit)="save()" class="space-y-6">
+    <form (submit)="$event.preventDefault(); save()" class="st-stack" novalidate>
       @for (field of d.fields; track field.key) {
-        @let inputId = 'field-' + field.key;
-        <div class="rounded-lg border border-neutral-200 bg-white p-4">
-
+        @let id = 'field-' + field.key;
+        <div class="st-card">
           @switch (field.kind) {
 
-            @case ('checkbox') {
-              <label [for]="inputId" class="flex items-center gap-2 text-sm font-medium">
-                <input type="checkbox" [id]="inputId" [(ngModel)]="model()[field.key]" [name]="field.key" />
-                {{ field.label }}
-              </label>
-              @if (field.help) { <p class="mt-1 text-xs text-neutral-500">{{ field.help }}</p> }
+            @case ('bool') {
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem">
+                <div>
+                  <span class="st-label" [id]="id + '-label'">{{ field.label }}</span>
+                  @if (field.help) { <p class="st-help">{{ field.help }}</p> }
+                </div>
+                <button type="button" role="switch" class="st-switch" [id]="id"
+                        [attr.aria-checked]="!!value(field.key)" [attr.aria-labelledby]="id + '-label'"
+                        [attr.data-testid]="field.key"
+                        (click)="set(field.key, !value(field.key))"></button>
+              </div>
             }
 
             @case ('text') {
-              <label [for]="inputId" class="block text-sm font-medium">{{ field.label }}</label>
-              @if (field.help) { <p class="mb-1 text-xs text-neutral-500">{{ field.help }}</p> }
-              <input [id]="inputId" [(ngModel)]="model()[field.key]" [name]="field.key" [attr.data-testid]="field.key"
-                     autocomplete="off" spellcheck="false"
-                     class="mt-1 w-full rounded-md border border-neutral-300 px-2 py-1 text-sm
-                            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500" />
+              <label [for]="id" class="st-label">{{ field.label }}</label>
+              @if (field.help) { <p class="st-help">{{ field.help }}</p> }
+              <input [id]="id" class="st-input" style="margin-top:.35rem" [value]="str(field.key)"
+                     (input)="set(field.key, inputValue($event))" [attr.data-testid]="field.key"
+                     autocomplete="off" spellcheck="false" />
             }
 
             @case ('slug') {
-              <label [for]="inputId" class="block text-sm font-medium">{{ field.label }}</label>
-              @if (field.help) { <p class="mb-1 text-xs text-neutral-500">{{ field.help }}</p> }
-              <input [id]="inputId" [(ngModel)]="model()[field.key]" [name]="field.key" [attr.data-testid]="field.key"
-                     autocomplete="off" spellcheck="false" inputmode="url"
-                     class="mt-1 w-full rounded-md border border-neutral-300 px-2 py-1 text-sm font-mono
-                            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500" />
+              <label [for]="id" class="st-label">{{ field.label }}</label>
+              @if (field.help) { <p class="st-help">{{ field.help }}</p> }
+              <input [id]="id" class="st-input" style="margin-top:.35rem;font-family:ui-monospace,monospace"
+                     [value]="str(field.key)" (input)="set(field.key, inputValue($event))"
+                     [attr.data-testid]="field.key" autocomplete="off" spellcheck="false" />
             }
 
             @case ('url') {
-              <label [for]="inputId" class="block text-sm font-medium">{{ field.label }}</label>
-              @if (field.help) { <p class="mb-1 text-xs text-neutral-500">{{ field.help }}</p> }
-              <input [id]="inputId" [(ngModel)]="model()[field.key]" [name]="field.key" [attr.data-testid]="field.key"
-                     type="url" inputmode="url" autocomplete="off" spellcheck="false"
-                     placeholder="https://example.com"
-                     class="mt-1 w-full rounded-md border border-neutral-300 px-2 py-1 text-sm
-                            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500" />
+              <label [for]="id" class="st-label">{{ field.label }}</label>
+              @if (field.help) { <p class="st-help">{{ field.help }}</p> }
+              <input [id]="id" class="st-input" style="margin-top:.35rem" type="url" inputmode="url"
+                     [value]="str(field.key)" (input)="set(field.key, inputValue($event))"
+                     [attr.data-testid]="field.key" autocomplete="off" spellcheck="false"
+                     [placeholder]="t.form.urlPlaceholder" />
+            }
+
+            @case ('number') {
+              <label [for]="id" class="st-label">{{ field.label }}</label>
+              @if (field.help) { <p class="st-help">{{ field.help }}</p> }
+              <input [id]="id" class="st-input" style="margin-top:.35rem;max-width:240px" type="number"
+                     [attr.step]="field.step ?? '1'" inputmode="decimal"
+                     [value]="str(field.key)" (input)="set(field.key, inputValue($event))"
+                     [attr.data-testid]="field.key" />
             }
 
             @case ('date') {
-              <label [for]="inputId" class="block text-sm font-medium">{{ field.label }}</label>
-              @if (field.help) { <p class="mb-1 text-xs text-neutral-500">{{ field.help }}</p> }
-              <input [id]="inputId" [(ngModel)]="model()[field.key]" [name]="field.key" [attr.data-testid]="field.key"
-                     type="date"
-                     class="mt-1 rounded-md border border-neutral-300 px-2 py-1 text-sm
-                            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500" />
+              <label [for]="id" class="st-label">{{ field.label }}</label>
+              <input [id]="id" class="st-input" style="margin-top:.35rem;max-width:240px" type="date"
+                     [value]="str(field.key).slice(0, 10)" (input)="set(field.key, inputValue($event))"
+                     [attr.data-testid]="field.key" />
             }
 
             @case ('categorySelect') {
-              <label [for]="inputId" class="block text-sm font-medium">{{ field.label }}</label>
-              <select [id]="inputId" [(ngModel)]="model()[field.key]" [name]="field.key"
-                      class="mt-1 rounded-md border border-neutral-300 bg-white px-2 py-1 text-sm text-neutral-900
-                             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500">
-                <option value="">— select —</option>
+              <label [for]="id" class="st-label">{{ field.label }}</label>
+              <select [id]="id" class="st-select" style="margin-top:.35rem;max-width:340px"
+                      (change)="set(field.key, inputValue($event))" [attr.data-testid]="field.key">
+                <option value="" [selected]="!str(field.key)">{{ t.common.select }}</option>
                 @for (opt of categoryOptions(); track opt.key) {
-                  <option [value]="opt.key">{{ opt.label }}</option>
+                  <option [value]="opt.key" [selected]="opt.key === str(field.key)">{{ opt.label }}</option>
                 }
               </select>
             }
 
             @case ('image') {
-              <p class="block text-sm font-medium" [id]="inputId + '-label'">{{ field.label }}</p>
-              @if (field.help) { <p class="mb-1 text-xs text-neutral-500">{{ field.help }}</p> }
-              <app-image-field class="mt-2 block"
-                [label]="field.label"
-                [value]="$any(model()[field.key])"
-                (valueChange)="model()[field.key] = $event" />
+              <span class="st-label" [id]="id + '-label'">{{ field.label }}</span>
+              @if (field.help) { <p class="st-help">{{ field.help }}</p> }
+              <app-image-field style="display:block;margin-top:.5rem" [label]="field.label"
+                [contain]="!!field.contain" [value]="$any(value(field.key))"
+                (valueChange)="set(field.key, $event)" />
+            }
+
+            @case ('gallery') {
+              <span class="st-label">{{ field.label }}</span>
+              @if (field.help) { <p class="st-help">{{ field.help }}</p> }
+              <div style="margin-top:.5rem">
+                <app-gallery-field [label]="field.label" [urls]="strings(field.key)"
+                  (urlsChange)="set(field.key, $event)" [hasMain]="!!field.mainKey"
+                  [main]="imageOf(field.mainKey)" (mainChange)="set(field.mainKey!, $event)" />
+              </div>
             }
 
             @case ('localized') {
-              <p class="block text-sm font-medium">{{ field.label }}</p>
-              @if (field.help) { <p class="mb-1 text-xs text-neutral-500">{{ field.help }}</p> }
-              <div class="mt-1 grid grid-cols-1 gap-2 sm:grid-cols-2">
-                <input [(ngModel)]="localized(field.key).uk" [name]="field.key + '_uk'"
-                       [attr.aria-label]="field.label + ' (Ukrainian)'" [attr.data-testid]="field.key + '-uk'"
-                       placeholder="Українською" (ngModelChange)="bump()"
-                       class="rounded-md border border-neutral-300 px-2 py-1 text-sm
-                              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500" />
-                <input [(ngModel)]="localized(field.key).en" [name]="field.key + '_en'"
-                       [attr.aria-label]="field.label + ' (English)'" [attr.data-testid]="field.key + '-en'"
-                       placeholder="English" (ngModelChange)="bump()"
-                       class="rounded-md border border-neutral-300 px-2 py-1 text-sm
-                              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500" />
-              </div>
+              <span class="st-label" [id]="id + '-label'">{{ field.label }}</span>
+              @if (field.help) { <p class="st-help">{{ field.help }}</p> }
+              <app-loc-pair style="margin-top:.4rem" [label]="field.label" [value]="loc(field.key)"
+                            (valueChange)="set(field.key, $event)" [testid]="field.key" />
             }
 
             @case ('localizedMultiline') {
-              <p class="block text-sm font-medium">{{ field.label }}</p>
-              @if (field.help) { <p class="mb-1 text-xs text-neutral-500">{{ field.help }}</p> }
-              <div class="mt-1 grid grid-cols-1 gap-2 sm:grid-cols-2">
-                <textarea [(ngModel)]="localized(field.key).uk" [name]="field.key + '_uk'" rows="3"
-                          [attr.aria-label]="field.label + ' (Ukrainian)'" placeholder="Українською"
-                          (ngModelChange)="bump()"
-                          class="rounded-md border border-neutral-300 px-2 py-1 text-sm
-                                 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500"></textarea>
-                <textarea [(ngModel)]="localized(field.key).en" [name]="field.key + '_en'" rows="3"
-                          [attr.aria-label]="field.label + ' (English)'" placeholder="English"
-                          (ngModelChange)="bump()"
-                          class="rounded-md border border-neutral-300 px-2 py-1 text-sm
-                                 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500"></textarea>
-              </div>
+              <span class="st-label" [id]="id + '-label'">{{ field.label }}</span>
+              @if (field.help) { <p class="st-help">{{ field.help }}</p> }
+              <app-loc-pair style="margin-top:.4rem" [label]="field.label" [value]="loc(field.key)"
+                            (valueChange)="set(field.key, $event)" [multiline]="true" [rows]="4" [testid]="field.key" />
             }
 
             @case ('localizedList') {
-              <p class="block text-sm font-medium">{{ field.label }}</p>
-              @if (field.help) { <p class="mb-1 text-xs text-neutral-500">{{ field.help }}</p> }
-              <div class="mt-1 space-y-2">
-                @for (item of asList(field.key); track $index) {
-                  <div class="flex items-start gap-2">
-                    <input [(ngModel)]="item.uk" [name]="field.key + '_uk_' + $index"
-                           [attr.aria-label]="field.label + ' row ' + ($index + 1) + ' (Ukrainian)'"
-                           placeholder="Українською" (ngModelChange)="bump()"
-                           class="flex-1 rounded-md border border-neutral-300 px-2 py-1 text-sm
-                                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500" />
-                    <input [(ngModel)]="item.en" [name]="field.key + '_en_' + $index"
-                           [attr.aria-label]="field.label + ' row ' + ($index + 1) + ' (English)'"
-                           placeholder="English" (ngModelChange)="bump()"
-                           class="flex-1 rounded-md border border-neutral-300 px-2 py-1 text-sm
-                                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500" />
-                    <button type="button" (click)="removeListItem(field.key, $index)"
-                            [attr.aria-label]="'Remove ' + field.label + ' row ' + ($index + 1)"
-                            class="px-2 py-1 text-xs text-neutral-400 hover:text-red-600">✕</button>
-                  </div>
-                }
-                <button type="button" (click)="addListItem(field.key, 'localized')"
-                        class="rounded-md border border-neutral-300 px-2 py-1 text-xs hover:bg-neutral-100">+ Add row</button>
+              <span class="st-label">{{ field.label }}</span>
+              @if (field.help) { <p class="st-help">{{ field.help }}</p> }
+              <div style="margin-top:.4rem">
+                <app-loc-list [label]="field.label" [items]="list(field.key)" (itemsChange)="set(field.key, $event)"
+                              [multiline]="!!field.multiline" [testid]="field.key" />
               </div>
             }
 
-            @case ('imageList') {
-              <p class="block text-sm font-medium">{{ field.label }}</p>
-              @if (field.help) { <p class="mb-1 text-xs text-neutral-500">{{ field.help }}</p> }
-              <div class="mt-1 space-y-2">
-                @for (url of asStringList(field.key); track $index) {
-                  <div class="flex items-center gap-2">
-                    <app-image-field class="flex-1"
-                      [label]="field.label + ' image ' + ($index + 1)"
-                      [value]="url"
-                      (valueChange)="setStringListItem(field.key, $index, $event)" />
-                    <button type="button" (click)="removeListItem(field.key, $index)"
-                            [attr.aria-label]="'Remove ' + field.label + ' image ' + ($index + 1)"
-                            class="px-2 py-1 text-xs text-neutral-400 hover:text-red-600">✕</button>
-                  </div>
-                }
-                <button type="button" (click)="addListItem(field.key, 'string')"
-                        class="rounded-md border border-neutral-300 px-2 py-1 text-xs hover:bg-neutral-100">+ Add image</button>
+            @case ('sections') {
+              <span class="st-label">{{ field.label }}</span>
+              <div style="margin-top:.6rem">
+                <app-sections-field [sections]="sections(field.key)" (sectionsChange)="set(field.key, $event)" />
               </div>
             }
           }
@@ -166,22 +145,29 @@
       }
 
       @if (error()) {
-        <p class="text-sm text-red-600" role="alert">{{ error() }}</p>
+        <p class="st-alert error" role="alert">{{ error() }}</p>
+      }
+      @if (missing().length) {
+        <p class="st-alert warn" role="status">
+          {{ t.lang.saveWarn(missing().join(', ')) }}
+        </p>
       }
 
-      <div class="flex items-center gap-3">
-        <button type="submit" [disabled]="saving()"
-                class="rounded-md bg-neutral-900 px-4 py-2 text-sm text-white hover:bg-neutral-700 disabled:opacity-50
-                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500 focus-visible:ring-offset-2">
-          {{ saving() ? 'Saving…' : 'Save' }}
+      <div class="st-formbar">
+        <button type="submit" class="st-btn st-btn-primary" [disabled]="saving() || (d.singleton && !dirty())">
+          {{ saving() ? t.common.saving : t.common.save }}
         </button>
-        <a [routerLink]="['/studio', d.key]" class="text-sm text-neutral-500 hover:underline">Cancel</a>
+        @if (d.singleton) {
+          <button type="button" class="st-btn" [disabled]="!dirty() || saving()" (click)="discard()">{{ t.common.discardChanges }}</button>
+        } @else {
+          <a [routerLink]="backLink()" class="st-btn">{{ t.common.cancel }}</a>
+        }
         @if (dirty()) {
-          <span class="text-xs text-amber-600">Unsaved changes</span>
+          <span class="st-chip warn" role="status">{{ t.common.unsavedChanges }}</span>
         }
       </div>
     </form>
   }
 } @else {
-  <p class="text-sm text-red-600" role="alert">Unknown collection.</p>
+  <p class="st-state error" role="alert">{{ t.common.unknownType }}</p>
 }

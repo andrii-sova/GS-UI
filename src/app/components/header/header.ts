@@ -1,6 +1,7 @@
 import { Component, HostListener, computed, inject, signal } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { ContentStore } from '../../core/content/content.store';
 import { LangService } from '../../services/lang.service';
 
 // Fully transparent at the very top of the hero, ramping up to a fully
@@ -14,6 +15,7 @@ const HERO_FADE_FRACTION = 0.5;
 })
 export class HeaderComponent {
   readonly lang = inject(LangService);
+  readonly content = inject(ContentStore);
   private readonly router = inject(Router);
 
   readonly menuOpen = signal(false);

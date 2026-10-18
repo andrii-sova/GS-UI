@@ -3,7 +3,7 @@
 
     <!-- Stats row -->
     <div class="grid grid-cols-3 gap-4 sm:gap-8">
-      @for (stat of lang.dict().teamSection.stats; track stat.value) {
+      @for (stat of content.stats().team; track $index) {
         <div class="flex flex-col gap-1">
           <strong class="text-2xl sm:text-4xl font-bold">{{ stat.value }}</strong>
           <span class="text-sm sm:text-base">{{ stat.label }}</span>
@@ -12,10 +12,12 @@
     </div>
 
     <!-- Group photo -->
-    <div class="w-full aspect-[3/2] overflow-hidden shadow-lg">
-      <img src="/team/team.jpg" alt="Company team" loading="lazy" decoding="async"
-           class="w-full h-full object-cover" />
-    </div>
+    @if (content.site().teamPhotoUrl; as teamPhoto) {
+      <div class="w-full aspect-[3/2] overflow-hidden shadow-lg">
+        <img [src]="teamPhoto" alt="" loading="lazy" decoding="async"
+             class="w-full h-full object-cover" />
+      </div>
+    }
 
     <!-- Team grid -->
     <div>

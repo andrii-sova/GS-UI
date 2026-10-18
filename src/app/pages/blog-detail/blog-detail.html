@@ -9,10 +9,8 @@
       <h1 class="text-3xl sm:text-4xl font-bold">{{ p.title }}</h1>
     </header>
 
-    @if (p.imageUrl) {
-      <div class="w-full aspect-video overflow-hidden">
-        <img [src]="p.imageUrl" [alt]="p.title" decoding="async" class="w-full h-full object-cover" />
-      </div>
+    @if (images().length) {
+      <app-gallery-slider [images]="images()" [alt]="p.title" />
     }
 
     <!-- Post body -->

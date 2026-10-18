@@ -7,9 +7,18 @@
       @for (item of content.testimonials(); track $index) {
         <blockquote class="flex flex-col gap-4 p-6 border">
           <p class="text-lg font-medium">{{ item.quote }}</p>
-          <footer class="mt-auto">
-            <strong>{{ item.author }}</strong>
-            <span> — {{ item.company }}</span>
+          <footer class="mt-auto flex flex-col gap-3">
+            <div>
+              <strong>{{ item.author }}</strong>
+              <span> — {{ item.company }}</span>
+            </div>
+            @if (hasDetails(item)) {
+              <button type="button" class="testimonial-details-btn" data-testid="testimonial-details"
+                      aria-haspopup="dialog"
+                      (click)="open(item, $event)">
+                {{ lang.dict().testimonials.details }}
+              </button>
+            }
           </footer>
         </blockquote>
       }
@@ -17,3 +26,29 @@
 
   </div>
 </section>
+
+@if (selected(); as t) {
+  <dialog #detailsDialog class="testimonial-dialog" data-testid="testimonial-dialog"
+          aria-labelledby="testimonial-dialog-title"
+          (close)="closeDialog()" (click)="onBackdropClick($event)">
+    <div class="testimonial-dialog__body">
+      <button type="button" class="testimonial-dialog__close" (click)="closeDialog()"
+              [attr.aria-label]="lang.dict().testimonials.close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>
+      </button>
+
+      <h3 id="testimonial-dialog-title" class="text-xl sm:text-2xl font-bold">
+        {{ t.detailTitle || t.company }}
+      </h3>
+      <p class="text-sm testimonial-dialog__meta">{{ t.author }} — {{ t.company }}</p>
+
+      @for (paragraph of t.detail; track $index) {
+        <p>{{ paragraph }}</p>
+      }
+
+      @if (t.gallery.length) {
+        <app-gallery-slider [images]="t.gallery" [alt]="t.detailTitle || t.company" />
+      }
+    </div>
+  </dialog>
+}
