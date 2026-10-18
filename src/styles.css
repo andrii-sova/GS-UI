@@ -1,5 +1,9 @@
 @import 'tailwindcss';
 
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
 /* ═══════════════════════════════════════════════════════════
    BRAND PALETTE
    Blue   #0071BC  — Галіція Сталь logo
@@ -21,8 +25,17 @@
   --coral-hover:   #b81e15;
   --border:        #dce3ea;
   --input-bg:      #ffffff;
-  --header-bg:        linear-gradient(90deg, #00579a 0%, #0090e0 50%, #00579a 100%);
-  --accent-gradient:  linear-gradient(90deg, #00579a 0%, #0090e0 50%, #00579a 100%);
+  --header-bg:        rgba(11, 24, 34, 0.9);
+  --accent-gradient:  linear-gradient(135deg, #00457a 0%, #0071bc 55%, #0a8ad8 100%);
+
+  /* Shape + elevation scale — use these instead of one-off values */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 1px 2px rgba(16, 32, 44, 0.06), 0 1px 3px rgba(16, 32, 44, 0.06);
+  --shadow-md: 0 4px 12px rgba(16, 32, 44, 0.08), 0 2px 4px rgba(16, 32, 44, 0.05);
+  --shadow-lg: 0 18px 40px rgba(16, 32, 44, 0.14), 0 4px 10px rgba(16, 32, 44, 0.06);
+  --ring: 0 0 0 3px rgba(0, 113, 188, 0.35);
   --footer-bg:        #18232a;   /* deep charcoal */
   --footer-gradient:  linear-gradient(180deg, #18232a 0%, #0e1922 100%);
   --footer-text:      #e4ecf0;
@@ -79,7 +92,10 @@
     inset: 0;
     z-index: -1;
     background: var(--header-bg);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
+    backdrop-filter: saturate(140%) blur(14px);
+    -webkit-backdrop-filter: saturate(140%) blur(14px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.22);
     transition: opacity 0.1s linear;
     pointer-events: none;
   }
@@ -117,22 +133,47 @@
   }
 
   app-header header a {
-    color: rgba(255,255,255,0.82);
+    color: rgba(255,255,255,0.86);
     text-decoration: none;
     font-weight: 500;
+    font-size: 0.9375rem;
     transition: color 0.15s ease;
   }
   app-header header a:hover { color: #fff; }
 
-  /* "Get a Quote" — coral filled pill */
+  /* Active nav item — coral underline bar instead of a browser underline */
+  app-header header ul a {
+    position: relative;
+    display: inline-block;
+    padding: 0.5rem 0;
+  }
+  app-header header ul a::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: 0.1rem;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--coral);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.2s ease;
+  }
+  app-header header ul a:hover::after,
+  app-header header ul a.underline::after { transform: scaleX(1); }
+  app-header header ul a.underline { text-decoration: none; color: #fff; }
+  .mobile-menu ul a.underline { text-decoration: none; color: var(--brand); }
+
+  /* "Get a Quote" — coral filled button */
   app-header header a.border {
     background-color: var(--coral);
     border-color: var(--coral) !important;
     color: #fff !important;
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     font-weight: 600;
-    transition: background-color 0.18s ease;
+    box-shadow: 0 4px 14px rgba(219, 38, 27, 0.35);
+    transition: background-color 0.18s ease, transform 0.18s ease;
   }
+  app-header header a.border:active { transform: translateY(1px); }
   app-header header a.border:hover {
     background-color: var(--coral-hover);
     border-color: var(--coral-hover) !important;
@@ -908,4 +949,351 @@
   bottom: -2rem;
   width: 2px;
   background-color: var(--border);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   DESIGN REFRESH
+   Unlayered on purpose: wins over Tailwind utilities (`text-2xl`,
+   `rounded-lg`, …) set in the templates, so the type scale, shape and
+   elevation live in one place instead of being repeated per component.
+   ═══════════════════════════════════════════════════════════ */
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  line-height: 1.6;
+}
+
+/* ── Type scale ───────────────────────────────────────────── */
+h1 { letter-spacing: -0.025em; line-height: 1.1; }
+section h2,
+main h2 { letter-spacing: -0.02em; line-height: 1.15; }
+
+section h2.text-2xl {
+  font-size: clamp(1.75rem, 1.35rem + 1.4vw, 2.5rem);
+  font-weight: 800;
+}
+
+main header h1 {
+  font-size: clamp(2.25rem, 1.6rem + 2.4vw, 3.5rem);
+  font-weight: 800;
+}
+main header p { font-size: 1.125rem; line-height: 1.65; }
+
+p { line-height: 1.7; }
+
+/* Section rhythm: slightly more generous, consistent vertical padding */
+@media (min-width: 640px) {
+  section.sm\:py-20 { padding-top: 6rem; padding-bottom: 6rem; }
+}
+
+/* ── Focus: always visible for keyboard users ─────────────── */
+:focus-visible {
+  outline: 3px solid var(--brand);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+app-header :focus-visible,
+app-footer :focus-visible,
+app-hero :focus-visible,
+app-cta-banner :focus-visible { outline-color: #fff; }
+
+/* ── Buttons ──────────────────────────────────────────────── */
+.btn-primary,
+main a.border,
+main button.border,
+main label.border {
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.btn-primary {
+  box-shadow: 0 6px 18px rgba(219, 38, 27, 0.32);
+  transition: background-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(219, 38, 27, 0.4);
+}
+.btn-primary:active { transform: translateY(0); }
+
+/* Ghost button on dark photo backgrounds needs white, not coral */
+app-hero a.border {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(6px);
+}
+app-hero a.border:hover {
+  background: #fff;
+  border-color: #fff;
+  color: var(--text);
+}
+
+/* Filter chips (portfolio) */
+main nav > button.border {
+  border-radius: 999px;
+  min-height: 40px;
+  padding: 0.4rem 1.1rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--text);
+  border-color: var(--border);
+  background: var(--surface);
+}
+main nav > button.border:hover {
+  background: var(--surface-alt);
+  color: var(--brand);
+  border-color: var(--brand);
+}
+
+/* ── HERO ─────────────────────────────────────────────────── */
+app-hero .hero-title {
+  font-size: clamp(2.25rem, 1.4rem + 3.6vw, 4.25rem);
+  font-weight: 800;
+  line-height: 1.05;
+  text-wrap: balance;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.35);
+}
+app-hero .hero-subtext {
+  font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.3rem);
+  line-height: 1.6;
+  max-width: 40rem;
+}
+app-hero .hero-scrim {
+  background:
+    radial-gradient(120% 80% at 50% 40%, rgba(8, 14, 20, 0.25) 0%, rgba(8, 14, 20, 0.7) 100%),
+    linear-gradient(180deg, rgba(8, 14, 20, 0.45) 0%, rgba(8, 14, 20, 0.35) 40%, rgba(8, 14, 20, 0.9) 100%);
+}
+app-hero .hero-stat-value { font-size: clamp(1.75rem, 1.2rem + 1.8vw, 2.75rem); font-weight: 800; }
+app-hero .hero-stat-label { font-size: 0.9375rem; }
+
+/* ── Cards ────────────────────────────────────────────────── */
+.card-hover {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: color-mix(in srgb, var(--brand) 35%, var(--border));
+}
+.card-hover h2, .card-hover h3 { letter-spacing: -0.01em; }
+
+/* Image slot: when a record has no photo yet, show a deliberate placeholder
+   (blueprint-style gradient + icon) instead of a blank white hole. */
+.img-hover-zoom { background: var(--surface-alt); position: relative; }
+.img-hover-zoom:not(:has(img))::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(0, 113, 188, 0.14), rgba(219, 38, 27, 0.06)),
+    repeating-linear-gradient(45deg, transparent 0 14px, rgba(0, 113, 188, 0.05) 14px 15px);
+}
+.img-hover-zoom:not(:has(img))::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 44px; height: 44px;
+  transform: translate(-50%, -50%);
+  background-color: color-mix(in srgb, var(--brand) 55%, transparent);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='18' height='18' rx='3'/%3E%3Ccircle cx='9' cy='9' r='1.6'/%3E%3Cpath d='m21 15-5-5L5 21'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='18' height='18' rx='3'/%3E%3Ccircle cx='9' cy='9' r='1.6'/%3E%3Cpath d='m21 15-5-5L5 21'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* Category label on portfolio cards reads as a chip */
+.card-hover span.text-sm:first-child:not(:only-child) {
+  width: fit-content;
+  padding: 0.15rem 0.65rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--brand) 10%, transparent);
+  color: var(--brand);
+  font-weight: 600;
+  font-size: 0.8125rem;
+}
+
+/* ── Testimonials ─────────────────────────────────────────── */
+blockquote {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  background: var(--surface);
+  padding-top: 3rem !important;
+  transition: box-shadow 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+blockquote::before {
+  content: '\201C';
+  position: absolute;
+  top: 0.6rem; left: 1.25rem;
+  font-size: 4rem;
+  line-height: 1;
+  font-weight: 800;
+  color: color-mix(in srgb, var(--coral) 80%, transparent);
+}
+blockquote:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+blockquote footer {
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.9375rem;
+}
+blockquote footer span { color: var(--text-muted); }
+
+/* ── Partners strip ───────────────────────────────────────── */
+.partners-item {
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ── About section image + stats ──────────────────────────── */
+app-about section img { border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); }
+.stat-number { font-size: clamp(1.75rem, 1.3rem + 1.4vw, 2.5rem) !important; font-weight: 800; letter-spacing: -0.02em; }
+app-team .shadow-lg { border-radius: var(--radius-lg); }
+
+/* ── Process: horizontal stepper on desktop ───────────────── */
+@media (min-width: 1024px) {
+  app-process .max-w-4xl { max-width: 80rem; }
+  .process-track {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.25rem;
+  }
+  .process-step {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.5rem 1.25rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+  }
+  .process-step:not(:last-child)::after { display: none; }
+  .process-step__text { padding-top: 0; font-size: 0.9375rem; line-height: 1.6; }
+}
+.process-step__badge {
+  background: linear-gradient(135deg, var(--brand), #0a8ad8);
+  box-shadow: 0 4px 12px rgba(0, 113, 188, 0.35);
+}
+
+/* ── CTA banner ───────────────────────────────────────────── */
+app-cta-banner section {
+  background:
+    radial-gradient(60% 120% at 85% 0%, rgba(255, 255, 255, 0.14), transparent 60%),
+    var(--accent-gradient);
+}
+app-cta-banner h2 { letter-spacing: -0.02em; font-weight: 800; }
+app-cta-banner h2::after { left: 50%; transform: translateX(-50%); background: #fff; }
+
+/* ── Forms ────────────────────────────────────────────────── */
+input[type='text'], input[type='tel'], input[type='email'], input[type='number'],
+input[type='search'], input[type='url'], input[type='password'], textarea, select {
+  border: 1px solid #c3cdd6;
+  border-radius: var(--radius-sm);
+  min-height: 48px;
+  font-size: 1rem;
+}
+input:hover, textarea:hover, select:hover { border-color: #9aa9b6; }
+input:focus, textarea:focus, select:focus {
+  border-color: var(--brand) !important;
+  box-shadow: var(--ring) !important;
+}
+/* Only flag a field as invalid once the user has interacted with it */
+input.ng-touched.ng-invalid, textarea.ng-touched.ng-invalid {
+  border-color: var(--coral);
+  background: color-mix(in srgb, var(--coral) 4%, #fff);
+}
+form label { font-weight: 600; font-size: 0.9375rem; }
+form label[for='file'].border { background: var(--surface); }
+main form {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+}
+
+/* Contact details column */
+main aside h2 { font-size: 0.8125rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+main aside h2::after { display: none; }
+main aside a { font-size: 1.125rem; font-weight: 600; }
+main aside iframe { border-radius: var(--radius-md); }
+main aside .border { border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); }
+
+/* ── Footer ───────────────────────────────────────────────── */
+app-footer footer h4 { font-size: 0.8125rem; letter-spacing: 0.08em; text-transform: uppercase; }
+app-footer footer a { display: inline-block; padding: 0.15rem 0; }
+
+/* ── Language switcher: bigger, clearer tap target ────────── */
+.lang-switcher {
+  padding: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  gap: 0;
+}
+.lang-switcher button {
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  min-height: 28px;
+}
+.lang-switcher button.active { background: rgba(255, 255, 255, 0.18); }
+.lang-sep { display: none; }
+.mobile-menu .lang-switcher { border-color: var(--border); }
+.mobile-menu .lang-switcher button.active { background: var(--brand); }
+
+/* Mobile nav: larger touch rows */
+.mobile-menu ul li a { padding: 0.9rem 0.25rem; font-size: 1.0625rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-primary, .btn-primary:hover, blockquote, blockquote:hover { transition: none; transform: none; }
+  html { scroll-behavior: auto; }
+}
+
+/* Hero headline: company name as a small eyebrow, the promise as the big line */
+.hero-title__eyebrow {
+  display: block;
+  margin-bottom: 0.9rem;
+  font-size: clamp(0.95rem, 0.85rem + 0.5vw, 1.25rem);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.78);
+}
+.hero-title__main { display: block; }
+app-hero .hero-stat-value + .hero-stat-label { margin-top: 0.15rem; }
+
+/* ── Mobile refinements ───────────────────────────────────── */
+@media (max-width: 639px) {
+  /* Hero: compact badges + a single 3-up stats row instead of an orphaned 2+1 wrap */
+  .hero-badge { padding: 0.35rem 0.75rem; font-size: 0.8125rem; }
+  app-hero .max-w-5xl > .flex.gap-3 { gap: 0.5rem; }
+  app-hero .flex.justify-center.flex-wrap:has(.hero-stat-value) {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    width: 100%;
+  }
+  app-hero .hero-stat-value { font-size: 1.5rem; }
+  app-hero .hero-stat-label { font-size: 0.75rem; line-height: 1.3; text-align: center; }
+
+  /* Testimonials: swipeable row rather than six stacked cards */
+  app-testimonials .grid {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    margin-inline: -1rem;
+    padding: 0.25rem 1rem 1rem;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  app-testimonials .grid::-webkit-scrollbar { display: none; }
+  app-testimonials blockquote { flex: 0 0 85%; scroll-snap-align: center; }
 }

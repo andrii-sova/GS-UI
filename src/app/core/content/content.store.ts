@@ -21,7 +21,11 @@ export class ContentStore {
   readonly isLoading = this.resource.isLoading;
   readonly hasError = computed(() => this.resource.error() != null);
 
-  private readonly content = computed(() => this.resource.value() ?? EMPTY_SITE_CONTENT);
+  // `value()` throws while the resource is in an error state (even with a defaultValue),
+  // which aborts change detection for the whole page when the API is unreachable.
+  private readonly content = computed(() =>
+    this.resource.hasValue() ? (this.resource.value() ?? EMPTY_SITE_CONTENT) : EMPTY_SITE_CONTENT,
+  );
 
   readonly services = computed(() => this.content().services);
   readonly projects = computed(() => this.content().projects);

@@ -76,6 +76,10 @@ export const PARTNERS_MANIFEST: PartnerLogo[] = [
     "logo": "/partners/aa0294aec9f224e51558f1474fce1b19.png"
   },
   {
+    "name": "Channels4 Profile",
+    "logo": "/partners/channels4_profile.jpg"
+  },
+  {
     "name": "DAF Logo.svg",
     "logo": "/partners/DAF_logo.svg.webp"
   },
@@ -110,10 +114,6 @@ export const PARTNERS_MANIFEST: PartnerLogo[] = [
   {
     "name": "Iveco Logo A7vGS6vu",
     "logo": "/partners/iveco-logo-A7vGS6vu.jpg"
-  },
-  {
-    "name": "Lev Logo White",
-    "logo": "/partners/lev-logo-white.svg"
   },
   {
     "name": "Logo Нова Лінія.svg",
