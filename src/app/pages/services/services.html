@@ -8,12 +8,13 @@
   <div class="flex flex-col gap-12 sm:gap-16">
     @for (service of content.services(); track service.slug) {
       <article class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-10 items-center border-b pb-12 sm:pb-16">
-        <div class="w-full aspect-video overflow-hidden img-slot">
+        <a [routerLink]="['/services', service.slug]" class="w-full aspect-video overflow-hidden img-hover-zoom card-hover"
+           [attr.aria-label]="service.name">
           @if (service.imageUrl) {
             <img [src]="service.imageUrl" [alt]="service.name" loading="lazy" decoding="async"
                  class="w-full h-full object-cover" />
           }
-        </div>
+        </a>
         <div class="flex flex-col gap-4">
           <h2 class="text-xl sm:text-2xl font-bold">{{ service.name }}</h2>
           <p>{{ service.description }}</p>
