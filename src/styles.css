@@ -29,9 +29,9 @@
   --accent-gradient:  linear-gradient(135deg, #00457a 0%, #0071bc 55%, #0a8ad8 100%);
 
   /* Shape + elevation scale — use these instead of one-off values */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 11px;
   --shadow-sm: 0 1px 2px rgba(16, 32, 44, 0.06), 0 1px 3px rgba(16, 32, 44, 0.06);
   --shadow-md: 0 4px 12px rgba(16, 32, 44, 0.08), 0 2px 4px rgba(16, 32, 44, 0.05);
   --shadow-lg: 0 18px 40px rgba(16, 32, 44, 0.14), 0 4px 10px rgba(16, 32, 44, 0.06);
@@ -320,7 +320,7 @@
   main label.border {
     border-color: var(--coral);
     color: var(--coral);
-    border-radius: 4px;
+    border-radius: 3px;
     transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
   }
   main a.border:hover,
@@ -342,7 +342,7 @@
     background-color: var(--coral);
     border: 1px solid var(--coral);
     color: #fff;
-    border-radius: 4px;
+    border-radius: 3px;
     transition: background-color 0.18s ease, border-color 0.18s ease;
   }
   .btn-primary:hover {
@@ -445,7 +445,7 @@
   .metric-card {
     background-color: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 10px;
+    border-radius: 7px;
   }
 
   /* ── FOOTER ──────────────────────────────────────────── */
@@ -563,7 +563,7 @@
   padding: 1rem 1.25rem;
   background-color: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 14px;
+  border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
@@ -628,7 +628,7 @@
   width: 12px;
   height: 12px;
   flex-shrink: 0;
-  border-radius: 3px;
+  border-radius: 2px;
   background-color: var(--brand);
 }
 
@@ -992,7 +992,7 @@ p { line-height: 1.7; }
 :focus-visible {
   outline: 3px solid var(--brand);
   outline-offset: 3px;
-  border-radius: 4px;
+  border-radius: 3px;
 }
 app-header :focus-visible,
 app-footer :focus-visible,
@@ -1356,3 +1356,21 @@ app-hero .hero-stat-value + .hero-stat-label { margin-top: 0.15rem; }
   cursor: pointer;
 }
 .testimonial-dialog__close svg { width: 1.1rem; height: 1.1rem; }
+
+/* ═══════════════════════════════════════════════════════════
+   IMAGE LOADERS — shimmer placeholder until a photo has loaded.
+   `.is-loaded` is added by ImageLoadingService. The hero background
+   is excluded on purpose; header/footer logos sit outside <main>.
+   ═══════════════════════════════════════════════════════════ */
+@keyframes img-shimmer {
+  to { background-position: -200% 0; }
+}
+main img:not(.hero-bg-image):not(.is-loaded) {
+  background: linear-gradient(100deg, #e3e8ed 30%, #f2f5f8 50%, #e3e8ed 70%);
+  background-size: 200% 100%;
+  animation: img-shimmer 1.4s linear infinite;
+  color: transparent; /* hide the alt text flash while loading */
+}
+@media (prefers-reduced-motion: reduce) {
+  main img:not(.hero-bg-image):not(.is-loaded) { animation: none; }
+}

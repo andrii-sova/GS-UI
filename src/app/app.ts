@@ -4,6 +4,7 @@ import { filter } from 'rxjs/operators';
 import { HeaderComponent } from './components/header/header';
 import { FooterComponent } from './components/footer/footer';
 import { LangService } from './services/lang.service';
+import { ImageLoadingService } from './core/image-loading.service';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,8 @@ export class App {
   readonly isHome = signal(this.router.url === '/');
 
   constructor() {
+    inject(ImageLoadingService).start();
+
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {

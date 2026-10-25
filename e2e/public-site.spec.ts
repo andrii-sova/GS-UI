@@ -35,6 +35,40 @@ test.describe('public site', () => {
     await expect(page.getByRole('heading', { name: 'Metal Doors' })).toBeVisible();
   });
 
+  test('photos show a shimmer loader until loaded, but the hero background does not', async ({ page }) => {
+    let release!: () => void;
+    const gate = new Promise<void>((resolve) => (release = resolve));
+    // Hold every uploaded image back so the loading state can be observed.
+    await page.route('**/uploads/**', async (route) => {
+      await gate;
+      await route.continue();
+    });
+
+    await page.goto('/about', { waitUntil: 'domcontentloaded' });
+    const photo = page.locator('main img:not(.hero-bg-image)').first();
+    await expect(photo).toBeAttached();
+    await expect(photo).not.toHaveClass(/is-loaded/);
+    expect(await photo.evaluate((el) => getComputedStyle(el).animationName)).toBe('img-shimmer');
+
+    release();
+    await expect(photo).toHaveClass(/is-loaded/);
+    expect(await photo.evaluate((el) => getComputedStyle(el).animationName)).toBe('none');
+
+    // The hero background never gets the loader, even while its image is pending.
+    await page.unroute('**/uploads/**');
+    let releaseHero!: () => void;
+    const heroGate = new Promise<void>((resolve) => (releaseHero = resolve));
+    await page.route('**/uploads/site/**', async (route) => {
+      await heroGate;
+      await route.continue();
+    });
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    const hero = page.locator('.hero-bg-image');
+    await expect(hero).toBeAttached();
+    expect(await hero.evaluate((el) => getComputedStyle(el).animationName)).toBe('none');
+    releaseHero();
+  });
+
   test('hero background is served from /uploads (API site settings)', async ({ page, request }) => {
     const content = await loadContent(request);
     expect(content.site.heroImageUrl).toContain('/uploads/');
