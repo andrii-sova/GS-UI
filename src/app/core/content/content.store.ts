@@ -91,7 +91,7 @@ export class ContentStore {
     return computed(() => this.blog().find((p) => p.slug === slug) ?? null);
   }
 
-  /** Force a refetch (used by the studio after edits, if it shares this app instance). */
+  /** Force a refetch (e.g. after content changes). */
   reload(): void {
     this.resource.reload();
   }

@@ -1,11 +1,11 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * End-to-end tests for the GS-UI site + hidden studio, driven against a real browser.
+ * End-to-end tests for the public GS-UI site, driven against a real browser.
  *
  * Two dev servers are started automatically:
  *  1. the API (GS-API) on :5048, pointed at a dedicated `GsContentE2E` LocalDB database
- *     (migrated + seeded on startup, so the default admin account exists);
+ *     (migrated + seeded on startup);
  *  2. `ng serve` on :4200, which proxies `/api` and `/uploads` to the API.
  *
  * Run: `npm run e2e`  (headed/interactive: `npm run e2e:ui`)

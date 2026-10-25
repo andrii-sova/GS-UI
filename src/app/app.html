@@ -1,9 +1,5 @@
-@if (isStudio()) {
+<app-header />
+<main [class.header-offset]="!isHome()">
   <router-outlet />
-} @else {
-  <app-header />
-  <main [class.header-offset]="!isHome()">
-    <router-outlet />
-  </main>
-  <app-footer />
-}
+</main>
+<app-footer />

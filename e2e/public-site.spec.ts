@@ -35,14 +35,6 @@ test.describe('public site', () => {
     await expect(page.getByRole('heading', { name: 'Metal Doors' })).toBeVisible();
   });
 
-  test('the studio is not linked anywhere on the public site', async ({ page }) => {
-    await page.goto('/');
-    await expect(page.locator('a[href*="studio"]')).toHaveCount(0);
-
-    await page.goto('/contact');
-    await expect(page.locator('a[href*="studio"]')).toHaveCount(0);
-  });
-
   test('hero background is served from /uploads (API site settings)', async ({ page, request }) => {
     const content = await loadContent(request);
     expect(content.site.heroImageUrl).toContain('/uploads/');

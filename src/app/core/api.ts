@@ -1,11 +1,11 @@
+import { environment } from '../../environments/environment';
+
 /**
- * Base path for the GS content API.
- *
- * Both dev and prod use a relative `/api` path:
- *  - dev: `proxy.conf.json` forwards `/api` (and `/uploads`) to the API on :5048;
- *  - prod: the site and API are served behind the same host / reverse proxy.
+ * Base path for the GS API.
+ *  - dev: relative `/api`, forwarded to the API on :5048 by `proxy.conf.json`;
+ *  - production: absolute URL from `environments/environment.production.ts`.
  */
-export const API_BASE = '/api';
+export const API_BASE = `${environment.apiUrl}/api`;
 
 export const apiUrl = (path: string): string =>
   `${API_BASE}/${path.replace(/^\/+/, '')}`;
