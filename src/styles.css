@@ -1089,8 +1089,9 @@ app-hero .hero-stat-label { font-size: 0.9375rem; }
 
 /* Image slot: when a record has no photo yet, show a deliberate placeholder
    (blueprint-style gradient + icon) instead of a blank white hole. */
-.img-hover-zoom { background: var(--surface-alt); position: relative; }
-.img-hover-zoom:not(:has(img))::before {
+.img-hover-zoom, .img-slot { background: var(--surface-alt); position: relative; }
+.img-hover-zoom:not(:has(img))::before,
+.img-slot:not(:has(img))::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -1098,7 +1099,8 @@ app-hero .hero-stat-label { font-size: 0.9375rem; }
     linear-gradient(135deg, rgba(0, 113, 188, 0.14), rgba(219, 38, 27, 0.06)),
     repeating-linear-gradient(45deg, transparent 0 14px, rgba(0, 113, 188, 0.05) 14px 15px);
 }
-.img-hover-zoom:not(:has(img))::after {
+.img-hover-zoom:not(:has(img))::after,
+.img-slot:not(:has(img))::after {
   content: '';
   position: absolute;
   top: 50%; left: 50%;

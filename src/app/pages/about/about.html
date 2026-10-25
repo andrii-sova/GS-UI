@@ -110,7 +110,7 @@
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8">
         @for (member of content.team(); track $index) {
           <div class="flex flex-col gap-3">
-            <div class="w-full aspect-[2/3] overflow-hidden shadow-lg team-photo">
+            <div class="w-full aspect-[2/3] overflow-hidden shadow-lg team-photo img-slot">
               @if (member.photoUrl) {
                 <img [src]="member.photoUrl" [alt]="member.name" loading="lazy" decoding="async"
                      class="w-full h-full object-cover" />
