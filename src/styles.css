@@ -1493,11 +1493,10 @@ main img:not(.hero-bg-image):not(.is-loaded) {
   /* A photo fades in over its placeholder instead of snapping in. */
   main img.is-loaded:not(.hero-bg-image) { animation: img-fade-in 0.5s var(--ease-out) backwards; }
 
-  /* Route changes: old page fades out, new page rises in; the header stays put. */
-  app-header { view-transition-name: site-header; }
+  /* Route changes: a quick cross-fade. No view-transition-name on the header: it would make the header
+     a backdrop root and break the blur behind it. A fade-only root keeps the fixed header visually still. */
   ::view-transition-old(root) { animation: reveal-fade 0.15s var(--ease-in-out) reverse both; }
-  ::view-transition-new(root) { --reveal-distance: 10px; animation: reveal-up 0.35s var(--ease-out) both; }
-  ::view-transition-group(site-header) { animation-duration: 0s; }
+  ::view-transition-new(root) { animation: reveal-fade 0.3s var(--ease-out) both; }
 }
 
 /* ==========================================================
