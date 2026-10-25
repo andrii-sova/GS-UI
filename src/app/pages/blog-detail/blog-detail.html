@@ -3,28 +3,39 @@
   <a routerLink="/blog" class="link-arrow link-arrow--back text-sm">{{ lang.dict().blogDetailPage.back }}</a>
 
   @if (post(); as p) {
+  <div class="flex flex-col gap-10" animate.enter="page-enter">
     <!-- Post hero -->
-    <header class="flex flex-col gap-4">
+    <header class="flex flex-col gap-4" appRevealGroup>
       <time class="text-sm" [attr.datetime]="p.publishedOn">{{ p.publishedOn | localizedDate }}</time>
       <h1 class="text-3xl sm:text-4xl font-bold">{{ p.title }}</h1>
     </header>
 
     @if (images().length) {
-      <app-gallery-slider [images]="images()" [alt]="p.title" />
+      <app-gallery-slider appReveal="scale" [images]="images()" [alt]="p.title" />
     }
 
     <!-- Post body -->
-    <section class="flex flex-col gap-4">
+    <section class="flex flex-col gap-4" appRevealGroup>
       @for (paragraph of p.body; track $index) {
         <p class="text-base sm:text-lg">{{ paragraph }}</p>
       }
     </section>
+  </div>
+  } @else if (content.isLoading()) {
+    <div class="flex flex-col gap-6" role="status" aria-busy="true">
+      <span class="sr-only">Loading…</span>
+      <div class="skeleton skeleton--title"></div>
+      <div class="skeleton skeleton--media"></div>
+      <div class="skeleton skeleton--line w-full"></div>
+      <div class="skeleton skeleton--line w-5/6"></div>
+      <div class="skeleton skeleton--block"></div>
+    </div>
   } @else {
-    <p class="text-neutral-500" aria-live="polite">{{ content.isLoading() ? 'Loading…' : 'Post not found.' }}</p>
+    <p class="text-neutral-500" aria-live="polite">Post not found.</p>
   }
 
   <!-- CTA -->
-  <div class="flex flex-col items-center gap-6 py-12 sm:py-16 text-center border-t">
+  <div appRevealGroup class="flex flex-col items-center gap-6 py-12 sm:py-16 text-center border-t">
     <h2 class="text-xl sm:text-2xl font-bold">{{ lang.dict().blogDetailPage.ctaHeading }}</h2>
     <p>{{ lang.dict().blogDetailPage.ctaText }}</p>
     <a routerLink="/contact" class="btn-primary px-8 py-3">{{ lang.dict().blogDetailPage.ctaButton }}</a>

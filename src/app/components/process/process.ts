@@ -1,7 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { LangService } from '../../services/lang.service';
+import { RevealDirective } from '../../shared/reveal.directive';
 
 @Component({
+  imports: [RevealDirective],
   selector: 'app-process',
   templateUrl: './process.html',
 })

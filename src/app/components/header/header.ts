@@ -1,4 +1,4 @@
-import { Component, HostListener, computed, inject, signal } from '@angular/core';
+import { Component, ElementRef, HostListener, computed, effect, inject, signal } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { ContentStore } from '../../core/content/content.store';
@@ -17,6 +17,7 @@ export class HeaderComponent {
   readonly lang = inject(LangService);
   readonly content = inject(ContentStore);
   private readonly router = inject(Router);
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;
 
   readonly menuOpen = signal(false);
   readonly isHome = signal(this.router.url === '/');
@@ -35,6 +36,13 @@ export class HeaderComponent {
   });
 
   constructor() {
+    // Lock page scroll while the mobile menu is open.
+    effect((onCleanup) => {
+      if (typeof document === 'undefined' || !this.menuOpen()) return;
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      onCleanup(() => (document.body.style.overflow = prev));
+    });
     this.measureHero();
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
@@ -49,6 +57,16 @@ export class HeaderComponent {
   onWindowScroll(): void {
     this.scrollY.set(window.scrollY);
     if (this.isHome() && this.heroHeight() === 0) this.measureHero();
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    if (this.menuOpen()) this.closeMenu();
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (this.menuOpen() && !this.host.contains(event.target as Node)) this.closeMenu();
   }
 
   @HostListener('window:resize')

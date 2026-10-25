@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { RevealDirective } from '../../shared/reveal.directive';
 
 @Component({
   selector: 'app-cta-banner',
-  imports: [RouterLink],
+  imports: [RevealDirective, RouterLink],
   templateUrl: './cta-banner.html',
 })
 export class CtaBannerComponent {

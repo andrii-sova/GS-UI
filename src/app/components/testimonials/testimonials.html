@@ -1,9 +1,9 @@
 <section class="w-full py-12 sm:py-20">
   <div class="max-w-7xl mx-auto px-4 sm:px-6">
 
-    <h2 class="text-2xl sm:text-3xl font-bold mb-8 sm:mb-12">{{ lang.dict().testimonials.title }}</h2>
+    <h2 appReveal class="text-2xl sm:text-3xl font-bold mb-8 sm:mb-12">{{ lang.dict().testimonials.title }}</h2>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+    <div appRevealGroup class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
       @for (item of content.testimonials(); track $index) {
         <blockquote class="flex flex-col gap-4 p-6 border">
           <p class="text-lg font-medium">{{ item.quote }}</p>
@@ -21,6 +21,16 @@
             }
           </footer>
         </blockquote>
+      } @empty {
+        @if (content.isLoading()) {
+          @for (i of [1, 2, 3]; track i) {
+            <div class="skeleton-card flex flex-col gap-3 p-6" style="min-height:11rem" aria-hidden="true">
+              <span class="skeleton" style="width:95%;height:1.1rem"></span>
+              <span class="skeleton" style="width:80%;height:1.1rem"></span>
+              <span class="skeleton mt-auto" style="width:45%;height:0.9rem"></span>
+            </div>
+          }
+        }
       }
     </div>
 
@@ -28,9 +38,9 @@
 </section>
 
 @if (selected(); as t) {
-  <dialog #detailsDialog class="testimonial-dialog" data-testid="testimonial-dialog"
+  <dialog #detailsDialog class="testimonial-dialog" [class.is-closing]="closing()" data-testid="testimonial-dialog"
           aria-labelledby="testimonial-dialog-title"
-          (close)="closeDialog()" (click)="onBackdropClick($event)">
+          (cancel)="onCancel($event)" (close)="finalize()" (click)="onBackdropClick($event)">
     <div class="testimonial-dialog__body">
       <button type="button" class="testimonial-dialog__close" (click)="closeDialog()"
               [attr.aria-label]="lang.dict().testimonials.close">

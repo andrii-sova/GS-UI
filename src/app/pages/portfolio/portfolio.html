@@ -1,22 +1,22 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20 flex flex-col gap-12">
 
-  <header class="flex flex-col gap-4">
+  <header class="flex flex-col gap-4" appRevealGroup>
     <h1 class="text-3xl sm:text-4xl font-bold">{{ lang.dict().portfolioPage.title }}</h1>
     <p class="text-base sm:text-lg max-w-2xl">{{ lang.dict().portfolioPage.subtext }}</p>
   </header>
 
   <!-- Category filter -->
-  <nav class="flex flex-wrap gap-3">
+  <nav class="flex flex-wrap gap-3" appRevealGroup>
     <button
       type="button"
-      class="border px-4 py-2"
+      class="filter-chip border px-4 py-2"
       [class.filter-active]="selectedCategory() === null"
       (click)="selectCategory(null)"
     >{{ lang.lang() === 'uk' ? 'Всі' : 'All' }}</button>
     @for (cat of content.projectCategories(); track cat.key) {
       <button
         type="button"
-        class="border px-4 py-2"
+        class="filter-chip border px-4 py-2"
         [class.filter-active]="selectedCategory() === cat.key"
         (click)="selectCategory(cat.key)"
       >{{ cat.label }}</button>
@@ -24,7 +24,9 @@
   </nav>
 
   <!-- Projects grid -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+  @for (k of gridKeys(); track k) {
+  <div class="filter-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
+       [class.filter-grid--leaving]="leaving()" appRevealGroup>
     @for (project of filteredItems(); track project.slug) {
       <article class="flex flex-col border rounded-lg overflow-hidden card-hover">
         <a [routerLink]="['/portfolio', project.slug]" class="w-full aspect-video overflow-hidden img-hover-zoom">
@@ -42,6 +44,7 @@
       </article>
     }
   </div>
+  }
 
   <!-- Regions coverage map -->
   <app-regions-map />
@@ -50,7 +53,7 @@
   <app-europe-map />
 
   <!-- CTA -->
-  <div class="flex flex-col items-center gap-6 py-12 sm:py-16 text-center border-t">
+  <div appRevealGroup class="flex flex-col items-center gap-6 py-12 sm:py-16 text-center border-t">
     <h2 class="text-xl sm:text-2xl font-bold">{{ lang.dict().portfolioPage.ctaHeading }}</h2>
     <p>{{ lang.dict().portfolioPage.ctaText }}</p>
     <a routerLink="/contact" class="btn-primary px-8 py-3">{{ lang.dict().portfolioPage.ctaButton }}</a>

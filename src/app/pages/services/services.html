@@ -1,13 +1,13 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20 flex flex-col gap-12 sm:gap-16">
 
-  <header class="flex flex-col gap-4">
+  <header class="flex flex-col gap-4" appRevealGroup>
     <h1 class="text-3xl sm:text-4xl font-bold">{{ lang.dict().servicesPage.title }}</h1>
     <p class="text-base sm:text-lg max-w-2xl">{{ lang.dict().servicesPage.subtext }}</p>
   </header>
 
   <div class="flex flex-col gap-12 sm:gap-16">
     @for (service of content.services(); track service.slug) {
-      <article class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-10 items-center border-b pb-12 sm:pb-16">
+      <article appReveal class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-10 items-center border-b pb-12 sm:pb-16">
         <a [routerLink]="['/services', service.slug]" class="w-full aspect-video overflow-hidden img-hover-zoom card-hover"
            [attr.aria-label]="service.name">
           @if (service.imageUrl) {
@@ -29,7 +29,7 @@
     }
   </div>
 
-  <div class="flex flex-col items-center gap-6 py-12 sm:py-16 text-center">
+  <div appRevealGroup class="flex flex-col items-center gap-6 py-12 sm:py-16 text-center">
     <h2 class="text-xl sm:text-2xl font-bold">{{ lang.dict().servicesPage.notSure }}</h2>
     <p>{{ lang.dict().servicesPage.helpText }}</p>
     <a routerLink="/contact" class="btn-primary px-8 py-3">{{ lang.dict().servicesPage.contactCta }}</a>

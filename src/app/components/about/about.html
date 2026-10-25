@@ -2,7 +2,7 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
 
     <!-- Left: image -->
-    <div class="w-full aspect-square overflow-hidden">
+    <div appReveal="left" class="w-full aspect-square overflow-hidden img-slot">
       @if (content.site().aboutImageUrl; as aboutImage) {
         <img
           [src]="aboutImage"
@@ -13,14 +13,23 @@
     </div>
 
     <!-- Right: stats + text -->
-    <div class="flex flex-col gap-6 sm:gap-8">
+    <div appRevealGroup class="flex flex-col gap-6 sm:gap-8">
 
       <div class="grid grid-cols-3 gap-4 sm:gap-6">
         @for (stat of content.stats().about; track $index) {
           <div class="flex flex-col gap-1">
-            <strong class="stat-number text-2xl sm:text-3xl font-bold">{{ stat.value }}</strong>
+            <strong class="stat-number text-2xl sm:text-3xl font-bold" [appCountUp]="stat.value"></strong>
             <span class="text-sm">{{ stat.label }}</span>
           </div>
+        } @empty {
+          @if (content.isLoading()) {
+            @for (i of [1, 2, 3]; track i) {
+              <div class="flex flex-col gap-2" aria-hidden="true">
+                <span class="skeleton" style="width:3.5rem;height:2rem"></span>
+                <span class="skeleton" style="width:5rem;height:0.9rem"></span>
+              </div>
+            }
+          }
         }
       </div>
 

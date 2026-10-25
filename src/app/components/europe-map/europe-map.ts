@@ -1,9 +1,11 @@
 import { Component, inject } from '@angular/core';
+import { RevealDirective } from '../../shared/reveal.directive';
 import { ContentStore } from '../../core/content/content.store';
 import { LangService } from '../../services/lang.service';
 
 @Component({
   selector: 'app-europe-map',
+  imports: [RevealDirective],
   templateUrl: './europe-map.html',
 })
 export class EuropeMapComponent {

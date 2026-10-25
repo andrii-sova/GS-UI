@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { RevealDirective } from '../../shared/reveal.directive';
 import { LangService } from '../../services/lang.service';
 import { ContentStore } from '../../core/content/content.store';
 
 @Component({
   selector: 'app-services-page',
-  imports: [RouterLink],
+  imports: [RouterLink, RevealDirective],
   templateUrl: './services.html',
 })
 export class ServicesPageComponent {

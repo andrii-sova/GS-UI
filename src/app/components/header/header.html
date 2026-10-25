@@ -5,7 +5,7 @@
     <!-- Logo -->
     <a routerLink="/" class="flex items-center shrink-0" (click)="closeMenu()">
       @if (content.site().logoUrl; as logo) {
-        <img [src]="logo" alt="Галіція Сталь" class="h-[52px] w-auto" />
+        <img [src]="logo" alt="Галіція Сталь" class="h-[52px] w-auto" animate.enter="fade-enter" />
       } @else {
         <span class="sr-only">Галіція Сталь</span>
       }
@@ -23,7 +23,7 @@
     <!-- Right side (desktop) -->
     <div class="hidden lg:flex items-center gap-4">
       @if (content.site().phone) {
-        <a [href]="content.phoneHref()" data-testid="header-phone">{{ content.site().phone }}</a>
+        <a [href]="content.phoneHref()" data-testid="header-phone" animate.enter="fade-enter">{{ content.site().phone }}</a>
       }
       <a routerLink="/contact" class="border px-4 py-2 text-sm font-medium">{{ lang.dict().nav.getQuote }}</a>
 
@@ -53,7 +53,8 @@
 
   <!-- Mobile menu panel -->
   @if (menuOpen()) {
-    <div id="mobile-menu" class="mobile-menu lg:hidden">
+    <div class="mobile-menu-backdrop lg:hidden" animate.enter="backdrop-enter" animate.leave="backdrop-leave" (click)="closeMenu()" aria-hidden="true"></div>
+    <div id="mobile-menu" class="mobile-menu lg:hidden" animate.enter="menu-enter" animate.leave="menu-leave">
       <ul class="list-none">
         <li><a routerLink="/services"  routerLinkActive="underline" (click)="closeMenu()">{{ lang.dict().nav.services }}</a></li>
         <li><a routerLink="/portfolio" routerLinkActive="underline" (click)="closeMenu()">{{ lang.dict().nav.portfolio }}</a></li>

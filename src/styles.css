@@ -803,7 +803,19 @@
   aspect-ratio: 16 / 9;
   overflow: hidden;
   background-color: var(--surface-alt);
+  touch-action: pan-y;
+  user-select: none;
 }
+.gallery-slider__viewport:focus-visible { outline: none; box-shadow: var(--ring); }
+
+/* Stacked slides: only the active one is visible; before/after set the slide direction. */
+.gallery-slider__slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.gallery-slider__slide--active { opacity: 1; }
 
 .gallery-slider__nav {
   position: absolute;
@@ -860,8 +872,25 @@
 }
 
 .gallery-slider__dot--active {
+  background-color: var(--border);
+}
+
+/* The brand-coloured indicator glides between dots (0.6rem dot + 0.5rem gap = 1.1rem step). */
+.gallery-slider__track {
+  position: relative;
+  display: flex;
+  gap: 0.5rem;
+}
+.gallery-slider__indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 999px;
   background-color: var(--brand);
-  transform: scale(1.2);
+  transform: translateX(calc(var(--active, 0) * 1.1rem)) scale(1.2);
+  pointer-events: none;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -1332,6 +1361,41 @@ app-hero .hero-stat-value + .hero-stat-label { margin-top: 0.15rem; }
   box-shadow: var(--shadow-lg);
 }
 .testimonial-dialog::backdrop { background: rgba(11, 24, 34, 0.6); }
+
+/* Open / close motion: @starting-style for entry, `.is-closing` (set by the component) for exit. */
+@media (prefers-reduced-motion: no-preference) {
+  .testimonial-dialog {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+    transition:
+      opacity var(--dur-base) var(--ease-out),
+      transform var(--dur-base) var(--ease-out),
+      overlay var(--dur-base) allow-discrete,
+      display var(--dur-base) allow-discrete;
+  }
+  .testimonial-dialog[open] { opacity: 1; transform: none; }
+  .testimonial-dialog::backdrop {
+    background: rgba(11, 24, 34, 0);
+    transition:
+      background-color var(--dur-base) var(--ease-out),
+      overlay var(--dur-base) allow-discrete,
+      display var(--dur-base) allow-discrete;
+  }
+  .testimonial-dialog[open]::backdrop { background: rgba(11, 24, 34, 0.6); }
+  @starting-style {
+    .testimonial-dialog[open] { opacity: 0; transform: scale(0.96) translateY(8px); }
+    .testimonial-dialog[open]::backdrop { background: rgba(11, 24, 34, 0); }
+  }
+  .testimonial-dialog.is-closing,
+  .testimonial-dialog[open].is-closing {
+    opacity: 0;
+    transform: scale(0.97);
+    transition-duration: var(--dur-fast);
+    transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  }
+  .testimonial-dialog.is-closing::backdrop,
+  .testimonial-dialog[open].is-closing::backdrop { background: rgba(11, 24, 34, 0); transition-duration: var(--dur-fast); }
+}
 .testimonial-dialog__body {
   position: relative;
   display: flex;
@@ -1375,4 +1439,252 @@ main img:not(.hero-bg-image):not(.is-loaded) {
 }
 @media (prefers-reduced-motion: reduce) {
   main img:not(.hero-bg-image):not(.is-loaded) { animation: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MOTION — shared tokens, scroll reveal, image fade, route
+   transitions. Only transform/opacity are animated.
+   `.reveal` / `.reveal-group` are added by RevealDirective, so
+   content stays visible without JS. Entrance animations use
+   `backwards` fill so hover transforms keep working afterwards.
+   ═══════════════════════════════════════════════════════════ */
+:root {
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --dur-fast: 0.18s;
+  --dur-base: 0.35s;
+  --dur-slow: 0.7s;
+  --reveal-distance: 24px;
+}
+
+@keyframes reveal-up    { from { opacity: 0; transform: translate3d(0, var(--reveal-distance), 0); } }
+@keyframes reveal-fade  { from { opacity: 0; } }
+@keyframes reveal-scale { from { opacity: 0; transform: scale(0.94); } }
+@keyframes reveal-left  { from { opacity: 0; transform: translate3d(calc(var(--reveal-distance) * -1.5), 0, 0); } }
+@keyframes reveal-right { from { opacity: 0; transform: translate3d(calc(var(--reveal-distance) * 1.5), 0, 0); } }
+@keyframes img-fade-in  { from { opacity: 0; } }
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal:not(.is-visible),
+  .reveal-group:not(.is-visible) > * { opacity: 0; }
+
+  .reveal.is-visible,
+  .reveal-group.is-visible > * {
+    animation: reveal-up var(--dur-slow) var(--ease-out) backwards;
+    animation-delay: var(--reveal-delay, 0s);
+  }
+  .reveal[data-reveal='fade'].is-visible  { animation-name: reveal-fade; }
+  .reveal[data-reveal='scale'].is-visible { animation-name: reveal-scale; }
+  .reveal[data-reveal='left'].is-visible  { animation-name: reveal-left; }
+  .reveal[data-reveal='right'].is-visible { animation-name: reveal-right; }
+
+  /* Stagger: first 10 children, the rest share the last step. */
+  .reveal-group.is-visible > :nth-child(2)  { animation-delay: 0.07s; }
+  .reveal-group.is-visible > :nth-child(3)  { animation-delay: 0.14s; }
+  .reveal-group.is-visible > :nth-child(4)  { animation-delay: 0.21s; }
+  .reveal-group.is-visible > :nth-child(5)  { animation-delay: 0.28s; }
+  .reveal-group.is-visible > :nth-child(6)  { animation-delay: 0.35s; }
+  .reveal-group.is-visible > :nth-child(7)  { animation-delay: 0.42s; }
+  .reveal-group.is-visible > :nth-child(8)  { animation-delay: 0.49s; }
+  .reveal-group.is-visible > :nth-child(9)  { animation-delay: 0.56s; }
+  .reveal-group.is-visible > :nth-child(n + 10) { animation-delay: 0.63s; }
+
+  /* A photo fades in over its placeholder instead of snapping in. */
+  main img.is-loaded:not(.hero-bg-image) { animation: img-fade-in 0.5s var(--ease-out) backwards; }
+
+  /* Route changes: old page fades out, new page rises in; the header stays put. */
+  app-header { view-transition-name: site-header; }
+  ::view-transition-old(root) { animation: reveal-fade 0.15s var(--ease-in-out) reverse both; }
+  ::view-transition-new(root) { --reveal-distance: 10px; animation: reveal-up 0.35s var(--ease-out) both; }
+  ::view-transition-group(site-header) { animation-duration: 0s; }
+}
+
+/* ==========================================================
+   MOTION — pages
+   Detail-page skeletons + enter, portfolio filter swap,
+   contact form feedback. transform/opacity only.
+   ========================================================== */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: color-mix(in srgb, currentColor 8%, transparent);
+  border-radius: 4px;
+}
+.skeleton--line { height: 1rem; }
+.skeleton--title { height: 2.5rem; width: 70%; }
+.skeleton--media { aspect-ratio: 16 / 9; width: 100%; border-radius: 0; }
+.skeleton--block { height: 8rem; width: 100%; }
+
+.form-error {
+  color: #b91c1c;
+  font-size: 0.875rem;
+}
+.spinner {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  vertical-align: -0.125em;
+  margin-right: 0.5rem;
+}
+.btn-primary[disabled] { opacity: 0.7; cursor: progress; }
+.contact-map { position: relative; }
+.contact-map iframe { opacity: 0; }
+.contact-map iframe.is-ready { opacity: 1; }
+
+@keyframes skeleton-shimmer { to { transform: translateX(100%); } }
+@keyframes page-enter { from { opacity: 0; transform: translate3d(0, 12px, 0); } }
+@keyframes filter-in { from { opacity: 0; transform: scale(0.96); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes msg-in { from { opacity: 0; transform: translate3d(0, 8px, 0); } }
+
+@media (prefers-reduced-motion: no-preference) {
+  .skeleton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, currentColor 10%, transparent), transparent);
+    animation: skeleton-shimmer 1.4s var(--ease-in-out) infinite;
+  }
+  .page-enter { animation: page-enter var(--dur-slow) var(--ease-out) backwards; }
+
+  .filter-grid { transition: opacity 0.12s var(--ease-in-out), transform 0.12s var(--ease-in-out); }
+  .filter-grid--leaving { opacity: 0; transform: scale(0.98); pointer-events: none; }
+  .filter-grid:not(.filter-grid--leaving) > * { animation-name: filter-in; animation-duration: var(--dur-base); }
+
+  nav button.filter-chip { transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out); }
+  nav button.filter-chip:active { transform: scale(0.97); }
+
+  .spinner { animation: spin 0.7s linear infinite; }
+  .form-msg { animation: msg-in var(--dur-base) var(--ease-out) backwards; }
+  .form-error-in { animation: reveal-fade var(--dur-base) var(--ease-out) backwards; }
+  .contact-map iframe { transition: opacity var(--dur-slow) var(--ease-out); }
+  .file-name-swap { animation: reveal-fade var(--dur-base) var(--ease-out) backwards; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .contact-map iframe { transition: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MOTION — widgets (gallery slider, maps)  [anchor: motion-widgets]
+   ═══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: no-preference) {
+  .gallery-slider__slide {
+    transition: opacity 0.45s var(--ease-out), transform 0.45s var(--ease-out);
+  }
+  .gallery-slider__slide--before { transform: translate3d(-6%, 0, 0); }
+  .gallery-slider__slide--after { transform: translate3d(6%, 0, 0); }
+  .gallery-slider__slide--active { transform: none; }
+  .gallery-slider__indicator { transition: transform 0.4s var(--ease-out); }
+
+  /* Active countries / regions fill in one after another once the map is revealed. */
+  @keyframes map-fill-in { from { fill: #aeb8c2; } }
+  .map-reveal.is-visible path.active,
+  .map-reveal.is-visible path.origin {
+    animation: map-fill-in 0.7s var(--ease-out) backwards;
+    animation-delay: calc(0.25s + (var(--map-i, 0) * 0.07s));
+  }
+  .map-reveal path:nth-child(8n + 1) { --map-i: 0; }
+  .map-reveal path:nth-child(8n + 2) { --map-i: 3; }
+  .map-reveal path:nth-child(8n + 3) { --map-i: 6; }
+  .map-reveal path:nth-child(8n + 4) { --map-i: 1; }
+  .map-reveal path:nth-child(8n + 5) { --map-i: 4; }
+  .map-reveal path:nth-child(8n + 6) { --map-i: 7; }
+  .map-reveal path:nth-child(8n + 7) { --map-i: 2; }
+  .map-reveal path:nth-child(8n) { --map-i: 5; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MOTION — header/hero/home
+   Mobile menu (animate.enter / animate.leave), hero load-in +
+   Ken-Burns, skeleton placeholders, process line, press feedback.
+   Only transform/opacity are animated; movement is gated on
+   no-preference.
+   ═══════════════════════════════════════════════════════════ */
+
+/* Skeleton placeholders: reserve the final layout until API content arrives. */
+.skeleton {
+  display: block;
+  border-radius: 6px;
+  background: linear-gradient(100deg, #e3e8ed 30%, #f2f5f8 50%, #e3e8ed 70%);
+  background-size: 200% 100%;
+  animation: img-shimmer 1.4s linear infinite;
+}
+.skeleton--dark {
+  background: linear-gradient(100deg, rgba(255, 255, 255, 0.1) 30%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.1) 70%);
+  background-size: 200% 100%;
+}
+.skeleton-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.partners-item .skeleton { background-color: transparent; }
+@media (prefers-reduced-motion: reduce) {
+  .skeleton { animation: none; }
+}
+
+/* Press feedback (buttons only). */
+button:not(.menu-toggle):active,
+.btn-primary:active { transform: scale(0.98); }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Header */
+  app-header .header-bg { transition: opacity 0.25s linear; }
+  .fade-enter { animation: reveal-fade var(--dur-base) var(--ease-out) backwards; }
+
+  /* Mobile menu: slide-down + fade, staggered links, backdrop fade. */
+  .mobile-menu-backdrop {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 100vh;
+    z-index: 40;
+    background: rgba(8, 14, 20, 0.45);
+  }
+  @keyframes menu-in  { from { opacity: 0; transform: translate3d(0, -14px, 0); } }
+  @keyframes menu-out { to   { opacity: 0; transform: translate3d(0, -10px, 0); } }
+  @keyframes menu-item-in { from { opacity: 0; transform: translate3d(0, -8px, 0); } }
+  .menu-enter { animation: menu-in 0.4s var(--ease-drawer) backwards; }
+  .menu-leave { animation: menu-out 0.2s var(--ease-in-out) forwards; }
+  .backdrop-enter { animation: reveal-fade 0.3s var(--ease-out) backwards; }
+  .backdrop-leave { animation: reveal-fade 0.2s var(--ease-in-out) reverse forwards; }
+  .menu-enter > ul > li { animation: menu-item-in 0.45s var(--ease-out) backwards; }
+  .menu-enter > ul > li:nth-child(1) { animation-delay: 0.06s; }
+  .menu-enter > ul > li:nth-child(2) { animation-delay: 0.11s; }
+  .menu-enter > ul > li:nth-child(3) { animation-delay: 0.16s; }
+  .menu-enter > ul > li:nth-child(4) { animation-delay: 0.21s; }
+  .menu-enter > ul > li:nth-child(5) { animation-delay: 0.26s; }
+  .menu-enter > :not(ul) { animation: menu-item-in 0.45s var(--ease-out) 0.3s backwards; }
+
+  /* Hero: bg fades in over its colour (never hidden before load), slow Ken-Burns zoom. */
+  .hero-bg { background-color: #0b1822; }
+  .hero-bg-image {
+    transition: opacity 0.9s var(--ease-out);
+    transform-origin: 50% 40%;
+    animation: hero-kenburns 32s ease-out forwards;
+  }
+  .hero-bg-image:not(.is-loaded) { opacity: 0; }
+  @keyframes hero-kenburns { from { transform: scale(1); } to { transform: scale(1.1); } }
+
+  /* Partners: slowed (not stopped) on hover; speed eased from JS via playbackRate. */
+  .partners-marquee:hover .partners-track { animation-play-state: running; }
+
+  /* Process: connector lines draw down as the list reveals. */
+  .process-step:not(:last-child)::after { transform-origin: top; }
+  .process-track:not(.is-visible) .process-step:not(:last-child)::after { transform: scaleY(0); }
+  .process-track.is-visible .process-step:not(:last-child)::after {
+    animation: line-draw 0.7s var(--ease-out) backwards;
+  }
+  .process-track.is-visible .process-step:nth-child(1)::after { animation-delay: 0.25s; }
+  .process-track.is-visible .process-step:nth-child(2)::after { animation-delay: 0.45s; }
+  .process-track.is-visible .process-step:nth-child(3)::after { animation-delay: 0.65s; }
+  .process-track.is-visible .process-step:nth-child(4)::after { animation-delay: 0.85s; }
+  .process-track.is-visible .process-step:nth-child(n + 5)::after { animation-delay: 1.05s; }
+  @keyframes line-draw { from { transform: scaleY(0); } }
 }

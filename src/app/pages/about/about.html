@@ -3,12 +3,12 @@
   <!-- Page hero -->
   <section class="w-full py-12 sm:py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
-      <div class="flex flex-col gap-6">
+      <div class="flex flex-col gap-6" appRevealGroup>
         <h1 class="text-3xl sm:text-4xl font-bold">{{ lang.dict().aboutPage.heroHeading }}</h1>
         <p class="text-base sm:text-lg">{{ lang.dict().aboutPage.heroText }}</p>
       </div>
       @if (content.site().teamPhotoUrl; as teamPhoto) {
-        <div class="w-full aspect-[3/2] overflow-hidden shadow-lg">
+        <div class="w-full aspect-[3/2] overflow-hidden shadow-lg" appReveal="scale" [revealDelay]="150">
           <img [src]="teamPhoto" alt="" class="w-full h-full object-cover" />
         </div>
       }
@@ -18,11 +18,11 @@
   <!-- Metrics -->
   <section class="w-full py-12 sm:py-20 border-y">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col gap-8 sm:gap-12">
-      <h2 class="text-2xl sm:text-3xl font-bold">{{ lang.dict().aboutPage.metrics.title }}</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6">
+      <h2 appReveal class="text-2xl sm:text-3xl font-bold">{{ lang.dict().aboutPage.metrics.title }}</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6" appRevealGroup>
         @for (stat of content.stats().metrics; track $index) {
           <div class="metric-card flex flex-col gap-1 p-5 sm:p-6">
-            <strong class="stat-number text-2xl sm:text-3xl font-bold">{{ stat.value }}</strong>
+            <strong class="stat-number text-2xl sm:text-3xl font-bold" [appCountUp]="stat.value"></strong>
             <span class="text-sm">{{ stat.label }}</span>
           </div>
         }
@@ -34,11 +34,11 @@
   <section class="w-full py-12 sm:py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
       @if (content.site().aboutImageUrl; as aboutImage) {
-        <div class="w-full aspect-video overflow-hidden">
+        <div class="w-full aspect-video overflow-hidden" appReveal="left">
           <img [src]="aboutImage" alt="" loading="lazy" decoding="async" class="w-full h-full object-cover" />
         </div>
       }
-      <div class="flex flex-col gap-6">
+      <div class="flex flex-col gap-6" appRevealGroup>
         <h2 class="text-2xl sm:text-3xl font-bold">{{ lang.dict().aboutPage.storyHeading }}</h2>
         <p>{{ lang.dict().aboutPage.storyText1 }}</p>
         <p>{{ lang.dict().aboutPage.storyText2 }}</p>
@@ -49,8 +49,8 @@
   <!-- Core values -->
   <section class="w-full py-12 sm:py-20 border-t">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col gap-8 sm:gap-12">
-      <h2 class="text-2xl sm:text-3xl font-bold">{{ lang.dict().aboutPage.valuesHeading }}</h2>
-      <div class="values-grid">
+      <h2 appReveal class="text-2xl sm:text-3xl font-bold">{{ lang.dict().aboutPage.valuesHeading }}</h2>
+      <div class="values-grid" appRevealGroup>
         @for (value of lang.dict().aboutPage.values; track value.title) {
           <div class="values-grid__item flex flex-col gap-4">
             <div class="w-12 h-12 text-[var(--brand)]">
@@ -96,7 +96,7 @@
 
   <!-- CTA -->
   <section class="w-full py-12 sm:py-20 border-t">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 text-center flex flex-col items-center gap-6">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 text-center flex flex-col items-center gap-6" appRevealGroup>
       <h2 class="text-2xl sm:text-3xl font-bold">{{ lang.dict().aboutPage.ctaHeading }}</h2>
       <p>{{ lang.dict().aboutPage.ctaText }}</p>
       <a routerLink="/contact" class="btn-primary px-8 sm:px-10 py-3 sm:py-4">{{ lang.dict().aboutPage.ctaButton }}</a>
@@ -106,8 +106,8 @@
   <!-- Team -->
   <section class="w-full py-12 sm:py-20 border-t">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col gap-8 sm:gap-10">
-      <h2 class="text-2xl sm:text-3xl font-bold">{{ lang.dict().aboutPage.teamHeading }}</h2>
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8">
+      <h2 appReveal class="text-2xl sm:text-3xl font-bold">{{ lang.dict().aboutPage.teamHeading }}</h2>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8" appRevealGroup>
         @for (member of content.team(); track $index) {
           <div class="flex flex-col gap-3">
             <div class="w-full aspect-[2/3] overflow-hidden shadow-lg team-photo img-slot">

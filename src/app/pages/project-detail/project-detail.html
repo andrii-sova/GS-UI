@@ -3,14 +3,15 @@
   <a routerLink="/portfolio" class="link-arrow link-arrow--back text-sm">{{ lang.dict().projectDetailPage.back }}</a>
 
   @if (project(); as p) {
+  <div class="flex flex-col gap-12" animate.enter="page-enter">
     <!-- Page hero -->
     <header class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-10 items-center">
       @if (p.imageUrl) {
-        <div class="w-full aspect-video overflow-hidden">
+        <div class="w-full aspect-video overflow-hidden" appReveal="scale">
           <img [src]="p.imageUrl" [alt]="p.name" decoding="async" class="w-full h-full object-cover" />
         </div>
       }
-      <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-4" appRevealGroup>
         <span class="text-sm">{{ p.categoryLabel }}</span>
         <h1 class="text-3xl sm:text-4xl font-bold">{{ p.name }}</h1>
         <p class="text-base sm:text-lg">{{ p.shortDescription }}</p>
@@ -19,14 +20,14 @@
     </header>
 
     <!-- Overview -->
-    <section class="flex flex-col gap-4 border-t pt-12">
+    <section appRevealGroup class="flex flex-col gap-4 border-t pt-12">
       <h2 class="text-xl sm:text-2xl font-bold">{{ lang.dict().projectDetailPage.overview }}</h2>
       <p>{{ p.description }}</p>
     </section>
 
     <!-- Details -->
     @if (p.details.length) {
-      <section class="flex flex-col gap-4 border-t pt-12">
+      <section appRevealGroup class="flex flex-col gap-4 border-t pt-12">
         <h2 class="text-xl sm:text-2xl font-bold">{{ lang.dict().projectDetailPage.details }}</h2>
         <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 list-disc pl-5">
           @for (item of p.details; track $index) {
@@ -38,40 +39,22 @@
 
     <!-- Gallery -->
     @if (p.gallery.length) {
-      <section class="flex flex-col gap-4 border-t pt-12">
-        <div class="gallery-slider">
-          <div class="gallery-slider__viewport">
-            <img [src]="p.gallery[activeImage()]" [alt]="p.name" loading="lazy" decoding="async"
-                 class="w-full h-full object-cover" />
-
-            @if (p.gallery.length > 1) {
-              <button type="button" class="gallery-slider__nav gallery-slider__nav--prev" (click)="prevImage()" aria-label="Previous image">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-              </button>
-              <button type="button" class="gallery-slider__nav gallery-slider__nav--next" (click)="nextImage()" aria-label="Next image">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-              </button>
-            }
-          </div>
-
-          @if (p.gallery.length > 1) {
-            <div class="gallery-slider__dots">
-              @for (img of p.gallery; track $index) {
-                <button
-                  type="button"
-                  class="gallery-slider__dot"
-                  [class.gallery-slider__dot--active]="activeImage() === $index"
-                  (click)="goToImage($index)"
-                  [attr.aria-label]="'Go to image ' + ($index + 1)"
-                ></button>
-              }
-            </div>
-          }
-        </div>
+      <section appReveal class="flex flex-col gap-4 border-t pt-12">
+        <app-gallery-slider [images]="p.gallery" [alt]="p.name" />
       </section>
     }
+  </div>
+  } @else if (content.isLoading()) {
+    <div class="flex flex-col gap-6" role="status" aria-busy="true">
+      <span class="sr-only">Loading…</span>
+      <div class="skeleton skeleton--title"></div>
+      <div class="skeleton skeleton--media"></div>
+      <div class="skeleton skeleton--line w-full"></div>
+      <div class="skeleton skeleton--line w-5/6"></div>
+      <div class="skeleton skeleton--block"></div>
+    </div>
   } @else {
-    <p class="text-neutral-500" aria-live="polite">{{ content.isLoading() ? 'Loading…' : 'Project not found.' }}</p>
+    <p class="text-neutral-500" aria-live="polite">Project not found.</p>
   }
 
 </div>

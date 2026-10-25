@@ -52,7 +52,7 @@ test.describe('public site', () => {
 
     release();
     await expect(photo).toHaveClass(/is-loaded/);
-    expect(await photo.evaluate((el) => getComputedStyle(el).animationName)).toBe('none');
+    expect(await photo.evaluate((el) => getComputedStyle(el).animationName)).not.toBe('img-shimmer');
 
     // The hero background never gets the loader, even while its image is pending.
     await page.unroute('**/uploads/**');
@@ -65,7 +65,7 @@ test.describe('public site', () => {
     await page.goto('/', { waitUntil: 'domcontentloaded' });
     const hero = page.locator('.hero-bg-image');
     await expect(hero).toBeAttached();
-    expect(await hero.evaluate((el) => getComputedStyle(el).animationName)).toBe('none');
+    expect(await hero.evaluate((el) => getComputedStyle(el).animationName)).not.toBe('img-shimmer');
     releaseHero();
   });
 

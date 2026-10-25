@@ -2,13 +2,14 @@ import { Component, computed, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
+import { RevealDirective } from '../../shared/reveal.directive';
 import { LangService } from '../../services/lang.service';
 import { ContentStore } from '../../core/content/content.store';
 import { GallerySliderComponent } from '../../shared/gallery-slider';
 
 @Component({
   selector: 'app-service-detail-page',
-  imports: [RouterLink, GallerySliderComponent],
+  imports: [RouterLink, GallerySliderComponent, RevealDirective],
   templateUrl: './service-detail.html',
 })
 export class ServiceDetailPageComponent {

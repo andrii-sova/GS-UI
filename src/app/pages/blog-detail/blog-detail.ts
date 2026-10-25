@@ -2,6 +2,7 @@ import { Component, computed, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
+import { RevealDirective } from '../../shared/reveal.directive';
 import { LangService } from '../../services/lang.service';
 import { ContentStore } from '../../core/content/content.store';
 import { GallerySliderComponent } from '../../shared/gallery-slider';
@@ -9,7 +10,7 @@ import { LocalizedDatePipe } from '../../shared/localized-date.pipe';
 
 @Component({
   selector: 'app-blog-detail-page',
-  imports: [RouterLink, LocalizedDatePipe, GallerySliderComponent],
+  imports: [RouterLink, LocalizedDatePipe, GallerySliderComponent, RevealDirective],
   templateUrl: './blog-detail.html',
 })
 export class BlogDetailPageComponent {

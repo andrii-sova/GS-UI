@@ -1,11 +1,11 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20 flex flex-col gap-12">
 
-  <header>
+  <header appReveal>
     <h1 class="text-3xl sm:text-4xl font-bold">{{ lang.dict().blogPage.title }}</h1>
   </header>
 
   <!-- Posts grid -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" appRevealGroup>
     @for (post of content.blog(); track post.slug) {
       <article class="flex flex-col border rounded-lg overflow-hidden card-hover">
         <a [routerLink]="['/blog', post.slug]" class="w-full aspect-video overflow-hidden img-hover-zoom">
